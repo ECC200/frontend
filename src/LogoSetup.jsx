@@ -11,13 +11,12 @@ function Logo() {
         margin-right:auto;
     `
     const LogoImg = styled.img`
-        width: 15%;
+        width: 25%;
         margin: 0 auto;
         filter: drop-shadow(0 0 1px #000);
     `
     const LognName = styled.p`
         color: #000;
-        font-size:150%;
         letter-spacing:5px;
         padding:0;
         margin: 0;
