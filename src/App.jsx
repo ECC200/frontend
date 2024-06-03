@@ -1,13 +1,15 @@
 import './App.css'
 import Web from './Web/web'
-import Login from './Level2/Login'
+import Phone from './Level2/phone'
+import Home from './Level2/Home'
 
 function App() {
 
   return (
     <>
       <Web />
-      <Login />
+      {/* <Phone /> */}
+      {/* <Home /> */}
     </>
   )
 }

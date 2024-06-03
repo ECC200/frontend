@@ -1,9 +1,9 @@
-import Level2Login from './level2Login'
+import PhoneLogin from './phoneLogin'
 
 function web() {
     return (
         <>
-            <Level2Login />
+            <PhoneLogin />
         </>
     );
 }
