@@ -1,11 +1,11 @@
-// import styled from '@emotion/styled'
-import Lv1Login from './Lv1Login'
+import Lv1Login from "../level1/Lv1Login"
 
-function level1() {
+function Level1() {   
     return (
-        <>
-            <Lv1Login />
-        </>
+      <>
+        <Lv1Login />
+      </>
     );
 }
-export default level1;
+
+export default Level1;
