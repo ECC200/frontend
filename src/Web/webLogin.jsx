@@ -5,6 +5,121 @@ import Logofunc from '../LogoSetup';
 // import Axios from 'axios';
 
 
+function WebLogin() {
+    const [resetpw, setResetPW] = useState(false);
+    const [staffId, setStaffId] = useState('');
+    const [password, setPassword] = useState('');
+    const [reqMsg, setReqMsg] = useState(true);
+
+    const handleStaffIdChange = useCallback((e) => {
+        setStaffId(e.target.value);
+    }, []);
+
+    const handlePasswordChange = useCallback((e) => {
+        setPassword(e.target.value);
+    }, []);
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        console.log('StaffId:', staffId);
+        console.log('Password:', password);
+    };
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                // const response = await Axios.get('');
+                // if (response.statusCode !== 200) {
+                //     setReqMsg(false)
+                // }
+                setReqMsg(true)
+
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        fetchData();
+    }, []);
+
+    const HandlePwChangeMsg = () => {
+        setResetPW(resetpw => !resetpw);
+    }
+
+
+    if (resetpw) {
+        return (
+            <LoginBg>
+                <Logofunc />
+                <ResetPwMsg>ITの同僚に連絡してください。</ResetPwMsg>
+                <ResetPw onClick={HandlePwChangeMsg}>Login page</ResetPw>
+            </LoginBg>
+        );
+    } else {
+        return (
+            <>
+                <LoginBg>
+                    <Logofunc />
+                    {reqMsg === false ? (
+                        <>
+                            <ErrMsg>*Invalid Staff id / password</ErrMsg>
+                            <form onSubmit={handleSubmit}>
+                                <InputArea>
+                                    <ErrInputName htmlFor='staffId'>従業員の番号:</ErrInputName>
+                                    <ErrInputBar
+                                        type="text"
+                                        id="staffId"
+                                        value={staffId}
+                                        onChange={handleStaffIdChange}
+                                    />
+                                </InputArea>
+                                <InputArea>
+                                    <ErrInputName htmlFor='password'>パスワード:</ErrInputName>
+                                    <ErrInputBar
+                                        type="password"
+                                        id="password"
+                                        value={password}
+                                        onChange={handlePasswordChange}
+                                    />
+                                </InputArea>
+                                <SubmitBtn type="submit">Login</SubmitBtn>
+                            </form>
+                        </>
+                    ) : (
+                        <>
+                            <form onSubmit={handleSubmit}>
+                                <InputArea>
+                                    <InputName htmlFor='staffId'>従業員の番号:</InputName>
+                                    <InputBar
+                                        type="text"
+                                        id="staffId"
+                                        value={staffId}
+                                        onChange={handleStaffIdChange}
+                                    />
+                                </InputArea>
+                                <InputArea>
+                                    <InputName htmlFor='password'>パスワード:</InputName>
+                                    <InputBar
+                                        type="password"
+                                        id="password"
+                                        value={password}
+                                        onChange={handlePasswordChange}
+                                    />
+                                </InputArea>
+                                <SubmitBtn type="submit">Login</SubmitBtn>
+                            </form>
+
+                        </>
+                    )}
+                    <ResetPw onClick={HandlePwChangeMsg}>Password Reset?</ResetPw>
+                </LoginBg>
+            </>
+        );
+    }
+}
+
+export default WebLogin;
+
+
 const LoginBg = styled.div`
     display: flex;
     flex-direction: column;
@@ -98,114 +213,3 @@ const ErrMsg = styled.p`
     margin:0;
     
 `
-
-function WebLogin() {
-    const [resetpw, setResetPW] = useState(false);
-    const [staffId, setStaffId] = useState('');
-    const [password, setPassword] = useState('');
-    const [reqMsg, setReqMsg] = useState(true);
-
-    const handleStaffIdChange = useCallback((e) => {
-        setStaffId(e.target.value);
-    }, []);
-
-    const handlePasswordChange = useCallback((e) => {
-        setPassword(e.target.value);
-    }, []);
-
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        console.log('StaffId:', staffId);
-        console.log('Password:', password);
-    };
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                // const response = await Axios.get('');
-                // if (response.statusCode !== 200) {
-                //     setReqMsg(false)
-                // }
-                setReqMsg(true)
-
-            } catch (error) {
-                console.error(error);
-            }
-        };
-        fetchData();
-    }, []);
-
-    const HandlePwChangeMsg = () => {
-        setResetPW(resetpw => !resetpw);
-    }
-
-
-    if (resetpw) {
-        return (
-            <LoginBg>
-                <Logofunc />
-                <ResetPwMsg>ITの同僚に連絡してください。</ResetPwMsg>
-                <ResetPw onClick={HandlePwChangeMsg}>Login page</ResetPw>
-            </LoginBg>
-        );
-    } else {
-        return (
-            <>
-                <LoginBg>
-                    <Logofunc />
-                    {reqMsg === false ? (
-                        <>
-                            <ErrMsg>*Invalid Staff id / password</ErrMsg>
-                            <form onSubmit={handleSubmit}>
-                                <InputArea>
-                                    <ErrInputName htmlFor='staffId'>従業員の番号:</ErrInputName>
-                                    <ErrInputBar
-                                        type="text"
-                                        id="staffId"
-                                        value={staffId}
-                                        onChange={handleStaffIdChange}
-                                    />
-                                </InputArea>
-                                <InputArea>
-                                    <ErrInputName htmlFor='password'>パスワード:</ErrInputName>
-                                    <ErrInputBar
-                                        type="password"
-                                        id="password"
-                                        value={password}
-                                        onChange={handlePasswordChange}
-                                    />
-                                </InputArea>
-                                <SubmitBtn type="submit">Login</SubmitBtn>
-                            </form>
-                        </>
-                    ) : (
-                        <form onSubmit={handleSubmit}>
-                            <InputArea>
-                                <InputName htmlFor='staffId'>従業員の番号:</InputName>
-                                <InputBar
-                                    type="text"
-                                    id="staffId"
-                                    value={staffId}
-                                    onChange={handleStaffIdChange}
-                                />
-                            </InputArea>
-                            <InputArea>
-                                <InputName htmlFor='password'>パスワード:</InputName>
-                                <InputBar
-                                    type="password"
-                                    id="password"
-                                    value={password}
-                                    onChange={handlePasswordChange}
-                                />
-                            </InputArea>
-                            <SubmitBtn type="submit">Login</SubmitBtn>
-                        </form>
-                    )}
-                    <ResetPw onClick={HandlePwChangeMsg}>Password Reset?</ResetPw>
-                </LoginBg>
-            </>
-        );
-    }
-}
-
-export default WebLogin;

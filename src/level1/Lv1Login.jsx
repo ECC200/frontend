@@ -52,22 +52,22 @@ const Button = styled.button`
 `;
 
 function Level1() {
-    const id = "1A2B"; // ここに実際の障がい者番号を設定
+  const id = "1A2B"; // ここに実際の障がい者番号を設定
 
-    return (
-        <AppContainer>
-            <Header>
-                <CareConnect>
-                    <Icon>
-                        <img src={Logo} alt="Care Connect Logo" />
-                    </Icon>
-                    <Id>{id}</Id>
-                    <Button>通報</Button>
-                    <Button>緊急連絡人</Button>
-                </CareConnect>
-            </Header>
-        </AppContainer>
-    );
+  return (
+    <AppContainer>
+      <Header>
+        <CareConnect>
+          <Icon>
+            <img src={Logo} alt="Care Connect Logo" />
+          </Icon>
+          <Id>{id}</Id>
+          <Button>通報</Button>
+          <Button>緊急連絡人</Button>
+        </CareConnect>
+      </Header>
+    </AppContainer>
+  );
 }
 
 export default Level1;
