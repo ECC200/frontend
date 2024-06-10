@@ -1,9 +1,9 @@
-import PhoneLogin from './phoneLogin'
+import Step1Login from './step1Login'
 
 function web() {
     return (
         <>
-            <PhoneLogin />
+            <Step1Login />
         </>
     );
 }
