@@ -48,11 +48,13 @@ function WebLogin() {
 
     if (resetpw) {
         return (
-            <LoginBg>
-                <Logofunc />
-                <ResetPwMsg>ITの同僚に連絡してください。</ResetPwMsg>
-                <ResetPw onClick={HandlePwChangeMsg}>Login page</ResetPw>
-            </LoginBg>
+            <BackDiv>
+                <LoginBg>
+                    <Logofunc />
+                    <ResetPwMsg>ITの同僚に連絡してください。</ResetPwMsg>
+                    <ResetPw onClick={HandlePwChangeMsg}>Login page</ResetPw>
+                </LoginBg>
+            </BackDiv>
         );
     } else {
         return (
@@ -119,14 +121,21 @@ function WebLogin() {
 
 export default WebLogin;
 
+const BackDiv = styled.div`
+    display: flex;
+    align-content: center;
+    justify-content: center;
+
+`
 
 const LoginBg = styled.div`
     display: flex;
     flex-direction: column;
     width: 30%;
     height: 550px;
-    margin-left: auto;
-    margin-right: auto;
+    margin-left:auto;
+    margin-right:auto;
+    margin-top:5%;
     border: 2px solid #000;
     border-radius: 25px;
     background-color: #fff;

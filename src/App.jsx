@@ -1,14 +1,14 @@
 import './App.css'
-// import WebVersion from './Web/WebVersion'
+import WebVersion from './Web/WebVersion'
 // import Phone from './Level2/phone'
-import LV1 from './Level1/level1'
+// import LV1 from './Level1/level1'
 
 function App() {
   return (
     <>
-      {/* <WebVersion /> */}
+      <WebVersion />
       {/* <Phone /> */}
-      <LV1 />
+      {/* <LV1 /> */}
     </>
   )
 }
