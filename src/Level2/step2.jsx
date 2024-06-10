@@ -1,9 +1,9 @@
-import Level2Login from './level2Login'
+import Step2Login from './step2Login'
 
 function web() {
     return (
         <>
-            <Level2Login />
+            <Step2Login />
         </>
     );
 }
