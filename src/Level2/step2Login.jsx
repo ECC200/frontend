@@ -1,25 +1,24 @@
 import { useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
 import Logofunc from "../LogoSetup";
+import { Global, css } from '@emotion/react'
 
 function Step2Login() {
   const navigate = useNavigate();
+  const bgColor = 'green'
 
   const Step2Container = styled.div`
-  background-color: green;
-  min-height: 100vh;
+  background-color: ${bgColor};
   display: flex;
   flex-direction: column;
   align-items: center;
   padding-top: 20px;
-  width: 100%;
-  position: relative;
 `;
-
 
   const LogoutButton = styled.button`
     background-color: green;
     border: 1px solid white;
+    border-radius:5px;
     color: white;
     position: absolute;
     top: 20px;
@@ -73,6 +72,7 @@ function Step2Login() {
 
   const SubmitBtn = styled.button`
     border: 1px solid white;
+    border-radius:10px;
     background-color: green;
     color: white;
     font-size: 100%;
@@ -89,15 +89,24 @@ function Step2Login() {
   `;
 
   return (
-    <Step2Container>
-      <LogoutButton onClick={() => navigate("/")}>ログアウト</LogoutButton>
-      <Logofunc />
-      <InputArea>
-        <InputName htmlFor="disabilityId">障害者番号:</InputName>
-        <InputBar type="text" name="disabilityId" />
-      </InputArea>
-      <SubmitBtn onClick={() => navigate("/step3/")}>入力</SubmitBtn>
-    </Step2Container>
+    <>
+      <Global
+        styles={css`
+          body{
+            background-color: ${bgColor};
+          }
+        `}
+      />
+      <Step2Container>
+        <LogoutButton onClick={() => navigate("/step1")}>ログアウト</LogoutButton>
+        <Logofunc color='#fff' />
+        <InputArea>
+          <InputName htmlFor="disabilityId">障害者番号:</InputName>
+          <InputBar type="text" name="disabilityId" />
+        </InputArea>
+        <SubmitBtn onClick={() => navigate("/step3/")}>入力</SubmitBtn>
+      </Step2Container>
+    </>
   );
 }
 

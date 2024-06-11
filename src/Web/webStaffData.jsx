@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import styled from '@emotion/styled';
-import Logo from './LogoWeb';
+import Logo from '../LogoSetup';
 import Testimg from '../assets/螢幕截圖 2024-06-06 11.22.29.png'
 
 
@@ -22,7 +22,11 @@ function WebStaffData() {
     return (
         <>
             <Logo />
-            <ShowTime>{time.getHours()}:{time.getMinutes()}:{time.getSeconds()}</ShowTime>
+            {time.getSeconds() > 9 ?
+                (<ShowTime>{time.getHours()}:{time.getMinutes()}:{time.getSeconds()}</ShowTime>)
+                :
+                (<ShowTime>{time.getHours()}:{time.getMinutes()}:0{time.getSeconds()}</ShowTime>)
+            }
             <DataTable>
                 <InfoLeftPart>
                     <img src={Testimg} alt="" />
@@ -35,12 +39,12 @@ function WebStaffData() {
                 </InfoLeftPart>
 
                 <InfoRightPart>
-                    <InfoRightItem>Staff No: {StaffData.StaffNO}</InfoRightItem>
-                    <InfoRightItem>Mangement Level: {StaffData.MangementLevel}</InfoRightItem>
-                    <InfoRightItem>Work Status: {StaffData.WorkStatus}</InfoRightItem>
-                    <InfoRightItem>Disability Level: {StaffData.DisabilityLevel}</InfoRightItem>
-                    <InfoRightItem>Superior: {StaffData.Superior}</InfoRightItem>
-                    <InfoRightMessageItem>Message: </InfoRightMessageItem>
+                    <InfoRightItem>スタッフ番号： {StaffData.StaffNO}</InfoRightItem>
+                    <InfoRightItem>管理レベル： {StaffData.MangementLevel}</InfoRightItem>
+                    <InfoRightItem>勤務状況： {StaffData.WorkStatus}</InfoRightItem>
+                    <InfoRightItem>障害レベル： {StaffData.DisabilityLevel}</InfoRightItem>
+                    <InfoRightItem>上司： {StaffData.Superior}</InfoRightItem>
+                    <InfoRightMessageItem>メッセージ： </InfoRightMessageItem>
                     <InfoRightMessage>{StaffData.Message}</InfoRightMessage>
                 </InfoRightPart>
             </DataTable>
@@ -49,23 +53,26 @@ function WebStaffData() {
 }
 export default WebStaffData;
 
+const lineSize = '2.5px';
+const fontSize = '1.3em';
 const DataTable = styled.div`
         display: grid;
         grid-template-columns: auto auto;
         padding: 1px;
         margin: 0 auto;
         width: 70%;
-        border: 2px solid #000;
+        border: ${lineSize} solid #000;
         border-radius: 15px;
     `
 // Left
 const InfoLeftPart = styled.div`
-        flex-direction: column;
         grid-column: 1 / span 2;
+        flex-direction: column;
         text-align: center;
+        margin-top: 10%;
         img{
             width: 200px;
-            padding:5%;
+            padding:7% 5%;
         }
     `
 const InfoLeftData = styled.div`
@@ -74,28 +81,29 @@ const InfoLeftData = styled.div`
         color: #000;
     `
 const InfoLeftDataItem = styled.p`
-        font-size:1.3em;
+        font-size: ${fontSize};
+        padding: 1% 0;
         margin:0;
     `
 
 // Right
 const InfoRightPart = styled.div`
-        border-left:1px solid #000;
+        border-left: ${lineSize} solid #000;
         grid-column: 3 / span 10;
         text-align: left;
         color: #000;
     `
 const InfoRightItem = styled.div`
         padding: 1%;
-        border-bottom: 1px solid #000;
-        font-size:1.3em;
+        border-bottom: ${lineSize} solid #000;
+        font-size:${fontSize};
     `
 const InfoRightMessageItem = styled.div`
-        font-size:1.3em;
+        font-size:${fontSize};
         padding: 1%;
     `
 const InfoRightMessage = styled.div`
-        font-size:1.3em;
+        font-size: ${fontSize};
         padding: 0 1% 2% 1%;
         margin-bottom:20%;
     `
@@ -106,4 +114,5 @@ const ShowTime = styled.h2`
         width: 70%;
         margin: 0 auto;
         text-align: end;
+        letter-spacing: 1.7px;
     `

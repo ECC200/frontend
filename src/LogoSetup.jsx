@@ -1,27 +1,34 @@
 import Logofile from './assets/logo.png'
 import styled from '@emotion/styled'
 
-function Logo() {
+function Logo(props) {
+    const logoNameColor = props.color
     const LogoArea = styled.div`
         display: grid;
         justify-content: center;
-        // align-items: center;
-        padding: 5%;
+        padding: 5% 0 2% 0;
         margin-left:auto;
         margin-right:auto;
     `
     const LogoImg = styled.img`
-        width: 25%;
-        margin: 0 auto;
-        filter: drop-shadow(0 0 1px #000);
+    margin: 0 auto;
+    filter: drop-shadow(0 0 1px #000);
+    width: 150px;
+    @media (min-width: 768px) {
+        width: 200px;
+    }
     `
     const LognName = styled.p`
-        color: #000;
-        letter-spacing:5px;
+        color: ${logoNameColor};
+        letter-spacing:10px;
         padding:0;
         margin: 0;
         text-align: center;
         text-transform: uppercase;
+        font-size: 20px;
+        @media (min-width: 768px) {
+            font-size: 23px;
+        }
     `
     return (
         <LogoArea>
