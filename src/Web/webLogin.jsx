@@ -48,6 +48,7 @@ function WebLogin() {
 
 
     if (resetpw) {
+        // パスワード再設定
         return (
             <>
                 <Global
@@ -67,6 +68,7 @@ function WebLogin() {
             </>
         );
     } else {
+        // 普通
         return (
             <>
                 <Global
@@ -79,6 +81,7 @@ function WebLogin() {
                 <BackDiv>
                     <LoginBg>
                         <Logofunc />
+                        {/* Error */}
                         {reqMsg === false ? (
                             <>
                                 <ErrMsg>*Invalid Staff id / password</ErrMsg>
@@ -105,32 +108,30 @@ function WebLogin() {
                                 </form>
                             </>
                         ) : (
-                            <>
-                                <form onSubmit={handleSubmit}>
-                                    <InputArea>
-                                        <InputName htmlFor='staffId'>従業員の番号:</InputName>
-                                        <InputBar
-                                            type="text"
-                                            id="staffId"
-                                            value={staffId}
-                                            onChange={handleStaffIdChange}
-                                        />
-                                    </InputArea>
-                                    <InputArea>
-                                        <InputName htmlFor='password'>パスワード:</InputName>
-                                        <InputBar
-                                            type="password"
-                                            id="password"
-                                            value={password}
-                                            onChange={handlePasswordChange}
-                                        />
-                                    </InputArea>
-                                    <SubmitBtn type="submit">Login</SubmitBtn>
-                                </form>
-
-                            </>
+                            // 普通
+                            <form onSubmit={handleSubmit}>
+                                <InputArea>
+                                    <InputName htmlFor='staffId'>従業員の番号:</InputName>
+                                    <InputBar
+                                        type="text"
+                                        id="staffId"
+                                        value={staffId}
+                                        onChange={handleStaffIdChange}
+                                    />
+                                </InputArea>
+                                <InputArea>
+                                    <InputName htmlFor='password'>パスワード:</InputName>
+                                    <InputBar
+                                        type="password"
+                                        id="password"
+                                        value={password}
+                                        onChange={handlePasswordChange}
+                                    />
+                                </InputArea>
+                                <SubmitBtn type="submit">ログイン</SubmitBtn>
+                            </form>
                         )}
-                        <ResetPw onClick={HandlePwChangeMsg}>Password Reset?</ResetPw>
+                        <ResetPw onClick={HandlePwChangeMsg}>パスワードを忘れた方はこちら</ResetPw>
                     </LoginBg>
                 </BackDiv>
             </>
@@ -222,14 +223,15 @@ const ResetPw = styled.button`
     border: none;
     background-color: transparent;
     color: #000;
-    font-size: 14px;
+    margin-top:50px;
+    font-size: 12px;
     letter-spacing: 0.5em;
     text-transform: uppercase;
 `;
 const ResetPwMsg = styled.p`
     color: #000;
-    font-size:30px;
-    margin: 10% 3% 15% 3%;
+    font-size:25px;
+    margin: 15% 3%;
     letter-spacing: 1.5px;
     text-align: center;
     text-transform: uppercase;

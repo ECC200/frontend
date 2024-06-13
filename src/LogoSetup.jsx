@@ -6,7 +6,6 @@ function Logo(props) {
     const LogoArea = styled.div`
         display: grid;
         justify-content: center;
-        padding: 5% 0 2% 0;
         margin-left:auto;
         margin-right:auto;
     `

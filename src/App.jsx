@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Step1Login from "./Level2/step1Login";
-import Step2Login from "./Level2/step2Login";
-import Step3Detail from "./Level2/step3Detail";
+import Step1 from "./Level2/step1";
+import Step2 from "./Level2/step2";
+import Step3 from "./Level2/step3";
 import WebStaffData from './Web/webStaffData'
 import WebLogin from './Web/webLogin'
 import Level1 from './Level1/level1'
@@ -10,9 +10,9 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/step1" element={<Step1Login />} />
-        <Route path="/step2" element={<Step2Login />} />
-        <Route path="/step3" element={<Step3Detail />} />
+        <Route path="/step1" element={<Step1 />} />
+        <Route path="/step2" element={<Step2 />} />
+        <Route path="/step3" element={<Step3 />} />
         <Route path="/level1" element={<Level1 />} />
         <Route path="/WebLogin" element={<WebLogin />} />
         <Route path="/WebStaffData" element={<WebStaffData />} />

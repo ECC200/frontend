@@ -4,7 +4,7 @@ import Logo from '../LogoSetup';
 import { Global, css } from '@emotion/react'
 
 function Level1() {
-  const id = "1A2B";//患者番号を持ってくる
+  const id = "1A2B";
   const [isModalOpen, setModalOpen] = useState(false);
   const emergencyContacts = [
     { href: 'tel:' +/*emergencycontact*/'', text: '母携帯' },
@@ -20,23 +20,22 @@ function Level1() {
     setModalOpen(true);
   };
 
-
-
   return (
     <>
       <Global
         styles={css`
-          body{
-            background-color: #B22222;
-          }
-        `}
-      />
+            body {
+              background-color: #B22222;
+            }
+        `} />
       <AppContainer>
         {/* Main */}
         <CareConnect>
           <Logo color='#fff' />
-          <Iditem>患者番号:</Iditem>
-          <Id>{id}</Id>
+          <NumberSet>
+            <NumberItem>患者番号:</NumberItem>
+            <Number>{id}</Number>
+          </NumberSet>
           <Button onClick={handleReport}>119</Button>
           <Button onClick={handleEmergencyContact}>緊急連絡先</Button>
         </CareConnect>
@@ -44,8 +43,6 @@ function Level1() {
         {/* 緊急連絡人Menu */}
         {isModalOpen && (
           <Modal>
-
-
             <ModalContent>
               <p>どこに連絡しますか？</p>
               <LinkList>
@@ -79,21 +76,27 @@ const CareConnect = styled.div`
   display: flex;
   flex-direction: column;
   color: white;
-  font-size: 2em; /* 大きめのフォントサイズ */
-    padding: 3.5vh 3.5vh 0 3.5vh;
+    padding: 3vh 3.5vh 0 3.5vh;
 `;
 
-const Iditem = styled.div`
-    font-size: 0.7em; /* 大きめのフォントサイズ */
+const NumberSet = styled.div`
+  text-align: center;
+  margin: 1vh 0;
+  padding: 0;
+`
+const NumberItem = styled.p`
+    margin-bottom: -10px;
+    padding: 0;
+    font-size: 1em;
 `;
-
-const Id = styled.div`
-  font-size: 2em; /* 大きめのフォントサイズ */
-  margin: 0px 10px 40px 10px;
+const Number = styled.p`
+  margin: -2vh 0 0 0;
+  padding: 0;
+  font-size: 8vh;
 `;
 
 const Button = styled.button`
-  font-size: 1em; /* 大きめのフォントサイズ */
+  font-size: 2em;
   padding: 15px 30px; /* 大きめのパディング */
   margin: 15px 0; /* 大きめのマージン */
   width:250px;
@@ -105,12 +108,15 @@ const Button = styled.button`
 
 const Modal = styled.div`
   position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 999;
 `;
 
 const ModalContent = styled.div`
