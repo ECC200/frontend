@@ -1,24 +1,27 @@
+import { useNavigate } from "react-router-dom";
 import { Pagination } from "swiper/modules";
-import styled from "@emotion/styled";
-import Logofunc from "../LogoSetup";
 import { Global, css } from '@emotion/react'
 import { Swiper, SwiperSlide } from "swiper/react";
+import Logofunc from "../LogoSetup";
+import styled from "@emotion/styled";
 import "swiper/css";
 import "swiper/css/pagination";
 
 function Step3() {
-    const id = "1A2B";//患者番号を持ってくる
+    const navigate = useNavigate();
+
+    const id = "1A2B";
     return (
         <>
             <Global
                 styles={css`
-          body{
-            background-color: ${bgColor};
-          }
-        `}
-            />
+                    body{
+                        background-color: ${bgColor};
+                    }
+                `} />
             <Container>
                 <Header>
+                    <LogoutButton onClick={() => navigate("/step2")}>退出</LogoutButton>
                     <Logofunc />
 
                     <NumberSet>
@@ -155,6 +158,20 @@ export default Step3;
 
 
 const bgColor = 'green'
+const LogoutButton = styled.button`
+  background-color: green;
+  border: 1px solid white;
+  border-radius:5px;
+  color: white;
+  position: absolute;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+    top: 20px;
+    right: 20px;
+    font-size: 14px;
+    padding: 8px 16px;
+`;
 const Container = styled.div`
   background-color: green;
   padding: 3vh;

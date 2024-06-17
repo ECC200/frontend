@@ -44,7 +44,7 @@ function Level1() {
         {isModalOpen && (
           <Modal>
             <ModalContent>
-              <p>どこに連絡しますか？</p>
+              <h2>どこに連絡しますか？</h2>
               <LinkList>
                 {emergencyContacts.map((contact, index) => (
                   <LinkItem key={index}>
@@ -116,7 +116,6 @@ const Modal = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 999;
 `;
 
 const ModalContent = styled.div`
@@ -147,4 +146,8 @@ const LinkList = styled.ul`
 
 const LinkItem = styled.li`
   margin: 15px 0;
+  a{
+    text-decoration: none;
+    font-size:1.5em;
+  }
 `;

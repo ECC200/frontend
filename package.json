@@ -10,8 +10,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@coreui/coreui": "^5.0.2",
+    "@coreui/react": "^5.1.0",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
+    "@mui/material": "^5.15.20",
     "axios": "^1.7.2",
     "dom": "^0.0.3",
     "react": "^18.3.1",

@@ -1,15 +1,26 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
+import { useNavigate } from "react-router-dom";
+import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
 import styled from '@emotion/styled';
 import Logo from '../LogoSetup';
-import Testimg from '../assets/螢幕截圖 2024-06-06 11.22.29.png'
+import TestImg from '../assets/螢幕截圖 2024-06-06 11.22.29.png'
+
 
 
 function WebStaffData() {
+    const navigate = useNavigate();
+    const [open, setOpen] = useState(false);
+    const [searchbar, setSearchbar] = useState('')
     const StaffData = {
-        Fullname: '#Fullname#', Department: '#Department#', Position: '#Position#', DateOfJoining: '#DateOfJoining#',
-        StaffNO: '#StaffNO#', MangementLevel: '#MangementLevel#', WorkStatus: '#WorkStatus#', DisabilityLevel: '#DisabilityLevel#', Superior: '#superior#',
+        FullName: '#FullName#', Department: '#Department#', Position: '#Position#', DateOfJoining: '#DateOfJoining#',
+        StaffNO: '#StaffNO#', ManagementLevel: '#ManagementLevel#', WorkStatus: '#WorkStatus#', DisabilityLevel: '#DisabilityLevel#', Superior: '#superior#',
         Message: '#Message#'
     }
+
+
+    // Time
     const [time, setTime] = useState(new Date());
     useEffect(() => {
         const timer = setInterval(() => {
@@ -19,19 +30,62 @@ function WebStaffData() {
         return () => clearInterval(timer);
     }, []);
 
+    // Search
+    const [searchRsp, setSearchRsp] = useState(["asdasdsa", "asdasdsad", "asdadsad"]);
+    const HandleSearch = useCallback((e) => {
+        setSearchbar(e.target.value);
+        ///----------API------------------
+        // const response = await Axios.get('');
+        // if (response.statusCode !== 200) {
+        setSearchRsp();
+        // }
+        ///--------------------------------
+    }, []);
+
+    // Search Response
+
+
+
     return (
         <>
+            <Dialog open={open} onClose={() => setOpen(false)}>
+                <Testasd>
+                    <DialogTitle>検索結果</DialogTitle>
+                    <DialogContent className='DialogContentStyle'>
+                        {searchRsp.map((repo) => (
+                            <div key={repo.name}>
+                                <h4>{searchRsp}</h4>
+                            </div>
+                        ))}
+                    </DialogContent>
+                </Testasd>
+            </Dialog>
+
+            <Header>
+                {time.getSeconds() > 9 ?
+                    (<ShowTime><h2>{time.getHours()}:{time.getMinutes()}:{time.getSeconds()}</h2></ShowTime>)
+                    :
+                    (<ShowTime><h2>{time.getHours()}:{time.getMinutes()}:0{time.getSeconds()}</h2></ShowTime>)
+                }
+
+                <HeaderRight>
+                    <SearchBarArea>
+                        <SearchBar type='text' id='searchbar' value={searchbar} onChange={HandleSearch} />
+                        <SearchBarBtn type='submit' onClick={() => setOpen(true)}>検索</SearchBarBtn>
+                    </SearchBarArea>
+
+                    <SignUpBtn onClick={() => navigate("./webSignUp.jsx")}>新規登録</SignUpBtn>
+                </HeaderRight>
+            </Header>
+
+
             <Logo />
-            {time.getSeconds() > 9 ?
-                (<ShowTime>{time.getHours()}:{time.getMinutes()}:{time.getSeconds()}</ShowTime>)
-                :
-                (<ShowTime>{time.getHours()}:{time.getMinutes()}:0{time.getSeconds()}</ShowTime>)
-            }
+
             <DataTable>
                 <InfoLeftPart>
-                    <img src={Testimg} alt="" />
+                    <img src={TestImg} alt="Icon" />
                     <InfoLeftData>
-                        <InfoLeftDataItem>{StaffData.Fullname}</InfoLeftDataItem>
+                        <InfoLeftDataItem>{StaffData.FullName}</InfoLeftDataItem>
                         <InfoLeftDataItem>{StaffData.Department}</InfoLeftDataItem>
                         <InfoLeftDataItem>{StaffData.Position}</InfoLeftDataItem>
                         <InfoLeftDataItem>{StaffData.DateOfJoining}</InfoLeftDataItem>
@@ -40,7 +94,7 @@ function WebStaffData() {
 
                 <InfoRightPart>
                     <InfoRightItem>スタッフ番号： {StaffData.StaffNO}</InfoRightItem>
-                    <InfoRightItem>管理レベル： {StaffData.MangementLevel}</InfoRightItem>
+                    <InfoRightItem>管理レベル： {StaffData.ManagementLevel}</InfoRightItem>
                     <InfoRightItem>勤務状況： {StaffData.WorkStatus}</InfoRightItem>
                     <InfoRightItem>障害レベル： {StaffData.DisabilityLevel}</InfoRightItem>
                     <InfoRightItem>上司： {StaffData.Superior}</InfoRightItem>
@@ -53,13 +107,73 @@ function WebStaffData() {
 }
 export default WebStaffData;
 
+
+
 const lineSize = '2.5px';
 const fontSize = '1.3em';
+
+// --------------------------------------------Header----------------------------------------------------
+const Header = styled.header`
+    // background-color: grey;
+    margin: 1% 0;
+    display: flex;
+    align-items: center;
+    justify-content:space-between;
+`
+// Time 
+const ShowTime = styled.div`
+    margin-left: 10%;
+    color: #000;
+    letter-spacing: 1.7px;
+`
+const HeaderRight = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 70%;
+`
+// ----------------------SearchBar----------------------
+const SearchBarArea = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content:end;
+    align-items: center;
+    width: 75%;
+`
+const SearchBar = styled.input`
+    width: 300px;
+    height: 30px;
+    margin: 0 2%;
+    border: 2px solid black;
+    border-radius: 5px;
+`
+const SearchBarBtn = styled.button`
+    font-size:16px;
+    width:75px;
+    height:30px;
+    border-radius: 5px;
+`
+// --------------------------------------------
+const SignUpBtn = styled.button`
+    background-color: #fff;
+    border-radius: 5px;
+    font-size:16px;
+    font-weight:bold;
+    text-align:center;
+    margin: 0 5%;
+    padding:1% 1.5%;
+    letter-spacing:5px;
+`
+
+
+// ------------------------------------------------------------------------------------------------
+
+
+// --------------------------------------------Table----------------------------------------------------
 const DataTable = styled.div`
         display: grid;
         grid-template-columns: auto auto;
-        padding: 1px;
-        margin: 0 auto;
+        margin: 30px auto;
         width: 70%;
         border: ${lineSize} solid #000;
         border-radius: 15px;
@@ -85,7 +199,6 @@ const InfoLeftDataItem = styled.p`
         padding: 1% 0;
         margin:0;
     `
-
 // Right
 const InfoRightPart = styled.div`
         border-left: ${lineSize} solid #000;
@@ -94,7 +207,7 @@ const InfoRightPart = styled.div`
         color: #000;
     `
 const InfoRightItem = styled.div`
-        padding: 1%;
+        padding: 0.5% 1%;
         border-bottom: ${lineSize} solid #000;
         font-size:${fontSize};
     `
@@ -107,12 +220,9 @@ const InfoRightMessage = styled.div`
         padding: 0 1% 2% 1%;
         margin-bottom:20%;
     `
-// Time 
-const ShowTime = styled.h2`
-        padding-right:1%;
-        color: #000;
-        width: 70%;
-        margin: 0 auto;
-        text-align: end;
-        letter-spacing: 1.7px;
-    `
+// ------------------------------------------------------------------------------------------------
+
+
+const Testasd = styled.div`
+    width:1000px;
+`

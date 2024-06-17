@@ -64,11 +64,11 @@ const InputArea = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 80%;
-  margin: 3% auto;
+  width: 85%;
+  margin: 5% auto;
   @media (min-width: 768px) {
     width: 65%;
-    margin: 4% auto;
+    margin: 5% auto;
   }
 `;
 

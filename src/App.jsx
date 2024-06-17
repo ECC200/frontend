@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { Global, css } from '@emotion/react'
 import Step1 from "./Level2/step1";
 import Step2 from "./Level2/step2";
 import Step3 from "./Level2/step3";
@@ -8,16 +9,25 @@ import Level1 from './Level1/level1'
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/step1" element={<Step1 />} />
-        <Route path="/step2" element={<Step2 />} />
-        <Route path="/step3" element={<Step3 />} />
-        <Route path="/level1" element={<Level1 />} />
-        <Route path="/WebLogin" element={<WebLogin />} />
-        <Route path="/WebStaffData" element={<WebStaffData />} />
-      </Routes>
-    </Router>
+    <>
+      <Global
+        styles={css`
+                *{
+                    margin: 0;
+                    box-sizing: border-box;
+                }
+            `} />
+      <Router>
+        <Routes>
+          <Route path="/step1" element={<Step1 />} />
+          <Route path="/step2" element={<Step2 />} />
+          <Route path="/step3" element={<Step3 />} />
+          <Route path="/level1" element={<Level1 />} />
+          <Route path="/WebLogin" element={<WebLogin />} />
+          <Route path="/WebStaffData" element={<WebStaffData />} />
+        </Routes>
+      </Router>
+    </>
   );
 }
 
