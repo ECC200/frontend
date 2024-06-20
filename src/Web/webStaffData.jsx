@@ -16,7 +16,7 @@ function WebStaffData() {
     const [searchbar, setSearchbar] = useState('')
     const StaffData = {
         FullName: '#FullName#', Department: '#Department#', Position: '#Position#', DateOfJoining: '#DateOfJoining#',
-        StaffNO: '#StaffNO#', ManagementLevel: '#ManagementLevel#', WorkStatus: '#WorkStatus#', DisabilityLevel: '#DisabilityLevel#', Superior: '#superior#',
+        StaffNO: '#StaffNO#', ManagementLevel: '#ManagementLevel#', WorkStatus: '#WorkStatus#', Superior: '#superior#',
         Message: '#Message#'
     }
 
@@ -76,7 +76,7 @@ function WebStaffData() {
                         <SearchBarBtn type='submit' onClick={() => setOpen(true)}>検索</SearchBarBtn>
                     </SearchBarArea>
 
-                    <SignUpBtn onClick={() => navigate("./webSignUp.jsx")}>新規登録</SignUpBtn>
+                    <SignUpBtn onClick={() => navigate("/webDisSignUp/")}>新規登録</SignUpBtn>
                 </HeaderRight>
             </Header>
 
@@ -98,7 +98,6 @@ function WebStaffData() {
                     <InfoRightItem>スタッフ番号： {StaffData.StaffNO}</InfoRightItem>
                     <InfoRightItem>管理レベル： {StaffData.ManagementLevel}</InfoRightItem>
                     <InfoRightItem>勤務状況： {StaffData.WorkStatus}</InfoRightItem>
-                    <InfoRightItem>障害レベル： {StaffData.DisabilityLevel}</InfoRightItem>
                     <InfoRightItem>上司： {StaffData.Superior}</InfoRightItem>
                     <InfoRightMessageItem>メッセージ： </InfoRightMessageItem>
                     <InfoRightMessage>{StaffData.Message}</InfoRightMessage>
@@ -117,7 +116,7 @@ const fontSize = '1.3em';
 // --------------------------------------------Header----------------------------------------------------
 const Header = styled.header`
     // background-color: grey;
-    margin: 1% 0;
+    margin: 1% 0 0.5% 0;
     display: flex;
     align-items: center;
     justify-content:space-between;
@@ -167,7 +166,6 @@ const SignUpBtn = styled.button`
     letter-spacing:5px;
 `
 
-
 // ------------------------------------------------------------------------------------------------
 
 
@@ -175,7 +173,7 @@ const SignUpBtn = styled.button`
 const DataTable = styled.div`
         display: grid;
         grid-template-columns: auto auto;
-        margin: 30px auto;
+        margin: 25px auto;
         width: 70%;
         border: ${lineSize} solid #000;
         border-radius: 15px;
@@ -185,10 +183,10 @@ const InfoLeftPart = styled.div`
         grid-column: 1 / span 2;
         flex-direction: column;
         text-align: center;
-        margin-top: 10%;
+        margin-top: 3%;
         img{
-            width: 200px;
-            padding:7% 5%;
+            width: 250px;
+            padding:5%;
         }
     `
 const InfoLeftData = styled.div`
@@ -209,7 +207,7 @@ const InfoRightPart = styled.div`
         color: #000;
     `
 const InfoRightItem = styled.div`
-        padding: 0.5% 1%;
+        padding: 0.75% 1%;
         border-bottom: ${lineSize} solid #000;
         font-size:${fontSize};
     `
@@ -220,7 +218,7 @@ const InfoRightMessageItem = styled.div`
 const InfoRightMessage = styled.div`
         font-size: ${fontSize};
         padding: 0 1% 2% 1%;
-        margin-bottom:20%;
+        height: 300px;
     `
 // ------------------------------------------------------------------------------------------------
 
