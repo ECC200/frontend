@@ -5,6 +5,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import styled from '@emotion/styled';
 import Logo from '../LogoSetup';
+import { Axios } from 'axios';
 import TestImg from '../assets/螢幕截圖 2024-06-06 11.22.29.png'
 
 
@@ -32,13 +33,14 @@ function WebStaffData() {
 
     // Search
     const [searchRsp, setSearchRsp] = useState(["asdasdsa", "asdasdsad", "asdadsad"]);
-    const HandleSearch = useCallback((e) => {
+    const HandleSearch = useCallback(async (e) => {
         setSearchbar(e.target.value);
+
         ///----------API------------------
-        // const response = await Axios.get('');
-        // if (response.statusCode !== 200) {
-        setSearchRsp();
-        // }
+        const response = await Axios.get('localhost:8080');
+        if (response.statusCode === 200) {
+            setSearchRsp();
+        }
         ///--------------------------------
     }, []);
 
