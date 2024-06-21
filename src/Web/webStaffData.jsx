@@ -115,7 +115,6 @@ const fontSize = '1.3em';
 
 // --------------------------------------------Header----------------------------------------------------
 const Header = styled.header`
-    // background-color: grey;
     margin: 1% 0 0.5% 0;
     display: flex;
     align-items: center;

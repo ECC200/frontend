@@ -152,7 +152,7 @@ const LoginBg = styled.div`
     display: flex;
     flex-direction: column;
     width: 30%;
-    height: 550px;
+    height: 650px;
     margin-left:auto;
     margin-right:auto;
     margin-top:5%;
@@ -167,7 +167,7 @@ const InputArea = styled.div`
     flex-direction: column;
     justify-content: center;
     width: 65%;
-    margin: 4% auto;
+    margin: 5% auto;
     letter-spacing: 5px;
 `;
 
@@ -223,8 +223,8 @@ const ResetPw = styled.button`
     border: none;
     background-color: transparent;
     color: #000;
-    margin-top:50px;
     font-size: 12px;
+    margin-top: 5%;
     letter-spacing: 0.5em;
     text-transform: uppercase;
 `;

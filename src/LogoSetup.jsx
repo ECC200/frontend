@@ -2,7 +2,8 @@ import Logofile from './assets/logo.png'
 import styled from '@emotion/styled'
 
 function Logo(props) {
-    const logoNameColor = props.color
+    // eslint-disable-next-line react/prop-types
+    const logoNameColor = props.color ?? '#000';
     const LogoArea = styled.div`
         display: grid;
         justify-content: center;
