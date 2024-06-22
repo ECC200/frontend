@@ -1,19 +1,25 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { useNavigate } from "react-router-dom";
+import { Axios } from 'axios';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import styled from '@emotion/styled';
-import Logo from '../LogoSetup';
-import { Axios } from 'axios';
+import Logofunc from '../LogoSetup';
 import TestImg from '../assets/螢幕截圖 2024-06-06 11.22.29.png'
 
 
 
 function WebStaffData() {
+    const StaffID = '#'
     const navigate = useNavigate();
     const [open, setOpen] = useState(false);
+    const [isInactive, setIsInactive] = useState(false);
+    const timeoutRef = useRef(null);
     const [searchbar, setSearchbar] = useState('')
+    const [searchRsp, setSearchRsp] = useState(["asdasdsa", "asdasdsad", "asdadsad"]);
+
+
     const StaffData = {
         FullName: '#FullName#', Department: '#Department#', Position: '#Position#', DateOfJoining: '#DateOfJoining#',
         StaffNO: '#StaffNO#', ManagementLevel: '#ManagementLevel#', WorkStatus: '#WorkStatus#', Superior: '#superior#',
@@ -21,7 +27,37 @@ function WebStaffData() {
     }
 
 
-    // Time
+    // 5分
+    const resetTimer = () => {
+        setIsInactive(false);
+        clearTimeout(timeoutRef.current);
+        timeoutRef.current = setTimeout(() => {
+            setIsInactive(true);
+        }, 300000);
+    };
+
+    useEffect(() => {
+        const handleActivity = () => resetTimer();
+        window.addEventListener('mousemove', handleActivity);
+        window.addEventListener('keydown', handleActivity);
+        window.addEventListener('click', handleActivity);
+        window.addEventListener('scroll', handleActivity);
+        resetTimer();
+        return () => {
+            clearTimeout(timeoutRef.current);
+            window.removeEventListener('mousemove', handleActivity);
+            window.removeEventListener('keydown', handleActivity);
+            window.removeEventListener('click', handleActivity);
+            window.removeEventListener('scroll', handleActivity);
+        };
+    }, []);
+
+    const handleReLogin = () => {
+        const dataForReLogin = { FullName: '#FullName#', StaffID: StaffID }
+        navigate("/webStaffReLogin/", { state: dataForReLogin });
+    };
+
+    // 時間
     const [time, setTime] = useState(new Date());
     useEffect(() => {
         const timer = setInterval(() => {
@@ -31,11 +67,9 @@ function WebStaffData() {
         return () => clearInterval(timer);
     }, []);
 
-    // Search
-    const [searchRsp, setSearchRsp] = useState(["asdasdsa", "asdasdsad", "asdadsad"]);
+    // 検索
     const HandleSearch = useCallback(async (e) => {
         setSearchbar(e.target.value);
-
         ///----------API------------------
         const response = await Axios.get('localhost:8080');
         if (response.statusCode === 200) {
@@ -44,67 +78,68 @@ function WebStaffData() {
         ///--------------------------------
     }, []);
 
-    // Search Response
+    if (!isInactive) {
+        return (
+            <>
+                <Dialog Dialog open={open} onClose={() => setOpen(false)
+                }>
+                    <Testasd>
+                        <DialogTitle>検索結果</DialogTitle>
+                        <DialogContent className='DialogContentStyle'>
+                            {searchRsp.map((repo) => (
+                                <div key={repo.name}>
+                                    <h4>{searchRsp}</h4>
+                                </div>
+                            ))}
+                        </DialogContent>
+                    </Testasd>
+                </Dialog >
+
+                <Header>
+                    {time.getSeconds() > 9 ?
+                        (<ShowTime><h2>{time.getHours()}:{time.getMinutes()}:{time.getSeconds()}</h2></ShowTime>)
+                        :
+                        (<ShowTime><h2>{time.getHours()}:{time.getMinutes()}:0{time.getSeconds()}</h2></ShowTime>)
+                    }
+
+                    <HeaderRight>
+                        <SearchBarArea>
+                            <SearchBar type='text' id='searchbar' value={searchbar} onChange={HandleSearch} />
+                            <SearchBarBtn type='submit' onClick={() => setOpen(true)}>検索</SearchBarBtn>
+                        </SearchBarArea>
+
+                        <SignUpBtn onClick={() => navigate("/webDisSignUp/")}>新規登録</SignUpBtn>
+                    </HeaderRight>
+                </Header>
 
 
+                <Logofunc />
 
-    return (
-        <>
-            <Dialog open={open} onClose={() => setOpen(false)}>
-                <Testasd>
-                    <DialogTitle>検索結果</DialogTitle>
-                    <DialogContent className='DialogContentStyle'>
-                        {searchRsp.map((repo) => (
-                            <div key={repo.name}>
-                                <h4>{searchRsp}</h4>
-                            </div>
-                        ))}
-                    </DialogContent>
-                </Testasd>
-            </Dialog>
+                <DataTable>
+                    <InfoLeftPart>
+                        <img src={TestImg} alt="Icon" />
+                        <InfoLeftData>
+                            <InfoLeftDataItem>{StaffData.FullName}</InfoLeftDataItem>
+                            <InfoLeftDataItem>{StaffData.Department}</InfoLeftDataItem>
+                            <InfoLeftDataItem>{StaffData.Position}</InfoLeftDataItem>
+                            <InfoLeftDataItem>{StaffData.DateOfJoining}</InfoLeftDataItem>
+                        </InfoLeftData>
+                    </InfoLeftPart>
 
-            <Header>
-                {time.getSeconds() > 9 ?
-                    (<ShowTime><h2>{time.getHours()}:{time.getMinutes()}:{time.getSeconds()}</h2></ShowTime>)
-                    :
-                    (<ShowTime><h2>{time.getHours()}:{time.getMinutes()}:0{time.getSeconds()}</h2></ShowTime>)
-                }
-
-                <HeaderRight>
-                    <SearchBarArea>
-                        <SearchBar type='text' id='searchbar' value={searchbar} onChange={HandleSearch} />
-                        <SearchBarBtn type='submit' onClick={() => setOpen(true)}>検索</SearchBarBtn>
-                    </SearchBarArea>
-
-                    <SignUpBtn onClick={() => navigate("/webDisSignUp/")}>新規登録</SignUpBtn>
-                </HeaderRight>
-            </Header>
-
-
-            <Logo />
-
-            <DataTable>
-                <InfoLeftPart>
-                    <img src={TestImg} alt="Icon" />
-                    <InfoLeftData>
-                        <InfoLeftDataItem>{StaffData.FullName}</InfoLeftDataItem>
-                        <InfoLeftDataItem>{StaffData.Department}</InfoLeftDataItem>
-                        <InfoLeftDataItem>{StaffData.Position}</InfoLeftDataItem>
-                        <InfoLeftDataItem>{StaffData.DateOfJoining}</InfoLeftDataItem>
-                    </InfoLeftData>
-                </InfoLeftPart>
-
-                <InfoRightPart>
-                    <InfoRightItem>スタッフ番号： {StaffData.StaffNO}</InfoRightItem>
-                    <InfoRightItem>管理レベル： {StaffData.ManagementLevel}</InfoRightItem>
-                    <InfoRightItem>勤務状況： {StaffData.WorkStatus}</InfoRightItem>
-                    <InfoRightItem>上司： {StaffData.Superior}</InfoRightItem>
-                    <InfoRightMessageItem>メッセージ： </InfoRightMessageItem>
-                    <InfoRightMessage>{StaffData.Message}</InfoRightMessage>
-                </InfoRightPart>
-            </DataTable>
-        </>
-    );
+                    <InfoRightPart>
+                        <InfoRightItem>スタッフ番号： {StaffData.StaffNO}</InfoRightItem>
+                        <InfoRightItem>管理レベル： {StaffData.ManagementLevel}</InfoRightItem>
+                        <InfoRightItem>勤務状況： {StaffData.WorkStatus}</InfoRightItem>
+                        <InfoRightItem>上司： {StaffData.Superior}</InfoRightItem>
+                        <InfoRightMessageItem>メッセージ： </InfoRightMessageItem>
+                        <InfoRightMessage>{StaffData.Message}</InfoRightMessage>
+                    </InfoRightPart>
+                </DataTable>
+            </>
+        );
+    } else {
+        handleReLogin()
+    }
 }
 export default WebStaffData;
 
@@ -223,5 +258,6 @@ const InfoRightMessage = styled.div`
 
 
 const Testasd = styled.div`
-    width:1000px;
+width:1000px;
 `
+// ------------------------------------------------------------------------------------------------
