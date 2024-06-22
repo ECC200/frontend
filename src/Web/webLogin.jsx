@@ -1,12 +1,13 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useCallback } from 'react';
+import { Global, css } from '@emotion/react'
+import { useNavigate } from "react-router-dom";
 import styled from '@emotion/styled';
 import Logofunc from '../LogoSetup';
-// import WebStaffData from './webStaffData';
-// import Axios from 'axios';
-import { Global, css } from '@emotion/react'
+import Axios from 'axios';
 
 
 function WebLogin() {
+    const navigate = useNavigate();
     const [resetpw, setResetPW] = useState(false);
     const [staffId, setStaffId] = useState('');
     const [password, setPassword] = useState('');
@@ -22,25 +23,40 @@ function WebLogin() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log('StaffId:', staffId);
-        console.log('Password:', password);
+        handleLogin()
     };
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                // const response = await Axios.get('');
-                // if (response.statusCode !== 200) {
-                //     setReqMsg(false)
-                // }
-                setReqMsg(true)
+    // Staff Data
+    const handleTakeData = async () => {
+        try {
+            const response = await Axios.get('localhost:8080', {
+                StaffId: staffId,
+            });
+            navigate("/webStaffData/", { state: response.data });
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
-            } catch (error) {
-                console.error(error);
+    // Login
+    const handleLogin = async () => {
+        try {
+            const response = await Axios.post('localhost:8080', {
+                StaffId: staffId,
+                Password: password
+            });
+            switch (response.statusCode !== 200) {
+                case 200:
+                    handleTakeData()
+                    break
+                default:
+                    setReqMsg(false)
+                    break
             }
-        };
-        fetchData();
-    }, []);
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
     const HandlePwChangeMsg = () => {
         setResetPW(resetpw => !resetpw);
