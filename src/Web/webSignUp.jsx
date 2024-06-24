@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 import Logofunc from '../LogoSetup'
 
-function signUpTop() {
+function webSignUp() {
     const LoginBg = styled.div`
         display: flex;
         flex-direction: column;
@@ -83,4 +83,4 @@ function signUpTop() {
     );
 }
 
-export default signUpTop;
+export default webSignUp;
