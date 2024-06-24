@@ -1,17 +1,23 @@
 import { useState } from 'react';
 import styled from '@emotion/styled';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import Logo from '../LogoSetup';
 import PlusIconImage from '../assets/plus_icon.png';
 import PersonImg from '../assets/taku.jpeg';
+import EditImage from '../assets/edit.png';
+// import SaveButtonImage from '../assets/save.png';
 import BackButtonImage from '../assets/back.png';
 import SaveButtonImage from '../assets/save.png';
 
+
+
 const lineSize = '2.5px';
 
-function UpdatePatient() {
+function PatientData() {
     const navigate = useNavigate();
-    const PatientData = {
+    const location = useLocation();
+
+    const PatientData = location.state?.patientData ||{
         PersonImg: <Person_img src={PersonImg} alt="患者画像" />,
         Fullname: '岸本 たく',
         Age: '20',
@@ -31,8 +37,10 @@ function UpdatePatient() {
         { date: '2023-08-16', content: '定期健診、ビムパット50mg追加' }
     ];
 
+    const [patientData, setPatientData] = useState(PatientData);
     const [contentList, setContentList] = useState(initialContent);
     const [newContent, setNewContent] = useState({ date: '', content: '' });
+    const [isEditing, setIsEditing] = useState(false);  // 編集状態のフラグ
 
     const handleAddContent = () => {
         if (newContent.date && newContent.content) {
@@ -46,19 +54,42 @@ function UpdatePatient() {
         navigate(-1);
     };
 
+
     const handleSaveClick = () => {
-        const patientDataToSave = { ...PatientData, contentList };
+        const patientDataToSave = JSON.parse(JSON.stringify(patientData, (key, value) =>
+            key === '__emotion_real' ? undefined : value
+        ));
         localStorage.setItem('patientData', JSON.stringify(patientDataToSave));
         alert('データが保存されました');
+        navigate('/patientData', { state: { patientData: patientDataToSave } });
     };
+
+    const handleMedicineChange = (e) => {
+        setPatientData({ ...patientData, Medicine: e.target.value });
+    };
+
+    const handleDoctorMessageChange = (e) => {
+        setPatientData({ ...patientData, DoctorMessage: e.target.value });
+    };
+
+    const handleEditClick = () => {
+        setIsEditing(true);  // 編集状態にする
+    };
+
 
     return (
         <>
             <Header>
                 <BackButtonStyled src={BackButtonImage} alt="戻る" onClick={handleBackClick} />
-                <SaveButtonStyled src={SaveButtonImage} alt="保存" onClick={handleSaveClick} />
             </Header>
+
             <Logo />
+            {isEditing && (
+                    <SaveButton src={SaveButtonImage} alt="保存" onClick={handleSaveClick} />
+                )}
+                {!isEditing && (
+                    <EditImg src={EditImage} alt="編集" onClick={handleEditClick} />
+                )}
             <ContainerStyle>
                 <LeftStyle>
                     {PatientData.PersonImg}
@@ -102,15 +133,31 @@ function UpdatePatient() {
                 </InfoCenterData>
 
                 <InfoRightData>
-                    使用中の薬：<InfoRightDataTop>{PatientData.Medicine}</InfoRightDataTop>
-                    主治医から：<InfoRightDataItemBottom>{PatientData.DoctorMessage}</InfoRightDataItemBottom>
+                    使用中の薬：
+                    <InfoRightDataTop>
+                      <input
+                        type="text"
+                        placeholder="薬"
+                        value={patientData.Medicine}
+                        onChange={handleMedicineChange}
+                      />
+                    </InfoRightDataTop>
+                    主治医から：
+                    <InfoRightDataItemBottom>
+                      <input
+                          type="text"
+                          placeholder="メッセージ"
+                          value={patientData.DoctorMessage}
+                          onChange={handleDoctorMessageChange}
+                      />
+                    </InfoRightDataItemBottom>
                 </InfoRightData>
             </ContainerStyle>
         </>
     );
 }
 
-export default UpdatePatient;
+export default PatientData;
 
 const Header = styled.header`
   display: flex;
@@ -125,7 +172,14 @@ const BackButtonStyled = styled.img`
   cursor: pointer;
 `;
 
-const SaveButtonStyled = styled.img`
+const EditImg = styled.img`
+  width: 30px;
+  height: 30px;
+  margin-left: 1200px;
+  margin-bottom: 0px
+`;
+
+const SaveButton = styled.img`
   width: 30px;
   height: 30px;
   margin-left: 1130px;
@@ -195,6 +249,7 @@ const PlusIconStyled = styled.img`
   margin-bottom: 10px;
   cursor: pointer;
 `;
+
 
 const InfoCenterDataItem = styled.div`
   display: flex;

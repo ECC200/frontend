@@ -60,7 +60,7 @@ function webSignUp() {
         border-radius: 15px;
     `
 
-    const staffId = "12345";
+    const staff_id = "12345";
 
     return (
         <>
@@ -69,7 +69,7 @@ function webSignUp() {
                 {/* Staff ID */}
                 <InputArea>
                     <InputName htmlFor="">スタッフID:</InputName>
-                    <DisplayArea>{staffId}</DisplayArea>
+                    <DisplayArea>{staff_id}</DisplayArea>
                 </InputArea>
                 {/* Password */}
                 <InputArea>

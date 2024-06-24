@@ -8,17 +8,17 @@ function DisSignUpTop() {
   const [dob, setDob] = useState({ year: "", month: "", day: "" });
   const [age, setAge] = useState("");
   const [allData, setAllData] = useState({
-    name: "",
-    birth: "",
+    user_name: "",
+    birth_date: "",
     age: 0,
     address: "",
-    emergencyContact: "",
+    emergency_contacts: "",
     contact: "",
-    familyHospital: "",
-    attendingDoctor: "",
+    hospital_destination: "",
+    primary_care_doctor: "",
     specialty: "",
     chronicDisease: "",
-    disabilityLevel: ""
+    disability_grade: ""
   });
 
 
