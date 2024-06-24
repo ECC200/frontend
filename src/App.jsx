@@ -8,9 +8,7 @@ import WebStaffData from './Web/webStaffData';
 import WebStaffReLogin from './Web/webStaffReLogin';
 import WebLogin from './Web/webLogin';
 import Level1 from './Level1/level1';
-import SignUpTop from "./Web/webSignUp";
 import DisSignUpTop from "./Web/webDisSignUp";
-import { EncryptRoute } from './EncryptRoute';
 
 function App() {
   return (
@@ -30,15 +28,7 @@ function App() {
           <Route path="/step3" element={<Step3 />} />
           <Route path="/level1" element={<Level1 />} />
           <Route path="/WebLogin" element={<WebLogin />} />
-
-          <Route path="/WebStaffData" element={
-            <EncryptRoute path="/WebStaffData" encryptedPath="/asdjlahb2kj13kj1231231">
-              <WebStaffData />
-            </EncryptRoute>
-          } />
-          <Route path="/asdjlahb2kj13kj1231231" element={<WebStaffData />} />
-
-          <Route path="/WebSignUp" element={<SignUpTop />} />
+          <Route path="/WebStaffData" element={<WebStaffData />} />
           <Route path="/WebDisSignUp" element={<DisSignUpTop />} />
           <Route path="/webStaffReLogin" element={<WebStaffReLogin />} />
         </Routes>
