@@ -1,16 +1,14 @@
 /** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
 import Logo from '../LogoSetup';
-import PlusIcon from '../assets/plus_icon.png';
+import PlusIconImage from '../assets/plus_icon.png';
 import PersonImg from '../assets/taku.jpeg';
-import BackButton from '../assets/back.png';
-import SaveButton from '../assets/save.png';
+import BackButtonImage from '../assets/back.png';
+import SaveButtonImage from '../assets/save.png';
 
 const lineSize = '2.5px';
-const fontSize = '1.3em';
 
 const InfoLeftData = styled.div`
   text-align: left;
@@ -25,6 +23,13 @@ const InfoLeftDataItem = styled.p``;
 const InfoCenterData = styled.div`
   text-align: center;
   padding: 10px;
+`;
+
+const PlusIconStyled = styled.img`
+  width: 30px;
+  height: 30px;
+  margin-bottom: 10px;
+  cursor: pointer;
 `;
 
 const InfoCenterDataItem = styled.div`
@@ -69,6 +74,7 @@ function UpdatePatient() {
   const navigate = useNavigate();
 
   const PatientData = {
+    PersonImg: <Person_img src={PersonImg} alt="患者画像" />,
     Fullname: '岸本 たく',
     Age: '20',
     Birthday: '2003-08-30',
@@ -110,16 +116,16 @@ function UpdatePatient() {
 
   return (
     <>
-      <header css={headerStyle}>
-        <img src={BackButton} alt="backbutton" css={backbutton_img} onClick={handleBackClick} />
-        <img src={SaveButton} alt="savebutton" css={savebutton_img} onClick={handleSaveClick} />
-      </header>
+      <Header>
+        <BackButtonStyled src={BackButtonImage} alt="戻る" onClick={handleBackClick} />
+        <SaveButtonStyled src={SaveButtonImage} alt="保存" onClick={handleSaveClick} />
+      </Header>
 
       <Logo />
 
-      <div css={containerStyle}>
-        <div css={leftStyle}>
-          <img src={PersonImg} alt="Profile" css={person_img} />
+      <ContainerStyle>
+        <LeftStyle>
+          {PatientData.PersonImg}
           <InfoLeftData>
             <InfoLeftDataItem>名前 : {PatientData.Fullname}</InfoLeftDataItem>
             <InfoLeftDataItem>年齢 : {PatientData.Age}</InfoLeftDataItem>
@@ -132,10 +138,10 @@ function UpdatePatient() {
             <InfoLeftDataItem>緊急連絡先 : {PatientData.EmergencyContact}</InfoLeftDataItem>
             <InfoLeftDataItem>住所 : {PatientData.Address}</InfoLeftDataItem>
           </InfoLeftData>
-        </div>
+        </LeftStyle>
 
         <InfoCenterData>
-          <div css={dateContentStyle}>
+          <DateContentStyle>
             <input
               type="date"
               value={newContent.date}
@@ -147,42 +153,51 @@ function UpdatePatient() {
               value={newContent.content}
               onChange={(e) => setNewContent({ ...newContent, content: e.target.value })}
             />
-            <img src={PlusIcon} alt="追加" onClick={handleAddContent} />
-          </div>
-          <ul css={contentListStyle}>
+            <PlusIconStyled src={PlusIconImage} alt="追加" onClick={handleAddContent} />
+          </DateContentStyle>
+          <ContentListStyle>
             {contentList.map((item, index) => (
               <InfoCenterDataItem key={index}>
                 <span>{item.date}</span>
                 <span>{item.content}</span>
               </InfoCenterDataItem>
             ))}
-          </ul>
+          </ContentListStyle>
         </InfoCenterData>
 
         <InfoRightData>
           使用中の薬：<InfoRightDataTop>{PatientData.Medicine}</InfoRightDataTop>
           主治医から：<InfoRightDataItemBottom>{PatientData.DoctorMessage}</InfoRightDataItemBottom>
         </InfoRightData>
-      </div>
+      </ContainerStyle>
     </>
   );
 }
 
 export default UpdatePatient;
 
-const headerStyle = css`
+const Header = styled.header`
   display: flex;
   justify-content: flex-start;
   padding: 10px;
 `;
 
-const logoStyle = css`
-  text-align: center;
-  font-size: 2em;
-  margin-bottom: 1em;
+const BackButtonStyled = styled.img`
+  width: 30px;
+  height: 30px;
+  margin-bottom: 10px;
+  cursor: pointer;
 `;
 
-const containerStyle = css`
+const SaveButtonStyled = styled.img`
+  width: 30px;
+  height: 30px;
+  margin-left: 1130px;
+  cursor: pointer;
+  float: right;
+`;
+
+const ContainerStyle = styled.div`
   display: grid;
   grid-template-columns: 1fr 2fr 1fr;
   gap: 10px;
@@ -191,35 +206,19 @@ const containerStyle = css`
   margin: 20px;
 `;
 
-const leftStyle = css`
+const LeftStyle = styled.div`
   border-right: ${lineSize} solid #000;
   text-align: center;
   padding: 10px;
 `;
 
-const backbutton_img = css`
-  width: 30px;
-  height: 30px;
-  margin-bottom: 10px;
-  cursor: pointer;
-`;
-
-const savebutton_img = css`
-  width: 30px;
-  height: 30px;
-  margin-left: 1130px;
-  cursor: pointer;
-  float: right;
-`;
-
-const person_img = css`
+const Person_img = styled.img`
   width: 120px;
   height: 160px;
   margin-bottom: 10px;
-  cursor: pointer;
 `;
 
-const dateContentStyle = css`
+const DateContentStyle = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -239,7 +238,7 @@ const dateContentStyle = css`
   }
 `;
 
-const contentListStyle = css`
+const ContentListStyle = styled.div`
   list-style-type: none;
-  padding: 0;
+  padding: 0;y
 `;
