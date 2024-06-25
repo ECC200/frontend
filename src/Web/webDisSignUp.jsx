@@ -16,20 +16,17 @@ function DisSignUpTop() {
   const [sendBtn, setSendBtn] = useState(false);
   // const [successMsg, setSuccessMsg] = useState(false);
   const [allData, setAllData] = useState({
-    name: "",
-    birth: "",
+    user_name: "",
+    birth_date: "",
     age: 0,
     address: "",
-    emergencyPerson1: "",
-    emergencyPerson2: "",
-    emergencyContact1: "",
-    emergencyContact2: "",
+    emergency_contacts: "",
     contact: "",
-    familyHospital: "",
-    attendingDoctor: "",
+    hospital_destination: "",
+    primary_care_doctor: "",
     specialty: "",
-    disease: "",
-    disabilitLevel: ""
+    chronicDisease: "",
+    disability_grade: ""
   });
 
 
@@ -84,16 +81,16 @@ function DisSignUpTop() {
           <>
             <DialogTitle className={css`text-align: center;`}>個人情報を確認してください</DialogTitle>
             <DialogContent className={css`width:600px;`}>
-              <Confirm>名前：{allData.name}</Confirm>
-              <Confirm>生年月日：{allData.birth}</Confirm>
+              <Confirm>名前：{allData.user_name}</Confirm>
+              <Confirm>生年月日：{allData.birth_date}</Confirm>
               <Confirm>年齢：{allData.age}</Confirm>
               <Confirm>住所：{allData.address}</Confirm>
               <Confirm>電話番号：{allData.contact}</Confirm>
-              <Confirm>かかりつけの病院：{allData.familyHospital}</Confirm>
-              <Confirm>主治医：{allData.attendingDoctor}</Confirm>
+              <Confirm>かかりつけの病院：{allData.hospital_destination}</Confirm>
+              <Confirm>主治医：{allData.primary_care_doctor}</Confirm>
               <Confirm>何科：{allData.specialty}</Confirm>
-              <Confirm>持病名：{allData.disease}</Confirm>
-              <Confirm>障害者等級：{allData.disabilityLevel}</Confirm>
+              <Confirm>持病名：{allData.chronicDisease}</Confirm>
+              <Confirm>障害者等級：{allData.disability_grade}</Confirm>
               <Confirm className={css`text-align: center;`}>緊急連絡人</Confirm>
               <Confirm>緊急連絡1：{allData.emergencyPerson1} - {allData.emergencyContact1}</Confirm>
               <Confirm>緊急連絡2：{allData.emergencyPerson2} - {allData.emergencyContact2}</Confirm>
@@ -117,12 +114,12 @@ function DisSignUpTop() {
         <Logofunc />
         {/* 名前 */}
         <InputArea100>
-          <InputName htmlFor="name">名前:</InputName>
+          <InputName htmlFor="user_name">名前:</InputName>
           <InputBar
             type="text"
-            name="name"
-            value={allData.name}
-            onChange={(e) => handleInputChange("name", e.target.value)}
+            name="user_name"
+            value={allData.user_name}
+            onChange={(e) => handleInputChange("user_name", e.target.value)}
           />
         </InputArea100>
 

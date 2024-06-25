@@ -7,8 +7,9 @@ import Step3 from "./Level2/step3";
 import WebStaffData from './Web/webStaffData';
 import WebStaffReLogin from './Web/webStaffReLogin';
 import WebLogin from './Web/webLogin';
-import Level1 from './Level1/level1';
+import Level1 from './level1/level1';
 import DisSignUpTop from "./Web/webDisSignUp";
+import PatientData from './Web/PatientData'
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
           <Route path="/WebStaffData" element={<WebStaffData />} />
           <Route path="/WebDisSignUp" element={<DisSignUpTop />} />
           <Route path="/webStaffReLogin" element={<WebStaffReLogin />} />
+          <Route path="/PatientData" element={<PatientData />} />
         </Routes>
       </Router>
     </>

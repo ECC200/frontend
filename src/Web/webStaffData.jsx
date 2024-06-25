@@ -81,8 +81,7 @@ function WebStaffData() {
     if (!isInactive) {
         return (
             <>
-                <Dialog Dialog open={open} onClose={() => setOpen(false)
-                }>
+                <Dialog Dialog open={open} onClose={() => setOpen(false)}>
                     <Testasd>
                         <DialogTitle>検索結果</DialogTitle>
                         <DialogContent className='DialogContentStyle'>
