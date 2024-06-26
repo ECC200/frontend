@@ -7,7 +7,7 @@ import Step3 from "./Level2/step3";
 import WebStaffData from './Web/webStaffData';
 import WebStaffReLogin from './Web/webStaffReLogin';
 import WebLogin from './Web/webLogin';
-import Level1 from './level1/level1';
+import Level1 from './Level1/level1';
 import DisSignUpTop from "./Web/webDisSignUp";
 import PatientData from './Web/PatientData'
 
