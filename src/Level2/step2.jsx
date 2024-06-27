@@ -19,7 +19,7 @@ function Step2() {
         <Logofunc color='#fff' />
 
         <InputArea>
-          <InputName htmlFor="disabilityId">障害者番号:</InputName>
+          <InputName htmlFor="disabilityId">障がい者番号:</InputName>
           <InputBar type="text" name="disabilityId" placeholder="障がい者番号を入力してください" />
         </InputArea>
 

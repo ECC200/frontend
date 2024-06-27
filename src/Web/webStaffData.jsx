@@ -4,8 +4,8 @@ import { Axios } from 'axios';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
+import WebHeader from './webHeader.jsx';
 import styled from '@emotion/styled';
-import Logofunc from '../LogoSetup';
 import TestImg from '../assets/螢幕截圖 2024-06-06 11.22.29.png'
 
 
@@ -100,6 +100,7 @@ function WebStaffData() {
                         :
                         (<ShowTime><h2>{time.getHours()}:{time.getMinutes()}:0{time.getSeconds()}</h2></ShowTime>)
                     }
+                    <WebHeader />
 
                     <HeaderRight>
                         <SearchBarArea>
@@ -112,7 +113,6 @@ function WebStaffData() {
                 </Header>
 
 
-                <Logofunc />
 
                 <DataTable>
                     <InfoLeftPart>
@@ -126,8 +126,8 @@ function WebStaffData() {
                     </InfoLeftPart>
 
                     <InfoRightPart>
-                        <InfoRightItem>スタッフ番号： {StaffData.StaffNO}</InfoRightItem>
-                        <InfoRightItem>管理レベル： {StaffData.ManagementLevel}</InfoRightItem>
+                        <InfoRightItem>スタッフID： {StaffData.StaffNO}</InfoRightItem>
+                        <InfoRightItem>権限： {StaffData.ManagementLevel}</InfoRightItem>
                         <InfoRightItem>勤務状況： {StaffData.WorkStatus}</InfoRightItem>
                         <InfoRightItem>上司： {StaffData.Superior}</InfoRightItem>
                         <InfoRightMessageItem>メッセージ： </InfoRightMessageItem>
@@ -149,7 +149,7 @@ const fontSize = '1.3em';
 
 // --------------------------------------------Header----------------------------------------------------
 const Header = styled.header`
-    margin: 1% 0 0.5% 0;
+    margin-top: 1%;
     display: flex;
     align-items: center;
     justify-content:space-between;

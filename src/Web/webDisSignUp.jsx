@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { css } from '@emotion/css'
 import Axios from 'axios';
 import styled from "@emotion/styled";
 import Logofunc from "../LogoSetup";
-import Dialog from '@mui/material/Dialog';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
+import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 
@@ -37,10 +37,11 @@ function DisSignUpTop() {
   });
 
 
-  {/* 生年月日で年齢を計算 */ }
+  // 生年月日で年齢を計算 
   const years = Array.from({ length: 100 }, (_, i) => new Date().getFullYear() - i);
   const months = Array.from({ length: 12 }, (_, i) => i + 1);
   const days = Array.from({ length: 31 }, (_, i) => i + 1);
+
   const handleDobChange = (field, value) => {
     const newDob = { ...dob, [field]: value };
     setDob(newDob);
@@ -57,6 +58,7 @@ function DisSignUpTop() {
     }
   };
 
+  // データ => allData
   const handleInputChange = (field, value) => {
     setAllData((prevData) => ({
       ...prevData,
@@ -64,6 +66,7 @@ function DisSignUpTop() {
     }));
   };
 
+  // データをチェック
   const isAllDataEmpty = (data) => {
     for (let key in data) {
       if (Array.isArray(data[key])) {
@@ -80,6 +83,7 @@ function DisSignUpTop() {
     return true;
   };
 
+  // 第一ボタン
   const handleConfirm = () => {
     setCheckErr(false)
     setOpen(true)
@@ -91,6 +95,7 @@ function DisSignUpTop() {
     }
   };
 
+  // 第二ボタン
   const handleSendData = async () => {
     // iconの起動
     setSendBtn(true)
@@ -105,15 +110,15 @@ function DisSignUpTop() {
     }
   };
 
-  const handleDialogClose = () => {
-    setOpen(() => false)
-  }
+  // const handleDialogClose = () => {
+  //   setOpen(() => false)
+  // }
 
   return (
     <>
       {checkErr ?
         (
-          <Dialog open={open} onClose={handleDialogClose} >
+          <Dialog open={open} onClose={setOpen(() => false)} >
             <DialogTitle className={css`text-align: center;`}>メッセージ</DialogTitle>
             <DialogContent className={css`width:600px;text-align: center;`}>
               <h2>必要な情報を入力してください</h2>
@@ -121,7 +126,7 @@ function DisSignUpTop() {
           </Dialog >
         ) : (
           !sendBtn && !checkErr ? (
-            <Dialog open={open} onClose={() => { setOpen(false) }} >
+            <Dialog open={open} onClose={() => setOpen(false)} >
               <DialogTitle className={css`text-align: center;`}>個人情報を確認してください</DialogTitle>
               <DialogContent className={css`width:600px;`}>
                 <Confirm>名前：{allData.user_name}</Confirm>
@@ -133,8 +138,8 @@ function DisSignUpTop() {
                 <Confirm>主治医：{allData.primary_care_doctor}</Confirm>
                 <Confirm>何科：{allData.specialty}</Confirm>
                 <Confirm>持病名：{allData.chronicDisease}</Confirm>
-                <Confirm>障害者等級：{allData.disability_grade}</Confirm>
-                <Confirm className={css`text-align: center;`}>緊急連絡人</Confirm>
+                <Confirm>障がい者等級：{allData.disability_grade}</Confirm>
+                <Confirm className={css`text-align: center;`}>緊急連絡先</Confirm>
                 <Confirm>緊急連絡1：{allData.emergency_contacts[0].name} - {allData.emergency_contacts[0].phone}</Confirm>
                 <Confirm>緊急連絡2：{allData.emergency_contacts[1].name} - {allData.emergency_contacts[1].phone}</Confirm>
               </DialogContent>
@@ -414,12 +419,12 @@ function DisSignUpTop() {
         </TwoBar>
 
 
-        {/* 障害者等級 */}
+        {/* 障がい者等級 */}
         <InputArea100>
           {checkErr && allData.disability_grade === "" ?
             (
               <>
-                <InputNameErr htmlFor="disability_grade">障害者等級:</InputNameErr>
+                <InputNameErr htmlFor="disability_grade">障がい者等級:</InputNameErr>
                 <InputBarErr
                   type="number"
                   name="disability_grade"
@@ -429,7 +434,7 @@ function DisSignUpTop() {
               </>
             ) : (
               <>
-                <InputName htmlFor="disability_grade">障害者等級:</InputName>
+                <InputName htmlFor="disability_grade">障がい者等級:</InputName>
                 <InputBar
                   type="number"
                   name="disability_grade"
@@ -441,8 +446,8 @@ function DisSignUpTop() {
         </InputArea100>
 
         {/* 緊急連絡先 */}
-        <Emergency>緊急連絡人</Emergency>
-        <h4>緊急連絡人は最低一人です</h4>
+        <Emergency>緊急連絡先</Emergency>
+        <h4>緊急連絡先は最低一人です</h4>
         <TwoBar>
           <TwoColumn>
             {/* 関係 */}
@@ -450,7 +455,7 @@ function DisSignUpTop() {
               {checkErr && emergencyContactArray[0].name === "" ?
                 (
                   <>
-                    <InputNameErr htmlFor="emergencyContact">緊急連絡人の関係:</InputNameErr>
+                    <InputNameErr htmlFor="emergencyContact">緊急連絡先の関係:</InputNameErr>
                     <InputBarErr
                       type="tel"
                       name="emergencyContact1_name"
@@ -464,7 +469,7 @@ function DisSignUpTop() {
                   </>
                 ) : (
                   <>
-                    <InputName htmlFor="emergencyContact">緊急連絡人の関係:</InputName>
+                    <InputName htmlFor="emergencyContact">緊急連絡先の関係:</InputName>
                     <InputBar
                       type="tel"
                       name="emergencyContact1_name"

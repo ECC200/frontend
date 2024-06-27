@@ -77,7 +77,7 @@ function WebLogin() {
                 <BackDiv>
                     <LoginBg>
                         <Logofunc />
-                        <ResetPwMsg>ITの同僚に連絡してください。</ResetPwMsg>
+                        <ResetPwMsg>人事部にお問い合わせください</ResetPwMsg>
                         <ResetPw onClick={HandlePwChangeMsg}>Login page</ResetPw>
                     </LoginBg>
                 </BackDiv>
@@ -100,10 +100,10 @@ function WebLogin() {
                         {/* Error */}
                         {reqMsg === false ? (
                             <>
-                                <ErrMsg>*Invalid Staff id / password</ErrMsg>
+                                <ErrMsg>* Staff id か passwordが間違っています</ErrMsg>
                                 <form onSubmit={handleSubmit}>
                                     <InputArea>
-                                        <ErrInputName htmlFor='staffId'>従業員の番号:</ErrInputName>
+                                        <ErrInputName htmlFor='staffId'>スタッフID</ErrInputName>
                                         <ErrInputBar
                                             type="text"
                                             id="staffId"
@@ -127,7 +127,7 @@ function WebLogin() {
                             // 普通
                             <form onSubmit={handleSubmit}>
                                 <InputArea>
-                                    <InputName htmlFor='staffId'>従業員の番号:</InputName>
+                                    <InputName htmlFor='staffId'>スタッフID:</InputName>
                                     <InputBar
                                         type="text"
                                         id="staffId"

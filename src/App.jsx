@@ -4,12 +4,12 @@ import { Global, css } from '@emotion/react';
 import Step1 from "./Level2/step1";
 import Step2 from "./Level2/step2";
 import Step3 from "./Level2/step3";
+import Level1 from './Level1/level1';
 import WebStaffData from './Web/webStaffData';
 import WebStaffReLogin from './Web/webStaffReLogin';
 import WebLogin from './Web/webLogin';
-import Level1 from './Level1/level1';
 import DisSignUpTop from "./Web/webDisSignUp";
-import PatientData from './Web/PatientData'
+import WebPatientData from './Web/webPatientData'
 
 function App() {
   return (
@@ -32,7 +32,7 @@ function App() {
           <Route path="/WebStaffData" element={<WebStaffData />} />
           <Route path="/WebDisSignUp" element={<DisSignUpTop />} />
           <Route path="/webStaffReLogin" element={<WebStaffReLogin />} />
-          <Route path="/PatientData" element={<PatientData />} />
+          <Route path="/WebPatientData" element={<WebPatientData />} />
         </Routes>
       </Router>
     </>
