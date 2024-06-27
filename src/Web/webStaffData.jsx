@@ -1,19 +1,19 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { useNavigate } from "react-router-dom";
 import { Axios } from 'axios';
+import { css } from '@emotion/css'
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import WebHeader from './webHeader.jsx';
 import styled from '@emotion/styled';
-import TestImg from '../assets/螢幕截圖 2024-06-06 11.22.29.png'
-
-
+import PersonImg from '../assets/taku.jpeg';
 
 function WebStaffData() {
     const StaffID = '#'
     const navigate = useNavigate();
     const [open, setOpen] = useState(false);
+    const [logout, setLogout] = useState(false);
     const [isInactive, setIsInactive] = useState(false);
     const timeoutRef = useRef(null);
     const [searchbar, setSearchbar] = useState('')
@@ -57,6 +57,10 @@ function WebStaffData() {
         navigate("/webStaffReLogin/", { state: dataForReLogin });
     };
 
+    const handleLogout = () => {
+        setLogout(true)
+    }
+
     // 時間
     const [time, setTime] = useState(new Date());
     useEffect(() => {
@@ -81,7 +85,7 @@ function WebStaffData() {
     if (!isInactive) {
         return (
             <>
-                <Dialog Dialog open={open} onClose={() => setOpen(false)}>
+                <Dialog open={open} onClose={() => setOpen(false)}>
                     <Testasd>
                         <DialogTitle>検索結果</DialogTitle>
                         <DialogContent className='DialogContentStyle'>
@@ -94,29 +98,40 @@ function WebStaffData() {
                     </Testasd>
                 </Dialog >
 
+                <Dialog open={logout} onClose={() => setLogout(false)}>
+                    <Testasd className={css`text-align: center;`}>
+                        <DialogTitle>ログアウト確認</DialogTitle>
+                        <DialogContent className='DialogContentStyle'>
+                            <h3>本当にログアウトをしますか？</h3>
+                            <SubmitBtn onClick={() => navigate("/WebLogin/")}>ログアウト</SubmitBtn>
+                        </DialogContent>
+                    </Testasd>
+                </Dialog >
+
                 <Header>
-                    {time.getSeconds() > 9 ?
-                        (<ShowTime><h2>{time.getHours()}:{time.getMinutes()}:{time.getSeconds()}</h2></ShowTime>)
-                        :
-                        (<ShowTime><h2>{time.getHours()}:{time.getMinutes()}:0{time.getSeconds()}</h2></ShowTime>)
+                    {
+                        time.getSeconds() > 9 ?
+                            (<ShowTime><h2>{time.getHours()}:{time.getMinutes()}:{time.getSeconds()}</h2></ShowTime>)
+                            :
+                            (<ShowTime><h2>{time.getHours()}:{time.getMinutes()}:0{time.getSeconds()}</h2></ShowTime>)
                     }
                     <WebHeader />
-
-                    <HeaderRight>
-                        <SearchBarArea>
-                            <SearchBar type='text' id='searchbar' value={searchbar} onChange={HandleSearch} />
-                            <SearchBarBtn type='submit' onClick={() => setOpen(true)}>検索</SearchBarBtn>
-                        </SearchBarArea>
-
-                        <SignUpBtn onClick={() => navigate("/webDisSignUp/")}>新規登録</SignUpBtn>
-                    </HeaderRight>
+                    <HeaderRigjht>
+                        <HeaderBtn onClick={() => navigate("/webDisSignUp/")}>障がい者新規登録</HeaderBtn>
+                        <HeaderBtn onClick={handleLogout}>ログアウト</HeaderBtn>
+                    </HeaderRigjht>
                 </Header>
 
-
+                <PageTitle>おはようございます</PageTitle>
+                <SearchBarArea>
+                    <h3>障がい者検索：</h3>
+                    <SearchBar type='text' id='searchbar' value={searchbar} onChange={HandleSearch} />
+                    <SearchBarBtn type='submit' onClick={() => setOpen(true)}>検索</SearchBarBtn>
+                </SearchBarArea>
 
                 <DataTable>
                     <InfoLeftPart>
-                        <img src={TestImg} alt="Icon" />
+                        <img src={PersonImg} alt="Icon" />
                         <InfoLeftData>
                             <InfoLeftDataItem>{StaffData.FullName}</InfoLeftDataItem>
                             <InfoLeftDataItem>{StaffData.Department}</InfoLeftDataItem>
@@ -149,35 +164,28 @@ const fontSize = '1.3em';
 
 // --------------------------------------------Header----------------------------------------------------
 const Header = styled.header`
-    margin-top: 1%;
     display: flex;
     align-items: center;
     justify-content:space-between;
 `
 // Time 
 const ShowTime = styled.div`
+    position: absolute;
     margin-left: 10%;
-    color: #000;
+    color: #fff;
     letter-spacing: 1.7px;
-`
-const HeaderRight = styled.div`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    width: 70%;
 `
 // ----------------------SearchBar----------------------
 const SearchBarArea = styled.div`
     display: flex;
     flex-direction: row;
-    justify-content:end;
+    justify-content:center;
     align-items: center;
-    width: 75%;
 `
 const SearchBar = styled.input`
     width: 300px;
     height: 30px;
-    margin: 0 2%;
+    margin-right:15px;
     border: 2px solid black;
     border-radius: 5px;
 `
@@ -188,15 +196,15 @@ const SearchBarBtn = styled.button`
     border-radius: 5px;
 `
 // --------------------------------------------
-const SignUpBtn = styled.button`
+const HeaderBtn = styled.button`
     background-color: #fff;
     border-radius: 5px;
-    font-size:16px;
+    font-size: 16px;
     font-weight:bold;
     text-align:center;
-    margin: 0 5%;
-    padding:1% 1.5%;
-    letter-spacing:5px;
+    padding:5px 10px;
+    margin: 0 10px;
+    letter-spacing:3px;
 `
 
 // ------------------------------------------------------------------------------------------------
@@ -207,7 +215,7 @@ const DataTable = styled.div`
         display: grid;
         grid-template-columns: auto auto;
         margin: 25px auto;
-        width: 70%;
+        width: 65%;
         border: ${lineSize} solid #000;
         border-radius: 15px;
     `
@@ -218,7 +226,7 @@ const InfoLeftPart = styled.div`
         text-align: center;
         margin-top: 3%;
         img{
-            width: 250px;
+            width: 200px;
             padding:5%;
         }
     `
@@ -257,6 +265,32 @@ const InfoRightMessage = styled.div`
 
 
 const Testasd = styled.div`
-width:1000px;
+width:600px;
 `
 // ------------------------------------------------------------------------------------------------
+const PageTitle = styled.h1`
+      text-align: center;
+      margin:35px 0;
+      font-size:40px;
+`
+const HeaderRigjht = styled.div`
+    width:90%;
+    position:absolute;
+    text-align:center;
+    display:flex;
+    justify-content:end;
+`
+const SubmitBtn = styled.button`
+      border: 1px solid #000;
+      background-color: transparent;
+      border-radius: 20px;
+      color: #000;
+      font-size: 100%;
+      font-weight: bold;
+      letter-spacing: 5px;
+      margin: 0 auto;
+      margin-top: 5%;
+      padding: 10px 20px;
+      text-transform: uppercase;
+      cursor: pointer;
+      `;

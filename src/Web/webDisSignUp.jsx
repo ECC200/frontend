@@ -1,15 +1,20 @@
 import { useState } from "react";
 import { css } from '@emotion/css'
+import { useNavigate } from 'react-router-dom';
 import Axios from 'axios';
 import styled from "@emotion/styled";
-import Logofunc from "../LogoSetup";
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
+import WebHeader from './webHeader.jsx';
+import BackButtonImage from '../assets/back.png';
+
+
 
 function DisSignUpTop() {
+  const navigate = useNavigate();
   const [dob, setDob] = useState({ year: "", month: "", day: "" });
   const [emergencyContactArray, setEmergencyContactArray] = useState([
     { name: "", phone: "" },
@@ -157,8 +162,14 @@ function DisSignUpTop() {
           )
         )}
 
+      <Header>
+        <BackButtonStyled src={BackButtonImage} alt="戻る" onClick={() => navigate(-1)} />
+        <WebHeader />
+      </Header>
+
+      <PageTitle>障がい者新規登録</PageTitle>
+
       <LoginContainer>
-        <Logofunc />
         {/* 名前 */}
         <InputArea100>
           {checkErr && allData.user_name === "" ?
@@ -447,7 +458,7 @@ function DisSignUpTop() {
 
         {/* 緊急連絡先 */}
         <Emergency>緊急連絡先</Emergency>
-        <h4>緊急連絡先は最低一人です</h4>
+        <h4>* 緊急連絡先は最低一人です</h4>
         <TwoBar>
           <TwoColumn>
             {/* 関係 */}
@@ -558,8 +569,22 @@ function DisSignUpTop() {
 
 export default DisSignUpTop;
 
+const Header = styled.header`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 auto;
+  background-color:gray;
+`;
+
+const PageTitle = styled.h1`
+      text-align: center;
+      margin:35px 0 0 0;
+      font-size:40px;
+`
+
 const LoginContainer = styled.div`
-      margin: 3.5% auto 5% auto;
+      margin: 2% auto 5% auto;
       width: 50%;
       display:flex;
       flex-direction: column;
@@ -687,6 +712,7 @@ const SubmitBtn = styled.button`
       border-radius: 20px;
       color: #000;
       font-size: 100%;
+      font-weight: bold;
       letter-spacing: 5px;
       margin: 0 auto;
       margin-top: 5%;
@@ -716,3 +742,11 @@ const Emergency = styled.h2`
 const Confirm = styled.h3`
       margin:5px 0;
       `
+
+const BackButtonStyled = styled.img`
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  margin-left: 20px;
+  cursor: pointer;
+`;

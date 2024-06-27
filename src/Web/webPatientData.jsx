@@ -12,6 +12,7 @@ import PersonImg from '../assets/taku.jpeg';
 import EditImage from '../assets/edit.png';
 import BackButtonImage from '../assets/back.png';
 import SaveButtonImage from '../assets/save.png';
+import ReturnButtonImage from '../assets/x.png';
 import WebHeader from './webHeader.jsx';
 
 const lineSize = '2.5px';
@@ -66,13 +67,6 @@ function WebpatientData() {
         }
     };
 
-    const handleEditClick = () => {
-        setIsEditing(true); // 編集状態にする
-    };
-
-    const handleEditClose = () => {
-        setOpen(true);
-    }
     const handleSave = () => {
         setLoad(true)
         const patientDataToSave = { ...patientData, contentList };
@@ -93,7 +87,7 @@ function WebpatientData() {
     return (
         <>
             {load ? (
-                <Dialog open={open}>
+                <Dialog open={open} onClose={() => setOpen(false)}>
                     <DialogTitle className={css`text-align: center;`}>注意</DialogTitle>
                     <DialogContent className={css`width:600px;text-align: center;`}>
                         {!sended ? (
@@ -122,15 +116,19 @@ function WebpatientData() {
             <Header>
                 <BackButtonStyled src={BackButtonImage} alt="戻る" onClick={() => navigate(-1)} />
                 <WebHeader />
-                <div></div>
             </Header>
+
+            <PageTitle>障がい者データ</PageTitle>
 
             <EditBtn>
                 {isEditing && (
-                    <img src={SaveButtonImage} alt="保存" onClick={handleEditClose} className={css`width: 30px;height: 30px;`} />
+                    <div className={css`display:flex;`}>
+                        <img src={SaveButtonImage} alt="保存" onClick={() => setOpen(true)} className={css`width: 30px;height: 30px;margin:0 10px;`} />
+                        <img src={ReturnButtonImage} alt="編集戻る" onClick={() => setIsEditing(false)} className={css`width: 30px;height: 30px;margin:0 10px;`} />
+                    </div>
                 )}
                 {!isEditing && (
-                    <img src={EditImage} alt="編集" onClick={handleEditClick} className={css`width: 30px;height: 30px;`} />
+                    <img src={EditImage} alt="編集" onClick={() => setIsEditing(true)} className={css`width: 30px;height: 30px;`} />
                 )}
             </EditBtn>
 
@@ -278,14 +276,15 @@ export default WebpatientData;
 const Header = styled.header`
   display: flex;
   justify-content: space-between;
-  padding: 10px;
+  align-items: center;
+  margin: 0 auto;
+  background-color:gray;
 `;
 
 const BackButtonStyled = styled.img`
-    position: relative;
+  position: absolute;
   width: 40px;
   height: 40px;
-  margin-top: 20px;
   margin-left: 20px;
   cursor: pointer;
 `;
@@ -293,7 +292,6 @@ const BackButtonStyled = styled.img`
 const ContainerStyle = styled.div`
   display: grid;
   grid-template-columns: 1fr 2fr 1fr;
-  gap: 10px;
   width: 85%;
   border: ${lineSize} solid #000;
   border-radius: 15px;
@@ -334,6 +332,10 @@ const ContentListStyle = styled.table`
 const InfoLeftData = styled.div`
   text-align: left;
   border:none;
+  padding: 5px;
+  th{
+    padding: 3px 0;
+  }
   th{
      padding-right: 15px;
   }
@@ -439,3 +441,9 @@ const SubmitBtn = styled.button`
       text-transform: uppercase;
       cursor: pointer;
       `;
+
+const PageTitle = styled.h1`
+      text-align: center;
+      margin:25px 0 0 0;
+      font-size:40px;
+`

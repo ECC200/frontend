@@ -1,43 +1,55 @@
 import Logofile from "../assets/logo.png";
 import styled from "@emotion/styled";
+import { Global, css } from '@emotion/react';
 
 function webHeader() {
   const LogoArea = styled.div`
     display: grid;
     justify-content: center;
     align-items: center;
-    margin-left: auto;
-    margin-right: auto;
-    width: 90%;
+    width: 100%;
+    background-color:grey;
+    padding:0.3% 0;
   `;
   const LogoImg = styled.img`
     width: 100px;
-    @media (min-width: 768px) {
-        width: 150px;
-    }
-    margin: 0 auto;
+    margin: 0 10px;
     filter: drop-shadow(0 0 1px #000);
   `;
   const LogoName = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    color: #000;
+    color: #fff;
     letter-spacing: 20px;
-    padding: 0;
-    font-size: 30px;
+    padding: 0 auto;
+    font-size: 25px;
     text-align: center;
     text-transform: uppercase;
+    span{
+      letter-spacing: 10px;
+      margin-left:10px;
+    }
   `;
 
   return (
-    <LogoArea>
-      <LogoName>
-        Care&nbsp;
-        <LogoImg src={Logofile} alt="Logo" />
-        &nbsp;Connect
-      </LogoName>
-    </LogoArea>
+    <>
+      <Global
+        styles={css`
+      * {
+        margin: 0;
+        box-sizing: border-box;
+      }
+    `}
+      />
+      <LogoArea>
+        <LogoName>
+          &nbsp;&nbsp;Care
+          <LogoImg src={Logofile} alt="Logo" />
+          <span>Connect</span>
+        </LogoName>
+      </LogoArea>
+    </>
   );
 }
 
