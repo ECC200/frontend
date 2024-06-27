@@ -5,9 +5,9 @@ import Step2 from "./Level2/step2";
 import Step3 from "./Level2/step3";
 import WebStaffData from './Web/webStaffData'
 import WebLogin from './Web/webLogin'
-import Level1 from './Level1/level1'
-import SignUpTop from "./SignUp/signUpTop";
-import DisSignUpTop from "./DisSignUp/disSignUpTop";
+import Level1 from "./level1/level1";
+import SignUpTop from "./Web/webSignUp";
+import DisSignUpTop from "./Web/webDisSignUp";
 
 function App() {
   return (
@@ -23,12 +23,12 @@ function App() {
         <Routes>
           <Route path="/step1" element={<Step1 />} />
           <Route path="/step2" element={<Step2 />} />
-          <Route path="/step3" element={<Step3 />} />
+          <Route path="/step3/:disabilityId" element={<Step3 />} />
           <Route path="/level1" element={<Level1 />} />
           <Route path="/WebLogin" element={<WebLogin />} />
           <Route path="/WebStaffData" element={<WebStaffData />} />
-          <Route path="/signUp" element={<SignUpTop />} />
-          <Route path="/disSignUp" element={<DisSignUpTop />} />
+          <Route path="/WebSignUp" element={<SignUpTop />} />
+          <Route path="/WebDisSignUp" element={<DisSignUpTop />} />
         </Routes>
       </Router>
     </>
