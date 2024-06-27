@@ -4,13 +4,13 @@ import { Global, css } from '@emotion/react';
 import Step1 from "./Level2/step1";
 import Step2 from "./Level2/step2";
 import Step3 from "./Level2/step3";
-import WebStaffData from './Web/webStaffData';
+// import WebStaffData from './Web/webStaffData'
 import WebStaffReLogin from './Web/webStaffReLogin';
 import WebLogin from './Web/webLogin';
-import Level1 from './Level1/level1';
+import Level1 from './level1/level1';
 import SignUpTop from "./Web/webSignUp";
 import DisSignUpTop from "./Web/webDisSignUp";
-import { EncryptRoute } from './EncryptRoute';
+// import { EncryptRoute } from './EncryptRoute';
 
 function App() {
   return (
@@ -31,12 +31,12 @@ function App() {
           <Route path="/level1" element={<Level1 />} />
           <Route path="/WebLogin" element={<WebLogin />} />
 
-          <Route path="/WebStaffData" element={
+          {/* <Route path="/WebStaffData" element={
             <EncryptRoute path="/WebStaffData" encryptedPath="/asdjlahb2kj13kj1231231">
               <WebStaffData />
             </EncryptRoute>
-          } />
-          <Route path="/asdjlahb2kj13kj1231231" element={<WebStaffData />} />
+          } /> */}
+          {/* <Route path="/asdjlahb2kj13kj1231231" element={<WebStaffData />} /> */}
 
           <Route path="/WebSignUp" element={<SignUpTop />} />
           <Route path="/WebDisSignUp" element={<DisSignUpTop />} />
