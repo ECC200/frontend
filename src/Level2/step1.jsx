@@ -17,7 +17,6 @@ function Step1() {
   return (
     <Container>
       <Logofunc />
-
       <InputArea>
         <InputSet>
           <InputLabelBlack htmlFor="staffId">スタッフ番号:</InputLabelBlack>

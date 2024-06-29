@@ -9,8 +9,6 @@ import DialogTitle from '@mui/material/DialogTitle';
 import {
   // Container
   Container,
-  // Header
-  Header,
   // Number
   NumberSet, NumberItem, NumberWord
 } from '../EmotionForMoblie';
@@ -42,19 +40,17 @@ function Level1() {
         `} />
       <Container>
         {/* Main */}
-        <Header>
-          <Logo color='#fff' />
-          <NumberSet>
-            <NumberItem>患者番号:</NumberItem>
-            <NumberWord>{id}</NumberWord>
-          </NumberSet>
-        </Header>
+        <Logo color='#fff' />
+        <NumberSet>
+          <NumberItem>患者番号:</NumberItem>
+          <NumberWord>{id}</NumberWord>
+        </NumberSet>
 
         <Button onClick={handleReport}>119</Button>
         <Button onClick={handleEmergencyContact}>緊急連絡先</Button>
 
         <Dialog open={isModalOpen}>
-          <Testasd className={css`text-align: center;`}>
+          <DialogBoxArea>
             <DialogTitle>どこに連絡しますか？</DialogTitle>
             <DialogContent className='DialogContentStyle'>
               <LinkList>
@@ -66,7 +62,7 @@ function Level1() {
               </LinkList>
               <ModalButton onClick={() => setModalOpen(false)}>閉じる</ModalButton>
             </DialogContent>
-          </Testasd>
+          </DialogBoxArea>
         </Dialog >
       </Container>
     </>
@@ -114,7 +110,7 @@ const LinkItem = styled.li`
 `;
 
 
-const Testasd = styled.div`
+const DialogBoxArea = styled.div`
   width:300px;
   text-align:center;
 `

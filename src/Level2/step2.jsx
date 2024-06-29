@@ -23,8 +23,8 @@ function Step2() {
           }
         `}
       />
+      <UpperRightBtn onClick={() => navigate("/step1/")}>ログアウト</UpperRightBtn>
       <Container>
-        <UpperRightBtn onClick={() => navigate("/step1/")}>ログアウト</UpperRightBtn>
         <Logofunc color='#fff' />
 
         <InputArea>

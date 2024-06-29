@@ -1,5 +1,8 @@
-// ------------ All Mobile Version --------------------
 import styled from "@emotion/styled";
+
+// ------------ Web Version --------------------
+// Err
+export const ErrColor = '#ff1515'
 
 // Button
 export const BtnRadius = '10px'
@@ -21,6 +24,7 @@ export const InputRadius = '10px'
 // Input Set Area
 export const InputAreaWidth = '85%'
 
+// Submit button
 export const SubmitBtnPattern = `
   border-radius: ${BtnRadius};
   background-color: ${SubmitBtnColor};
@@ -30,14 +34,26 @@ export const SubmitBtnPattern = `
   text-transform: ${BtnTextTransform};
   cursor: ${BtnCursor};
 `
+
+
+
+
+
+
+
+// ---------------------------- Emotion ------------------------------------
 export const InputLabelBlack = styled.label`
 color: #000;
-font-size: 100%;
+font-size: 18px;
 `;
 
 export const InputLabelWhite = styled.label`
 color: #fff;
-font-size: 100%;
+font-size: 18px;
+`;
+export const ErrInputLabel = styled.label`
+    color: red;
+    font-size: 18px;
 `;
 
 export const InputBar = styled.input`
@@ -53,11 +69,31 @@ export const InputBar = styled.input`
   }
 `;
 
+export const ErrInputBar = styled.input`
+  border: ${InputBorder} solid ${ErrColor};
+  border-radius: ${InputRadius};
+  color: ${ErrColor};
+  height: ${InputHeight};
+  width: 100%;
+  margin-top: 5px;
+  padding-left: 10px;
+  :hover {
+    background-color: hsl(0 0% 85%);
+  }
+`;
+
 export const InputArea = styled.div`
 width: ${InputAreaWidth};
 margin: 5% 0;
 `
 
+export const Header = styled.header`
+    display: flex;
+    align-items: center;
+    justify-content:space-between;
+`
+
+// Other
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -66,31 +102,15 @@ export const Container = styled.div`
 `;
 
 export const UpperRightBtn = styled.button`
-  background-color: green;
-  border: ${BtnBorder} solid white;
-  border-radius: ${BtnRadius};
-  color: white;
-  position: absolute;
-  cursor: pointer;
-  top: 10px;
-  right: 10px;
-  font-size: ${BtnFontSize};
-  padding: 8px 16px;
-`;
-
-export const NumberSet = styled.div`
-  color: #fff;
-  text-align: center;
-  margin: 15px 0;
-  padding: 0;
-`
-export const NumberItem = styled.p`
-  padding: 0;
-  font-size: 1em;
-`;
-export const NumberWord = styled.p`
-  padding: 0;
-  font-size: 4em;
+border: ${BtnBorder} solid white;
+border-radius: ${BtnRadius};
+color: white;
+position: absolute;
+cursor: pointer;
+top: 10px;
+right: 10px;
+font-size: ${BtnFontSize};
+padding: 8px 16px;
 `;
 
 

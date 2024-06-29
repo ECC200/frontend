@@ -1,13 +1,16 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { useNavigate } from "react-router-dom";
 import { Axios } from 'axios';
-import { css } from '@emotion/css'
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import WebHeader from './webHeader.jsx';
 import styled from '@emotion/styled';
 import PersonImg from '../assets/taku.jpeg';
+import {
+    // Header
+    Header
+} from './EmotionForWeb'
 
 function WebStaffData() {
     const StaffID = '#'
@@ -86,7 +89,7 @@ function WebStaffData() {
         return (
             <>
                 <Dialog open={open} onClose={() => setOpen(false)}>
-                    <Testasd>
+                    <DialogBoxArea>
                         <DialogTitle>検索結果</DialogTitle>
                         <DialogContent className='DialogContentStyle'>
                             {searchRsp.map((repo) => (
@@ -95,17 +98,17 @@ function WebStaffData() {
                                 </div>
                             ))}
                         </DialogContent>
-                    </Testasd>
+                    </DialogBoxArea>
                 </Dialog >
 
                 <Dialog open={logout} onClose={() => setLogout(false)}>
-                    <Testasd className={css`text-align: center;`}>
+                    <DialogBoxArea>
                         <DialogTitle>ログアウト確認</DialogTitle>
                         <DialogContent className='DialogContentStyle'>
                             <h3>本当にログアウトをしますか？</h3>
                             <SubmitBtn onClick={() => navigate("/WebLogin/")}>ログアウト</SubmitBtn>
                         </DialogContent>
-                    </Testasd>
+                    </DialogBoxArea>
                 </Dialog >
 
                 <Header>
@@ -122,13 +125,16 @@ function WebStaffData() {
                     </HeaderRigjht>
                 </Header>
 
+
                 <PageTitle>おはようございます</PageTitle>
+
                 <SearchBarArea>
                     <h3>障がい者検索：</h3>
                     <SearchBar type='text' id='searchbar' value={searchbar} onChange={HandleSearch} />
                     <SearchBarBtn type='submit' onClick={() => setOpen(true)}>検索</SearchBarBtn>
                 </SearchBarArea>
 
+                {/* Table */}
                 <DataTable>
                     <InfoLeftPart>
                         <img src={PersonImg} alt="Icon" />
@@ -163,11 +169,7 @@ const lineSize = '2.5px';
 const fontSize = '1.3em';
 
 // --------------------------------------------Header----------------------------------------------------
-const Header = styled.header`
-    display: flex;
-    align-items: center;
-    justify-content:space-between;
-`
+
 // Time 
 const ShowTime = styled.div`
     position: absolute;
@@ -181,6 +183,7 @@ const SearchBarArea = styled.div`
     flex-direction: row;
     justify-content:center;
     align-items: center;
+    margin: 15px 0 50px 0;
 `
 const SearchBar = styled.input`
     width: 300px;
@@ -215,7 +218,7 @@ const DataTable = styled.div`
         display: grid;
         grid-template-columns: auto auto;
         margin: 25px auto;
-        width: 65%;
+        width: 75%;
         border: ${lineSize} solid #000;
         border-radius: 15px;
     `
@@ -264,8 +267,9 @@ const InfoRightMessage = styled.div`
 // ------------------------------------------------------------------------------------------------
 
 
-const Testasd = styled.div`
-width:600px;
+const DialogBoxArea = styled.div`
+    width:600px;
+    text-align:center;
 `
 // ------------------------------------------------------------------------------------------------
 const PageTitle = styled.h1`

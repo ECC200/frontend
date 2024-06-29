@@ -4,14 +4,13 @@ import { Global, css } from '@emotion/react'
 import { Swiper, SwiperSlide } from "swiper/react";
 import Logo from "../LogoSetup";
 import styled from "@emotion/styled";
+
 import "swiper/css";
 import "swiper/css/pagination";
 
 import {
     // Container
     Container,
-    // Header
-    Header,
     // Number
     NumberSet, NumberItem, NumberWord,
     // Button
@@ -47,16 +46,13 @@ function Step3() {
                         background-color: green;
                     }
                 `} />
+            <UpperRightBtn onClick={() => navigate("/step2")}>退出</UpperRightBtn>
             <Container>
-                <Header>
-                    <UpperRightBtn onClick={() => navigate("/step2")}>退出</UpperRightBtn>
-                    <Logo color='#fff' />
-                    <NumberSet>
-                        <NumberItem>患者番号:</NumberItem>
-                        <NumberWord>{id}</NumberWord>
-                    </NumberSet>
-                </Header>
-
+                <Logo color='#fff' />
+                <NumberSet>
+                    <NumberItem>患者番号:</NumberItem>
+                    <NumberWord>{id}</NumberWord>
+                </NumberSet>
 
                 <SwiperContainer>
                     <Swiper

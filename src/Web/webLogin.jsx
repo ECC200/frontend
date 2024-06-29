@@ -2,9 +2,18 @@ import { useState, useCallback } from 'react';
 import { Global, css } from '@emotion/react'
 import { useNavigate } from "react-router-dom";
 import styled from '@emotion/styled';
-import Logofunc from '../LogoSetup';
+import Logo from '../LogoSetup';
 import Axios from 'axios';
-
+import {
+    // Container
+    Container,
+    // button
+    SubmitBtnPattern,
+    // input
+    InputLabelBlack, InputBar,
+    // Err
+    ErrInputLabel, ErrInputBar
+} from './EmotionForWeb'
 
 function WebLogin() {
     const navigate = useNavigate();
@@ -74,13 +83,13 @@ function WebLogin() {
                         }
                     `}
                 />
-                <BackDiv>
+                <Container>
                     <LoginBg>
-                        <Logofunc />
+                        <Logo />
                         <ResetPwMsg>人事部にお問い合わせください</ResetPwMsg>
                         <ResetPw onClick={HandlePwChangeMsg}>Login page</ResetPw>
                     </LoginBg>
-                </BackDiv>
+                </Container>
             </>
         );
     } else {
@@ -94,16 +103,16 @@ function WebLogin() {
                         }
                     `}
                 />
-                <BackDiv>
+                <Container>
                     <LoginBg>
-                        <Logofunc />
+                        <Logo />
                         {/* Error */}
                         {reqMsg === false ? (
                             <>
                                 <ErrMsg>* Staff id か passwordが間違っています</ErrMsg>
                                 <form onSubmit={handleSubmit}>
                                     <InputArea>
-                                        <ErrInputName htmlFor='staffId'>スタッフID</ErrInputName>
+                                        <ErrInputLabel htmlFor='staffId'>スタッフID</ErrInputLabel>
                                         <ErrInputBar
                                             type="text"
                                             id="staffId"
@@ -112,7 +121,7 @@ function WebLogin() {
                                         />
                                     </InputArea>
                                     <InputArea>
-                                        <ErrInputName htmlFor='password'>パスワード:</ErrInputName>
+                                        <ErrInputLabel htmlFor='password'>パスワード:</ErrInputLabel>
                                         <ErrInputBar
                                             type="password"
                                             id="password"
@@ -127,7 +136,7 @@ function WebLogin() {
                             // 普通
                             <form onSubmit={handleSubmit}>
                                 <InputArea>
-                                    <InputName htmlFor='staffId'>スタッフID:</InputName>
+                                    <InputLabelBlack htmlFor='staffId'>スタッフID:</InputLabelBlack>
                                     <InputBar
                                         type="text"
                                         id="staffId"
@@ -136,7 +145,7 @@ function WebLogin() {
                                     />
                                 </InputArea>
                                 <InputArea>
-                                    <InputName htmlFor='password'>パスワード:</InputName>
+                                    <InputLabelBlack htmlFor='password'>パスワード:</InputLabelBlack>
                                     <InputBar
                                         type="password"
                                         id="password"
@@ -149,7 +158,7 @@ function WebLogin() {
                         )}
                         <ResetPw onClick={HandlePwChangeMsg}>パスワードを忘れた方はこちら</ResetPw>
                     </LoginBg>
-                </BackDiv>
+                </Container>
             </>
         );
     }
@@ -157,21 +166,13 @@ function WebLogin() {
 
 export default WebLogin;
 
-const BackDiv = styled.div`
-    display: flex;
-    align-content: center;
-    justify-content: center;
-
-`
 
 const LoginBg = styled.div`
     display: flex;
     flex-direction: column;
     width: 30%;
-    height: 650px;
-    margin-left:auto;
-    margin-right:auto;
-    margin-top:5%;
+    height: 700px;
+    margin:5% auto 0 auto;
     border: 2px solid #000;
     border-radius: 25px;
     background-color: #fff;
@@ -182,57 +183,18 @@ const InputArea = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
-    width: 65%;
+    width: 85%;
+    height: 70px;
     margin: 5% auto;
     letter-spacing: 5px;
-`;
-
-const InputName = styled.label`
-    color: #000;
-    font-size: 18px;
-`;
-
-const ErrInputName = styled.label`
-    color: red;
-    font-size: 18px;
-`;
-
-const InputBar = styled.input`
-    background-color: #fff;
-    border: 1px solid #000;
-    border-radius: 10px;
-    color: #000;
-    padding-left: 3%;
-    font-size: 14px;
-    height: 50px;
-    :hover {
-        background-color: hsl(0 0% 85%);
-    }
-`;
-const ErrInputBar = styled.input`
-    background-color: #fff;
-    border: 1px solid red;
-    border-radius: 10px;
-    color: #000;
-    padding-left: 3%;
-    font-size: 14px;
-    height: 50px;
-    :hover {
-        background-color: hsl(0 0% 85%);
-    }
 `;
 
 const SubmitBtn = styled.button`
     border: 1px solid #000;
-    border-radius: 7px;
-    background-color: transparent;
     color: #000;
-    font-size: 14px;
-    letter-spacing: 5px;
+    margin: 0 auto;
     display: flex;
-    margin: 5% auto;
-    padding: 1.5% 3.5%;
-    text-transform: uppercase;
+    ${SubmitBtnPattern}
 `;
 
 const ResetPw = styled.button`
@@ -240,14 +202,14 @@ const ResetPw = styled.button`
     background-color: transparent;
     color: #000;
     font-size: 12px;
-    margin-top: 5%;
+    margin-top: 15%;
     letter-spacing: 0.5em;
     text-transform: uppercase;
 `;
 const ResetPwMsg = styled.p`
     color: #000;
     font-size:25px;
-    margin: 15% 3%;
+    margin: 20% 3%;
     letter-spacing: 1.5px;
     text-align: center;
     text-transform: uppercase;
