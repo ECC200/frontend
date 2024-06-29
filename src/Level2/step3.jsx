@@ -9,7 +9,6 @@ import "swiper/css/pagination";
 
 function Step3() {
     const navigate = useNavigate();
-
     const id = "1A2B";
     return (
         <>
@@ -127,7 +126,6 @@ function Step3() {
                                 </Label>
                             </Field>
                         </SwiperSlide>
-
                         {/* Page three */}
                         <SwiperSlide>
                             <Title>倒れた履歴</Title>
