@@ -2685,6 +2685,11 @@ utils-merge@1.0.1:
   optionalDependencies:
     fsevents "~2.3.3"
 
+wanakana@^5.3.1:
+  version "5.3.1"
+  resolved "https://registry.npmjs.org/wanakana/-/wanakana-5.3.1.tgz"
+  integrity sha512-OSDqupzTlzl2LGyqTdhcXcl6ezMiFhcUwLBP8YKaBIbMYW1wAwDvupw2T9G9oVaKT9RmaSpyTXjxddFPUcFFIw==
+
 which-boxed-primitive@^1.0.2:
   version "1.0.2"
   resolved "https://registry.npmjs.org/which-boxed-primitive/-/which-boxed-primitive-1.0.2.tgz"

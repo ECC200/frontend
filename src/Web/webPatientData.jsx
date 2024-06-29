@@ -440,7 +440,7 @@ const SubmitBtn = styled.button`
       padding: 10px 20px;
       text-transform: uppercase;
       cursor: pointer;
-      `;
+    `;
 
 const PageTitle = styled.h1`
       text-align: center;

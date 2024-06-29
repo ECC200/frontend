@@ -2,31 +2,58 @@ import { useNavigate } from "react-router-dom";
 import { Pagination } from "swiper/modules";
 import { Global, css } from '@emotion/react'
 import { Swiper, SwiperSlide } from "swiper/react";
-import Logofunc from "../LogoSetup";
+import Logo from "../LogoSetup";
 import styled from "@emotion/styled";
 import "swiper/css";
 import "swiper/css/pagination";
+
+import {
+    // Container
+    Container,
+    // Header
+    Header,
+    // Number
+    NumberSet, NumberItem, NumberWord,
+    // Button
+    UpperRightBtn,
+
+} from '../EmotionForMoblie';
 
 function Step3() {
     const navigate = useNavigate();
 
     const id = "1A2B";
+
+    const patientData = {
+        PersonImg: '',
+        Fullname: '岸本 たく',
+        Birthday: '2003-08-30',
+        DisabilityType: '障害種別',
+        DisabilityLevel: '障がい者等級',
+        Hospital: 'XX病院',
+        Doctor: 'XX医',
+        PersonContact: '080-3860-1577',
+        EmergencyContact: '0120-333-906',
+        Address: '大阪府吹田市春日4-7-1-310',
+        Medicine: 'デパケン',
+        DoctorMessage: 'がんばってねー'
+    };
+
     return (
         <>
             <Global
                 styles={css`
                     body{
-                        background-color: ${bgColor};
+                        background-color: green;
                     }
                 `} />
             <Container>
                 <Header>
-                    <LogoutButton onClick={() => navigate("/step2")}>退出</LogoutButton>
-                    <Logofunc />
-
+                    <UpperRightBtn onClick={() => navigate("/step2")}>退出</UpperRightBtn>
+                    <Logo color='#fff' />
                     <NumberSet>
                         <NumberItem>患者番号:</NumberItem>
-                        <Number>{id}</Number>
+                        <NumberWord>{id}</NumberWord>
                     </NumberSet>
                 </Header>
 
@@ -48,7 +75,7 @@ function Step3() {
                                 </Label>
                                 <Label>
                                     <Furigana> きしもと  たく</Furigana>
-                                    岸本 大空
+                                    {patientData.Fullname}
                                 </Label>
                             </Field>
                             {/* 生年月日 */}
@@ -101,7 +128,7 @@ function Step3() {
                                 </Label>
                                 <Label>
                                     <Furigana> いーしーしーこんぴゅーた</Furigana>
-                                    ECCコンピュータ
+                                    {patientData.Hospital}
                                 </Label>
                             </Field>
                             {/* 医者 */}
@@ -112,7 +139,7 @@ function Step3() {
                                 </Label>
                                 <Label>
                                     <Furigana>ははおや</Furigana>
-                                    母親
+                                    {patientData.Doctor}
                                 </Label>
                             </Field>
                             {/* 何科 */}
@@ -137,15 +164,14 @@ function Step3() {
                                     処方状況
                                 </Label>
                             </CenteredField>
-                            <Value>●123123123</Value>
+                            <Value>{patientData.Medicine}</Value>
                             <CenteredField>
                                 <Label>
                                     <Furigana>いりょうめも</Furigana>
                                     医療メモ
                                 </Label>
                             </CenteredField>
-                            <Value>●看護師にナンパしない。今度は警察</Value>
-                            <Value>●看護師にナンパしない。今度は警察</Value>
+                            <Value>{patientData.DoctorMessage}</Value>
                         </SwiperSlide>
                     </Swiper>
                 </SwiperContainer>
@@ -157,67 +183,20 @@ function Step3() {
 export default Step3;
 
 
-const bgColor = 'green'
-const LogoutButton = styled.button`
-  background-color: green;
-  border: 1px solid white;
-  border-radius:5px;
-  color: white;
-  position: absolute;
-  padding: 10px 20px;
-  font-size: 16px;
-  cursor: pointer;
-    top: 20px;
-    right: 20px;
-    font-size: 14px;
-    padding: 8px 16px;
-`;
-const Container = styled.div`
-  background-color: green;
-  padding: 3vh;
-  color: white;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-`;
-const Header = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-const NumberSet = styled.div`
-  text-align: center;
-  margin: 1vh 0;
-  padding: 0;
-`
-const NumberItem = styled.p`
-    margin-bottom: -10px;
-    padding: 0;
-    font-size: 1em;
-`;
-const Number = styled.p`
-  margin: -2vh 0 0 0;
-  padding: 0;
-  font-size: 8vh;
-`;
-
 const Title = styled.div`
   color:#000;
   font-size: 2.5vh;
   font-weight: bold;
   margin-bottom:1%;
   text-align: center;
-
 `;
 
 const SwiperContainer = styled.div`
   background-color: white;
-  width: 100%;
-  max-width: 400px; 
-  height: 100%;
+  width: 85%;
+  height: 150%;
   flex: 1;
-  padding: 3vh;
+  padding: 2vh;
   border-radius: 10px;
   overflow: hidden;
   box-sizing: border-box;
@@ -239,7 +218,7 @@ const CenteredField = styled(Field)`
 `;
 
 const Label = styled.div`
-  font-size: 2vh;
+  font-size: 2.5vh;
   color: black;
 `;
 
@@ -252,6 +231,6 @@ const Value = styled.div`
 `;
 
 const Furigana = styled.div`
-  font-size: 1vh;
+  font-size: 1.5vh;
   color: gray;
 `;
