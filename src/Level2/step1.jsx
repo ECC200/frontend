@@ -15,6 +15,7 @@ function Step1() {
   const navigate = useNavigate();
   const [staffId, setStaffId] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState(false);
 
   const handleLogin = async () => {
     try {
@@ -31,14 +32,14 @@ function Step1() {
         if (data.success) {
           navigate("/step2/");
         } else {
-          alert("ログインに失敗しました: " + data.message);
+          setError(true);
         }
       } else {
-        alert("サーバーエラーが発生しました");
+        setError(true);
       }
     } catch (error) {
       console.error("Error during login:", error);
-      alert("ログイン中にエラーが発生しました");
+      setError(true);
     }
   };
 
@@ -48,12 +49,30 @@ function Step1() {
       <InputArea>
         <InputSet>
           <InputLabelBlack htmlFor="staffId">スタッフ番号:</InputLabelBlack>
-          <InputBar type="text" name="staffId" value={staffId} onChange={(e) => setStaffId(e.target.value)} />
+          <InputBar
+            type="text"
+            name="staffId"
+            value={staffId}
+            onChange={(e) => {
+              setStaffId(e.target.value);
+              setError(false); // 入力が変更された場合にエラー状態をリセットする
+            }}
+          />
         </InputSet>
         <InputSet>
           <InputLabelBlack htmlFor="password">パスワード:</InputLabelBlack>
-          <InputBar type="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+          <InputBar
+            type="password"
+            name="password"
+            value={password}
+            onChange={(e) => {
+              setPassword(e.target.value);
+              setError(false); // 入力が変更された場合にエラー状態をリセットする
+            }}
+            css={error ? errorStyle : null}
+          />
         </InputSet>
+        {error && <ErrorMessage>IDかパスワードどちらかまちがえています。もう一度入力してください。</ErrorMessage>}
       </InputArea>
       <SubmitBtn onClick={handleLogin}>ログイン</SubmitBtn>
     </Container>
@@ -73,4 +92,14 @@ const SubmitBtn = styled.button`
   border: ${BtnBorder} solid #000;
   color: #000;
   ${SubmitBtnPattern}
+`;
+
+const errorStyle = styled.input`
+  border-color: red;
+`;
+
+const ErrorMessage = styled.div`
+  color: red;
+  margin-top: 8px;
+  text-align: center;
 `;
