@@ -101,6 +101,7 @@ const CopieBT = styled.img`
   margin-bottom: 20px;
   width: 20px;
   height: 20px;
+  filter: brightness(0) invert(1);
 `;
 
 const SetNumber = styled.div`
