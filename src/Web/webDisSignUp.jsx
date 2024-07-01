@@ -1,74 +1,37 @@
 import { useState } from "react";
-import { css } from '@emotion/css'
-import { useNavigate } from 'react-router-dom';
-import Axios from 'axios';
+import { css } from "@emotion/css";
+import { useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
-import CircularProgress from '@mui/material/CircularProgress';
-import Box from '@mui/material/Box';
-import Dialog from '@mui/material/Dialog';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
-import WebHeader from './webHeader.jsx';
-import BackButtonImage from '../assets/back.png';
-import ProfilePic from '../assets/ProfilePic.svg'
+import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
+import Dialog from "@mui/material/Dialog";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import WebHeader from "./webHeader.jsx";
+import BackButtonImage from "../assets/back.png";
+import ProfilePic from "../assets/ProfilePic.svg";
 import {
-  // Header
-  Header, PageTitle,
-  // Button
+  Header,
+  PageTitle,
   SubmitBtnPattern,
-  // input
-  InputLabelBlack, InputBar, ErrInputBar, ErrInputLabel
-} from './EmotionForWeb.jsx'
+  InputLabelBlack,
+  InputBar,
+  ErrInputBar,
+  ErrInputLabel,
+} from "./EmotionForWeb.jsx";
 
 function DisSignUpTop() {
   const navigate = useNavigate();
-
-  // Basic
   const [open, setOpen] = useState(false);
   const [sendBtn, setSendBtn] = useState(false);
-
-  // Change Image
   const [selectedFile, setSelectedFile] = useState(null);
   const [preview, setPreview] = useState(ProfilePic);
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      setSelectedFile(file);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreview(reader.result);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  // 生年月日で年齢を計算 
-  const years = Array.from({ length: 100 }, (_, i) => new Date().getFullYear() - i);
-  const months = Array.from({ length: 12 }, (_, i) => i + 1);
-  const days = Array.from({ length: 31 }, (_, i) => i + 1);
   const [dob, setDob] = useState({ year: "", month: "", day: "" });
   const [age, setAge] = useState("");
   const [haveError, setHaveError] = useState(false);
-  const handleDobChange = (field, value) => {
-    const newDob = { ...dob, [field]: value };
-    setDob(newDob);
-    if (newDob.year && newDob.month && newDob.day) {
-      const birthDate = new Date(newDob.year, newDob.month - 1, newDob.day);
-      const ageDifMs = Date.now() - birthDate.getTime();
-      const ageDate = new Date(ageDifMs);
-      setAge(Math.abs(ageDate.getUTCFullYear() - 1970));
-      setAllData((prevData) => ({
-        ...prevData,
-        birth: birthDate.toISOString().split('T')[0],
-        age: Math.abs(ageDate.getUTCFullYear() - 1970)
-      }));
-    }
-  };
-
-  // データ => allData
   const [emergencyContactArray, setEmergencyContactArray] = useState([
     { name: "", phone: "" },
-    { name: "", phone: "" }
+    { name: "", phone: "" },
   ]);
   const [allData, setAllData] = useState({
     photo: selectedFile,
@@ -84,10 +47,9 @@ function DisSignUpTop() {
     disability_grade: "",
     emergency_contacts: [
       { name: "", phone: "" },
-      { name: "", phone: "" }
-    ]
+      { name: "", phone: "" },
+    ],
   });
-  // Check data
   const [inputErrors, setInputErrors] = useState({
     user_name: true,
     address: true,
@@ -98,103 +60,143 @@ function DisSignUpTop() {
     chronicDisease: true,
     disability_grade: true,
     emergency_contacts: [
-      { name: true, phone: true }
-    ]
+      { name: true, phone: true },
+      { name: true, phone: true },
+    ],
   });
+
+  const years = Array.from({ length: 100 }, (_, i) => new Date().getFullYear() - i);
+  const months = Array.from({ length: 12 }, (_, i) => i + 1);
+  const days = Array.from({ length: 31 }, (_, i) => i + 1);
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setSelectedFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleDobChange = (field, value) => {
+    const newDob = { ...dob, [field]: value };
+    setDob(newDob);
+    if (newDob.year && newDob.month && newDob.day) {
+      const birthDate = new Date(newDob.year, newDob.month - 1, newDob.day);
+      const ageDifMs = Date.now() - birthDate.getTime();
+      const ageDate = new Date(ageDifMs);
+      const calculatedAge = Math.abs(ageDate.getUTCFullYear() - 1970);
+      setAge(calculatedAge);
+      setAllData((prevData) => ({
+        ...prevData,
+        birth_date: birthDate.toISOString().split("T")[0],
+        age: calculatedAge,
+      }));
+    }
+  };
 
   const handleInputChange = (field, value) => {
     setAllData((prevData) => ({
       ...prevData,
-      [field]: value
+      [field]: value,
     }));
   };
 
-
-  // 第一ボタン
   const handleConfirm = () => {
-    const newInputErrors = { ...inputErrors };
-    handleInputChange("birth_date", `${dob.year}-${dob.month}-${dob.day}`);
-    for (const key in allData) {
-      switch (key) {
-        case "photo":
-          break;
-        case "emergency_contacts":
-          break;
-        case "birth_date":
-          if (allData[key] === "--") {
-            newInputErrors[key] = false;
-          }
-          break;
-        default:
-          if (allData[key] === "" || allData[key] === 0) {
-            newInputErrors[key] = false;
-          }
+    const newInputErrors = {};
+    for (const key in inputErrors) {
+      if (key === "emergency_contacts") {
+        newInputErrors[key] = inputErrors[key].map(() => ({ name: true, phone: true }));
+      } else {
+        newInputErrors[key] = true;
       }
-      setHaveError(true)
     }
-    handleInputChange("emergency_contacts", emergencyContactArray);
+
+    for (const key in allData) {
+      if (key === "photo" || key === "emergency_contacts") continue;
+      if (allData[key] === "" || allData[key] === 0) {
+        newInputErrors[key] = false;
+      }
+    }
+
+    if (!dob.year || !dob.month || !dob.day) {
+      newInputErrors.birth_date = false;
+    }
+
+    if (!emergencyContactArray[0].name || !emergencyContactArray[0].phone) {
+      newInputErrors.emergency_contacts[0] = { name: false, phone: false };
+    }
+
     setInputErrors(newInputErrors);
+
+    const errorFound = Object.values(newInputErrors).some(
+      (value) =>
+        value === false ||
+        (typeof value === "object" && Object.values(value).some((v) => v === false))
+    );
+
+    setHaveError(errorFound);
+
+    if (!errorFound) {
+      setOpen(true);
+    }
   };
 
-  // 第二ボタン
+  const handleCloseBox = () => {
+    setOpen(false);
+    setHaveError(false);
+  };
+
   const handleSendData = async () => {
-    // iconの起動
-    setSendBtn(true)
-    try {
-      const response = await Axios.post('localhost:8080', {
-      });
-      switch (response.statusCode) {
-        default:
-      }
-    } catch (error) {
-      console.error(error);
-    }
+    setSendBtn(true);
+    // TODO: ApI
   };
 
   return (
     <>
-      {haveError ?? (
-        <Dialog open={haveError} onClose={() => setHaveError(false)} >
+      {haveError && (
+        <Dialog open={haveError}>
           <DialogTitle className={css`text-align: center;`}>メッセージ</DialogTitle>
-          <DialogContent className={css`width:600px;`} >
-            <h3>Fuck</h3>
+          <DialogContent className={css`width:600px;`}>
+            <h3 className={css`text-align: center;`}>必要な情報を入力してください</h3>
+            <ConfirmBtn onClick={handleCloseBox} className={css`text-align: center;`}>OK</ConfirmBtn>
           </DialogContent>
-        </Dialog >
+        </Dialog>
       )}
 
-      {/* データを確認 */}
-      {
-        sendBtn ? (
-          <Dialog open={open} onClose={() => setOpen(false)} >
-            <DialogTitle className={css`text-align: center;`}>個人情報を確認してください</DialogTitle>
-            <DialogContent className={css`width:600px;`}>
-              <Confirm>名前：{allData.user_name}</Confirm>
-              <Confirm>生年月日：{allData.birth_date}</Confirm>
-              <Confirm>年齢：{allData.age}</Confirm>
-              <Confirm>住所：{allData.address}</Confirm>
-              <Confirm>電話番号：{allData.contact}</Confirm>
-              <Confirm>かかりつけの病院：{allData.hospital_destination}</Confirm>
-              <Confirm>主治医：{allData.primary_care_doctor}</Confirm>
-              <Confirm>何科：{allData.specialty}</Confirm>
-              <Confirm>持病名：{allData.chronicDisease}</Confirm>
-              <Confirm>障がい者等級：{allData.disability_grade}</Confirm>
-              <Confirm className={css`text-align: center;`}>緊急連絡先</Confirm>
-              <Confirm>緊急連絡1：{allData.emergency_contacts[0].name} - {allData.emergency_contacts[0].phone}</Confirm>
-              <Confirm>緊急連絡2：{allData.emergency_contacts[1].name} - {allData.emergency_contacts[1].phone}</Confirm>
-            </DialogContent>
-            <ConfirmBtn onClick={handleSendData}>確認</ConfirmBtn>
-          </Dialog >
-        ) : (
-          <Dialog open={open} onClose={() => setOpen(false)} >
-            <DialogTitle className={css`text-align: center;`}>新規登録</DialogTitle>
-            <DialogContent className={css`width:600px;`} >
-              <Box className={css`text-align: center; margin:10px; `}>
-                <CircularProgress color="inherit" />
-              </Box>
-            </DialogContent>
-          </Dialog >
-        )
-      }
+      {!sendBtn ? (
+        <Dialog open={open} onClose={() => setOpen(false)}>
+          <DialogTitle className={css`text-align: center;`}>個人情報を確認してください</DialogTitle>
+          <DialogContent className={css`width:600px;`}>
+            <Confirm>名前：{allData.user_name}</Confirm>
+            <Confirm>生年月日：{allData.birth_date}</Confirm>
+            <Confirm>年齢：{allData.age}</Confirm>
+            <Confirm>住所：{allData.address}</Confirm>
+            <Confirm>本人連絡先：{allData.contact}</Confirm>
+            <Confirm>かかりつけの病院：{allData.hospital_destination}</Confirm>
+            <Confirm>主治医：{allData.primary_care_doctor}</Confirm>
+            <Confirm>何科：{allData.specialty}</Confirm>
+            <Confirm>持病名：{allData.chronicDisease}</Confirm>
+            <Confirm>障がい者等級：{allData.disability_grade}</Confirm>
+            <Confirm className={css`text-align: center;`}>緊急連絡先</Confirm>
+            <Confirm>緊急連絡1：{emergencyContactArray[0].name} - {emergencyContactArray[0].phone}</Confirm>
+            <Confirm>緊急連絡2：{emergencyContactArray[1].name} - {emergencyContactArray[1].phone}</Confirm>
+          </DialogContent>
+          <ConfirmBtn onClick={handleSendData}>確認</ConfirmBtn>
+        </Dialog>
+      ) : (
+        <Dialog open={open} onClose={() => setOpen(false)}>
+          <DialogTitle className={css`text-align: center;`}>新規登録</DialogTitle>
+          <DialogContent className={css`width:600px;`}>
+            <Box className={css`text-align: center; margin:10px;`}>
+              <CircularProgress color="inherit" />
+            </Box>
+          </DialogContent>
+        </Dialog>
+      )}
 
       <Header>
         <BackButtonStyled src={BackButtonImage} alt="戻る" onClick={() => navigate(-1)} />

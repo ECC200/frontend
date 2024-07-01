@@ -8,7 +8,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import PlusIconImage from '../assets/plus_icon.png';
-import PersonImg from '../assets/taku.jpeg';
+import personImg from '../assets/taku.jpeg';
 import EditImage from '../assets/edit.png';
 import BackButtonImage from '../assets/back.png';
 import SaveButtonImage from '../assets/save.png';
@@ -31,22 +31,24 @@ function WebpatientData() {
     const [newContent, setNewContent] = useState({ date: '', content: '' });
     const [editContentIndex, setEditContentIndex] = useState(-1);
     const [saveMsg, setSaveMsg] = useState('本当に保存しますか？');
+    const [saveMsgTitle, setSaveMsgTitle] = useState('注意');
     const [open, setOpen] = useState(false);
     const [load, setLoad] = useState(false);
     const [sended, setSended] = useState(false);
 
     const [patientData, setPatientData] = useState({
-        PersonImg: '',
-        Fullname: '岸本 たく',
-        Age: '20',
-        Birthday: '2003-08-30',
-        DisabilityType: '障害種別',
-        DisabilityLevel: '障がい者等級',
-        Hospital: 'かかりつけ病院',
-        Doctor: '担当医',
-        PersonContact: '080-3860-1577',
-        EmergencyContact: '0120-333-906',
-        Address: '大阪府吹田市春日4-7-1-310',
+        photo: '',
+        user_name: '岸本 たく',
+        age: '20',
+        birth_date: '2003-08-30',
+        specialty: '何科',
+        disability_grade: '障がい者等級',
+        hospital_destination: 'かかりつけ病院',
+        chronicDisease: '持病名',
+        primary_care_doctor: '担当医',
+        contact: '080-3860-1577',
+        emergency_contacts: '0120-333-906',
+        address: '大阪府吹田市春日4-7-1-310',
         Medicine: 'デパケン',
         DoctorMessage: 'がんばってねー'
     });
@@ -75,27 +77,30 @@ function WebpatientData() {
     };
 
     const handleSave = () => {
-        setLoad(true)
-        const patientDataToSave = { ...patientData, contentList };
-        localStorage.setItem('patientData', JSON.stringify(patientDataToSave));
+        setLoad(true);
 
+        // ApI
 
-        setSaveMsg('データが保存されました');
-        setSended(true);
-        setIsEditing(false);
+        setTimeout(() => {
+            setSended(true);
+            setSaveMsgTitle('成功');
+            setSaveMsg('データが保存されました');
+            setIsEditing(false);
 
-        // 失敗
-        setSaveMsg('保存に失敗しました');
-        setSended(false);
-        // さいしょ
+            // Error
+            // setSaveMsg('保存に失敗しました');
+            // setSended(false);
+        }, 2000);
+
         setSaveMsg('本当に保存しますか？');
+        setSaveMsgTitle('注意');
     };
 
     return (
         <>
             {load ? (
                 <Dialog open={open} onClose={() => setOpen(false)}>
-                    <DialogTitle className={css`text-align: center;`}>注意</DialogTitle>
+                    <DialogTitle className={css`text-align: center;`}>{saveMsgTitle}</DialogTitle>
                     <DialogContent className={css`width:600px;text-align: center;`}>
                         {!sended ? (
                             <Box className={css`text-align: center; margin:10px; `}>
@@ -111,7 +116,7 @@ function WebpatientData() {
                 </Dialog >
             ) : (
                 <Dialog open={open} onClose={() => setOpen(false)}>
-                    <DialogTitle className={css`text-align: center;`}>注意</DialogTitle>
+                    <DialogTitle className={css`text-align: center;`}>{saveMsgTitle}</DialogTitle>
                     <DialogContent className={css`width:600px;text-align: center;`}>
                         <h2>{saveMsg}</h2>
                         <SubmitBtn onClick={handleSave}>OK</SubmitBtn>
@@ -143,47 +148,51 @@ function WebpatientData() {
             <ContainerStyle>
                 {/* Left */}
                 <LeftStyle>
-                    <Person_img src={PersonImg} alt="患者画像" />
+                    <Person_img src={personImg} alt="患者画像" />
                     <InfoLeftData>
                         <tr>
                             <th>名前 :</th>
-                            <td>{patientData.Fullname}</td>
+                            <td>{patientData.user_name}</td>
                         </tr>
                         <tr>
                             <th>年齢 :</th>
-                            <td>{patientData.Age}</td>
+                            <td>{patientData.age}</td>
                         </tr>
                         <tr>
                             <th>生年月日 :</th>
-                            <td>{patientData.Birthday}</td>
+                            <td>{patientData.birth_date}</td>
                         </tr>
                         <tr>
-                            <th>障がい種別 :</th>
-                            <td>{patientData.DisabilityType}</td>
+                            <th>何科 :</th>
+                            <td>{patientData.specialty}</td>
+                        </tr>
+                        <tr>
+                            <th>持病名 :</th>
+                            <td>{patientData.chronicDisease}</td>
                         </tr>
                         <tr>
                             <th>障がい者等級 :</th>
-                            <td>{patientData.DisabilityLevel}</td>
+                            <td>{patientData.disability_grade}</td>
                         </tr>
                         <tr>
-                            <th>かかりつけ医 :</th>
-                            <td>{patientData.Doctor}</td>
+                            <th>主治医 :</th>
+                            <td>{patientData.primary_care_doctor}</td>
                         </tr>
                         <tr>
                             <th>かかりつけ病院 :</th>
-                            <td>{patientData.Hospital}</td>
+                            <td>{patientData.hospital_destination}</td>
                         </tr>
                         <tr>
                             <th>本人連絡先 :</th>
-                            <td>{patientData.PersonContact}</td>
+                            <td>{patientData.contact}</td>
                         </tr>
                         <tr>
                             <th>緊急連絡先 :</th>
-                            <td>{patientData.EmergencyContact}</td>
+                            <td>{patientData.emergency_contacts}</td>
                         </tr>
                         <tr>
                             <th>住所 :</th>
-                            <td>{patientData.Address}</td>
+                            <td>{patientData.address}</td>
                         </tr>
                     </InfoLeftData>
                 </LeftStyle>

@@ -66,18 +66,18 @@ function Step3() {
                             {/* 名前 */}
                             <Field>
                                 <Label>
-                                    <Furigana>なまえ</Furigana>
+                                    {/* <Furigana>なまえ</Furigana> */}
                                     名前
                                 </Label>
                                 <Label>
-                                    <Furigana> きしもと  たく</Furigana>
+                                    {/* <Furigana> きしもと  たく</Furigana> */}
                                     {patientData.Fullname}
                                 </Label>
                             </Field>
                             {/* 生年月日 */}
                             <Field>
                                 <Label>
-                                    <Furigana>せいねんがっぴ</Furigana>
+                                    {/* <Furigana>せいねんがっぴ</Furigana> */}
                                     生年月日
                                 </Label>
                                 <Value>2024/05/16</Value>
@@ -85,22 +85,22 @@ function Step3() {
                             {/* 持病 */}
                             <Field>
                                 <Label>
-                                    <Furigana>じびょう</Furigana>
+                                    {/* <Furigana>じびょう</Furigana> */}
                                     持病
                                 </Label>
                                 <Label>
-                                    <Furigana>びんぼう</Furigana>
+                                    {/* <Furigana>びんぼう</Furigana> */}
                                     貧乏
                                 </Label>
                             </Field>
                             {/* 緊急連絡人との関係 */}
                             <Field>
                                 <Label>
-                                    <Furigana> きんきゅうれんらくにんとのかんけい</Furigana>
+                                    {/* <Furigana> きんきゅうれんらくにんとのかんけい</Furigana> */}
                                     緊急連絡人との関係
                                 </Label>
                                 <Label>
-                                    <Furigana>ははおや</Furigana>
+                                    {/* <Furigana>ははおや</Furigana> */}
                                     母親
                                 </Label>
                             </Field>
@@ -119,33 +119,33 @@ function Step3() {
                             {/* 病院 */}
                             <Field>
                                 <Label>
-                                    <Furigana>びょういん</Furigana>
+                                    {/* <Furigana>びょういん</Furigana> */}
                                     病院
                                 </Label>
                                 <Label>
-                                    <Furigana> いーしーしーこんぴゅーた</Furigana>
+                                    {/* <Furigana> いーしーしーこんぴゅーた</Furigana> */}
                                     {patientData.Hospital}
                                 </Label>
                             </Field>
                             {/* 医者 */}
                             <Field>
                                 <Label>
-                                    <Furigana>いしゃ</Furigana>
+                                    {/* <Furigana>いしゃ</Furigana> */}
                                     医者
                                 </Label>
                                 <Label>
-                                    <Furigana>ははおや</Furigana>
+                                    {/* <Furigana>ははおや</Furigana> */}
                                     {patientData.Doctor}
                                 </Label>
                             </Field>
                             {/* 何科 */}
                             <Field>
                                 <Label>
-                                    <Furigana>なにか</Furigana>
+                                    {/* <Furigana>なにか</Furigana> */}
                                     何科
                                 </Label>
                                 <Label>
-                                    <Furigana>びんぼう</Furigana>
+                                    {/* <Furigana>びんぼう</Furigana> */}
                                     貧乏
                                 </Label>
                             </Field>
@@ -156,14 +156,14 @@ function Step3() {
                             <Title>倒れた履歴</Title>
                             <CenteredField>
                                 <Label>
-                                    <Furigana>しょほうじょうきょう</Furigana>
+                                    {/* <Furigana>しょほうじょうきょう</Furigana> */}
                                     処方状況
                                 </Label>
                             </CenteredField>
                             <Value>{patientData.Medicine}</Value>
                             <CenteredField>
                                 <Label>
-                                    <Furigana>いりょうめも</Furigana>
+                                    {/* <Furigana>いりょうめも</Furigana> */}
                                     医療メモ
                                 </Label>
                             </CenteredField>
@@ -226,7 +226,7 @@ const Value = styled.div`
   padding: 0.5vh 0;
 `;
 
-const Furigana = styled.div`
-  font-size: 1.5vh;
-  color: gray;
-`;
+// const Furigana = styled.div`
+//   font-size: 1.5vh;
+//   color: gray;
+// `;
