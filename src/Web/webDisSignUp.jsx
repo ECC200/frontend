@@ -134,7 +134,6 @@ function DisSignUpTop() {
     }
     handleInputChange("emergency_contacts", emergencyContactArray);
     setInputErrors(newInputErrors);
-    // setOpen(true);
   };
 
   // 第二ボタン
