@@ -66,7 +66,7 @@ function WebStaffData() {
         try {
             const response = await axios.post('http://localhost:8080/checkDisabilityID', { disabilityId: searchbar });
             if (response.data.success) {
-                navigate('/WebpatientData', { state: { userId: searchbar } });
+                navigate(`/WebPatientData/${searchbar}`);
             } else {
                 setSearchRsp(['No matching records found']);
             }
