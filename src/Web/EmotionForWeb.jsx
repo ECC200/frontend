@@ -52,7 +52,7 @@ color: #fff;
 font-size: 18px;
 `;
 export const ErrInputLabel = styled.label`
-    color: red;
+    color: #ff1515;
     font-size: 18px;
 `;
 
@@ -88,10 +88,18 @@ margin: 5% 0;
 `
 
 export const Header = styled.header`
-    display: flex;
-    align-items: center;
-    justify-content:space-between;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 auto;
+  background-color:gray;
+`;
+export const PageTitle = styled.h1`
+      text-align: center;
+      margin:35px 0;
+      font-size:40px;
 `
+
 
 // Other
 export const Container = styled.div`

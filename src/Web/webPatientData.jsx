@@ -14,6 +14,13 @@ import BackButtonImage from '../assets/back.png';
 import SaveButtonImage from '../assets/save.png';
 import ReturnButtonImage from '../assets/x.png';
 import WebHeader from './webHeader.jsx';
+import {
+    // Header
+    Header, PageTitle,
+
+    // Button
+    SubmitBtnPattern,
+} from './EmotionForWeb.jsx'
 
 const lineSize = '2.5px';
 
@@ -273,13 +280,6 @@ function WebpatientData() {
 
 export default WebpatientData;
 
-const Header = styled.header`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 0 auto;
-  background-color:gray;
-`;
 
 const BackButtonStyled = styled.img`
   position: absolute;
@@ -295,7 +295,7 @@ const ContainerStyle = styled.div`
   width: 85%;
   border: ${lineSize} solid #000;
   border-radius: 15px;
-  margin: 20px auto;
+  margin: 0 auto;
 `;
 
 const LeftStyle = styled.div`
@@ -430,20 +430,7 @@ const EditBtn = styled.div`
 
 const SubmitBtn = styled.button`
       border: 1px solid #000;
-      background-color: transparent;
-      border-radius: 20px;
       color: #000;
-      font-size: 100%;
-      letter-spacing: 5px;
-      margin: 0 auto;
-      margin-top: 5%;
-      padding: 10px 20px;
-      text-transform: uppercase;
-      cursor: pointer;
+      margin: 5% auto 0 auto;
+      ${SubmitBtnPattern}
     `;
-
-const PageTitle = styled.h1`
-      text-align: center;
-      margin:25px 0 0 0;
-      font-size:40px;
-`
