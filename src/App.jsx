@@ -29,7 +29,7 @@ function App() {
           <Route path="/step3/:disabilityId" element={<Step3 />} />
           <Route path="/level1" element={<Level1 />} />
           <Route path="/WebLogin" element={<WebLogin />} />
-          <Route path="/WebStaffData" element={<WebStaffData />} />
+          <Route path="/WebStaffData/:staffId" element={<WebStaffData />} />
           <Route path="/WebDisSignUp" element={<DisSignUpTop />} />
           <Route path="/webStaffReLogin" element={<WebStaffReLogin />} />
           <Route path="/WebPatientData/:userId" element={<WebPatientData />} />
