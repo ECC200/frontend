@@ -60,6 +60,7 @@ function WebpatientData() {
                 try {
                     const response = await axios.get(`http://localhost:8080/users/${userId}`);
                     const data = response.data;
+                    console.log(data); // デバッグ用
                     setPatientData({
                         PersonImg: data.photo || '',
                         Fullname: data.user_name || '',

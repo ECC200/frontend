@@ -1,24 +1,33 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
+import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
 import WebHeader from './webHeader.jsx';
 import styled from '@emotion/styled';
 import PersonImg from '../assets/taku.jpeg';
 
 function WebStaffData() {
-    const StaffID = '#';
+    const { staffId } = useParams();
     const navigate = useNavigate();
+    const [open, setOpen] = useState(false);
     const [logout, setLogout] = useState(false);
     const [isInactive, setIsInactive] = useState(false);
     const timeoutRef = useRef(null);
     const [searchbar, setSearchbar] = useState('');
     const [searchRsp, setSearchRsp] = useState([]);
-
-    const StaffData = {
-        FullName: '#FullName#', Department: '#Department#', Position: '#Position#', DateOfJoining: '#DateOfJoining#',
-        StaffNO: '#StaffNO#', ManagementLevel: '#ManagementLevel#', WorkStatus: '#WorkStatus#', Superior: '#superior#',
-        Message: '#Message#'
-    };
+    const [staffData, setStaffData] = useState({
+        staff_name: "",
+        boss: "",
+        date: "2020/04/21",
+        department: "",
+        doctor_message: "",
+        password: "",
+        position: "",
+        staff_id: "",
+        work_status: ""
+    });
 
     const resetTimer = () => {
         setIsInactive(false);
@@ -44,9 +53,27 @@ function WebStaffData() {
         };
     }, []);
 
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get(`http://localhost:8080/staffs/${staffId}`);
+                if (response.status === 200) {
+                    setStaffData(response.data);
+                } else {
+                    console.error("Failed to fetch staff data");
+                }
+            } catch (error) {
+                console.error("Error fetching staff data:", error);
+            }
+        };
+        fetchData();
+    }, [staffId]);
+
     const handleReLogin = () => {
-        const dataForReLogin = { FullName: '#FullName#', StaffID: StaffID };
-        navigate("/webStaffReLogin/", { state: dataForReLogin });
+        if (staffData) {
+            const dataForReLogin = { FullName: staffData.FullName, StaffID: staffId };
+            navigate("/webStaffReLogin/", { state: dataForReLogin });
+        }
     };
 
     const handleLogout = () => {
@@ -62,73 +89,99 @@ function WebStaffData() {
         return () => clearInterval(timer);
     }, []);
 
-    const HandleSearch = useCallback(async () => {
+    const handleSearch = useCallback(async () => {
         try {
             const response = await axios.post('http://localhost:8080/checkDisabilityID', { disabilityId: searchbar });
             if (response.data.success) {
                 navigate(`/WebPatientData/${searchbar}`);
             } else {
                 setSearchRsp(['No matching records found']);
+                setOpen(true);
             }
         } catch (error) {
             console.error('Error searching disability ID:', error);
         }
     }, [navigate, searchbar]);
 
-    if (!isInactive) {
-        return (
-            <>
-                <Header>
-                    {time.getSeconds() > 9 ?
-                        (<ShowTime><h2>{time.getHours()}:{time.getMinutes()}:{time.getSeconds()}</h2></ShowTime>) :
-                        (<ShowTime><h2>{time.getHours()}:{time.getMinutes()}:0{time.getSeconds()}</h2></ShowTime>)
-                    }
-                    <WebHeader />
-                    <HeaderRigjht>
-                        <HeaderBtn onClick={() => navigate("/webDisSignUp/")}>障がい者新規登録</HeaderBtn>
-                        <HeaderBtn onClick={handleLogout}>ログアウト</HeaderBtn>
-                    </HeaderRigjht>
-                </Header>
-
-                <PageTitle>おはようございます</PageTitle>
-
-                <SearchBarArea>
-                    <h3>障がい者検索：</h3>
-                    <SearchBar type='text' id='searchbar' value={searchbar} onChange={(e) => setSearchbar(e.target.value)} />
-                    <SearchBarBtn type='submit' onClick={HandleSearch}>検索</SearchBarBtn>
-                </SearchBarArea>
-
-                <DataTable>
-                    <InfoLeftPart>
-                        <img src={PersonImg} alt="Icon" />
-                        <InfoLeftData>
-                            <InfoLeftDataItem>{StaffData.FullName}</InfoLeftDataItem>
-                            <InfoLeftDataItem>{StaffData.Department}</InfoLeftDataItem>
-                            <InfoLeftDataItem>{StaffData.Position}</InfoLeftDataItem>
-                            <InfoLeftDataItem>{StaffData.DateOfJoining}</InfoLeftDataItem>
-                        </InfoLeftData>
-                    </InfoLeftPart>
-
-                    <InfoRightPart>
-                        <InfoRightItem>スタッフID： {StaffData.StaffNO}</InfoRightItem>
-                        <InfoRightItem>権限： {StaffData.ManagementLevel}</InfoRightItem>
-                        <InfoRightItem>勤務状況： {StaffData.WorkStatus}</InfoRightItem>
-                        <InfoRightItem>上司： {StaffData.Superior}</InfoRightItem>
-                        <InfoRightMessageItem>メッセージ： </InfoRightMessageItem>
-                        <InfoRightMessage>{StaffData.Message}</InfoRightMessage>
-                    </InfoRightPart>
-                </DataTable>
-            </>
-        );
-    } else {
+    if (isInactive) {
         handleReLogin();
+        return null;
     }
+
+    return (
+        <>
+            <Dialog open={open} onClose={() => setOpen(false)}>
+                <DialogBoxArea>
+                    <DialogTitle>検索結果</DialogTitle>
+                    <DialogContent className='DialogContentStyle'>
+                        {searchRsp.map((repo, index) => (
+                            <div key={index}>
+                                <h4>{repo}</h4>
+                            </div>
+                        ))}
+                    </DialogContent>
+                </DialogBoxArea>
+            </Dialog >
+
+            <Dialog open={logout} onClose={() => setLogout(false)}>
+                <DialogBoxArea>
+                    <DialogTitle>ログアウト確認</DialogTitle>
+                    <DialogContent className='DialogContentStyle'>
+                        <h3>本当にログアウトをしますか？</h3>
+                        <SubmitBtn onClick={() => navigate("/WebLogin/")}>ログアウト</SubmitBtn>
+                    </DialogContent>
+                </DialogBoxArea>
+            </Dialog >
+
+            <Header>
+                {time.getSeconds() > 9 ?
+                    (<ShowTime><h2>{time.getHours()}:{time.getMinutes()}:{time.getSeconds()}</h2></ShowTime>) :
+                    (<ShowTime><h2>{time.getHours()}:{time.getMinutes()}:0{time.getSeconds()}</h2></ShowTime>)
+                }
+                <WebHeader />
+                <HeaderRigjht>
+                    <HeaderBtn onClick={() => navigate("/webDisSignUp/")}>障がい者新規登録</HeaderBtn>
+                    <HeaderBtn onClick={handleLogout}>ログアウト</HeaderBtn>
+                </HeaderRigjht>
+            </Header>
+
+            <PageTitle>おはようございます</PageTitle>
+
+            <SearchBarArea>
+                <h3>障がい者検索：</h3>
+                <SearchBar type='text' id='searchbar' value={searchbar} onChange={(e) => setSearchbar(e.target.value)} />
+                <SearchBarBtn type='submit' onClick={handleSearch}>検索</SearchBarBtn>
+            </SearchBarArea>
+
+            <DataTable>
+                <InfoLeftPart>
+                    <img src={PersonImg} alt="Icon" />
+                    <InfoLeftData>
+                        <InfoLeftDataItem>氏名: {staffData.staff_name}</InfoLeftDataItem>
+                        <InfoLeftDataItem>部署: {staffData.department}</InfoLeftDataItem>
+                        <InfoLeftDataItem>役職: {staffData.position}</InfoLeftDataItem>
+                        <InfoLeftDataItem>入社日: {staffData.date}</InfoLeftDataItem>
+                    </InfoLeftData>
+                </InfoLeftPart>
+
+                <InfoRightPart>
+                    <InfoRightItem>社員番号: {staffData.staff_id}</InfoRightItem>
+                    <InfoRightItem>勤務状況: {staffData.work_status}</InfoRightItem>
+                    <InfoRightItem>上司: {staffData.boss}</InfoRightItem>
+                    <InfoRightMessageItem>メッセージ:</InfoRightMessageItem>
+                    <InfoRightMessage>{staffData.doctor_message}</InfoRightMessage>
+                </InfoRightPart>
+            </DataTable>
+        </>
+    );
 }
 
 export default WebStaffData;
 
 const lineSize = '2.5px';
 const fontSize = '1.3em';
+
+// --------------------------------------------Header----------------------------------------------------
 
 const Header = styled.header`
   display: flex;
@@ -144,7 +197,7 @@ const ShowTime = styled.div`
     color: #fff;
     letter-spacing: 1.7px;
 `;
-
+// ----------------------SearchBar----------------------
 const SearchBarArea = styled.div`
     display: flex;
     flex-direction: row;
@@ -165,6 +218,7 @@ const SearchBarBtn = styled.button`
     height:30px;
     border-radius: 5px;
 `;
+// --------------------------------------------
 const HeaderBtn = styled.button`
     background-color: #fff;
     border-radius: 5px;
@@ -175,7 +229,10 @@ const HeaderBtn = styled.button`
     margin: 0 10px;
     letter-spacing:3px;
 `;
+// ------------------------------------------------------------------------------------------------
 
+
+// --------------------------------------------Table----------------------------------------------------
 const DataTable = styled.div`
     display: grid;
     grid-template-columns: auto auto;
@@ -184,7 +241,7 @@ const DataTable = styled.div`
     border: ${lineSize} solid #000;
     border-radius: 15px;
 `;
-
+// Left
 const InfoLeftPart = styled.div`
     grid-column: 1 / span 2;
     flex-direction: column;
@@ -205,7 +262,7 @@ const InfoLeftDataItem = styled.p`
     padding: 1% 0;
     margin:0;
 `;
-
+// Right
 const InfoRightPart = styled.div`
     border-left: ${lineSize} solid #000;
     grid-column: 3 / span 10;
@@ -226,7 +283,14 @@ const InfoRightMessage = styled.div`
     padding: 0 1% 2% 1%;
     height: 300px;
 `;
+// ------------------------------------------------------------------------------------------------
 
+
+const DialogBoxArea = styled.div`
+    width:600px;
+    text-align:center;
+`;
+// ------------------------------------------------------------------------------------------------
 const PageTitle = styled.h1`
     text-align: center;
     margin:35px 0;
