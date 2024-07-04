@@ -15,6 +15,7 @@ import {
 function Step2() {
   const navigate = useNavigate();
   const [disabilityId, setDisabilityId] = useState("");
+  const [error, setError] = useState(false);
 
   const handleSubmit = async () => {
     const response = await fetch("http://localhost:8080/checkDisabilityID", {
@@ -30,10 +31,10 @@ function Step2() {
       if (data.success) {
         navigate(`/step3/${disabilityId}`);
       } else {
-        alert("障害者番号が見つかりません");
+        setError(true);
       }
     } else {
-      alert("サーバーエラーが発生しました");
+      setError(true);
     }
   };
 
@@ -57,8 +58,10 @@ function Step2() {
             placeholder="障がい者番号を入力してください"
             value={disabilityId}
             onChange={(e) => setDisabilityId(e.target.value)}
+            css={error ? errorStyle : null}
           />
         </InputArea>
+        {error && <ErrorMessage>※もう一度入力してください</ErrorMessage>}
         <SubmitBtn onClick={handleSubmit}>入力</SubmitBtn>
       </Container>
     </>
@@ -71,4 +74,14 @@ const SubmitBtn = styled.button`
   border: ${BtnBorder} solid #fff;
   color: #fff;
   ${SubmitBtnPattern}
+`;
+
+const errorStyle = css`
+  border-color: red;
+`;
+
+const ErrorMessage = styled.div`
+  color: white;
+  margin-top: 8px;
+  margin-bottom: 50px;
 `;

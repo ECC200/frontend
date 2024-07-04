@@ -1,16 +1,18 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { Pagination } from "swiper/modules";
 import styled from "@emotion/styled";
 import Logofunc from "../LogoSetup";
 import { Global, css } from '@emotion/react';
 import { Swiper, SwiperSlide } from "swiper/react";
 import React from "react";
+
 import "swiper/css";
 import "swiper/css/pagination";
 
 function Step3() {
     const { disabilityId } = useParams();
+    const navigate = useNavigate();
     const [userData, setUserData] = useState(null);
 
     useEffect(() => {
@@ -20,18 +22,17 @@ function Step3() {
                 const response = await fetch(`http://localhost:8080/users/${disabilityId}`);
                 if (response.ok) {
                     const data = await response.json();
-                    console.log(`Data fetched: `, data);
                     setUserData(data);
                 } else {
-                    alert("データの取得に失敗しました");
+                    navigate("/step2");
                 }
             } catch (error) {
                 console.error("Error fetching data: ", error);
-                alert("データの取得に失敗しました");
+                navigate("/step2");
             }
         };
         fetchData();
-    }, [disabilityId]);
+    }, [disabilityId, navigate]);
 
     if (!userData) {
         return <div>Loading...</div>;
@@ -41,20 +42,18 @@ function Step3() {
         <>
             <Global
                 styles={css`
-          body{
-            background-color: ${bgColor};
-          }
-        `}
+                    body {
+                        background-color: green;
+                    }
+                `}
             />
+            <UpperRightBtn onClick={() => navigate("/step2")}>退出</UpperRightBtn>
             <Container>
-                <Header>
-                    <Logofunc />
-
-                    <NumberSet>
-                        <NumberItem>患者番号:</NumberItem>
-                        <Number>{userData.user_id}</Number>
-                    </NumberSet>
-                </Header>
+                <Logofunc color="#fff" />
+                <NumberSet>
+                    <NumberItem>患者番号:</NumberItem>
+                    <Number>{userData.user_id}</Number>
+                </NumberSet>
 
                 <SwiperContainer>
                     <Swiper
@@ -155,7 +154,6 @@ function Step3() {
                                     <br />
                                 </React.Fragment>
                             ))}
-                            
                         </SwiperSlide>
                     </Swiper>
                 </SwiperContainer>
@@ -167,8 +165,9 @@ function Step3() {
 export default Step3;
 
 const bgColor = 'green';
+
 const Container = styled.div`
-  background-color: green;
+  background-color: ${bgColor};
   padding: 3vh;
   color: white;
   display: flex;
@@ -176,21 +175,36 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
 `;
+
+const UpperRightBtn = styled.button`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 1.5em;
+`;
+
 const Header = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
 `;
+
 const NumberSet = styled.div`
   text-align: center;
   margin: 1vh 0;
   padding: 0;
 `;
+
 const NumberItem = styled.p`
   margin-bottom: -10px;
   padding: 0;
   font-size: 1em;
 `;
+
 const Number = styled.p`
   margin: -2vh 0 0 0;
   padding: 0;
@@ -207,11 +221,10 @@ const Title = styled.div`
 
 const SwiperContainer = styled.div`
   background-color: white;
-  width: 100%;
-  max-width: 400px; 
-  height: 100%;
+  width: 85%;
+  height: 150%;
   flex: 1;
-  padding: 3vh;
+  padding: 2vh;
   border-radius: 10px;
   overflow: hidden;
   box-sizing: border-box;
@@ -232,7 +245,7 @@ const CenteredField = styled(Field)`
 `;
 
 const Label = styled.div`
-  font-size: 2vh;
+  font-size: 2.5vh;
   color: black;
 `;
 

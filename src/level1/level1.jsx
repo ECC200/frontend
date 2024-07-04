@@ -1,23 +1,47 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import Logo from '../LogoSetup';
 import { Global, css } from '@emotion/react'
+import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import Copie from '../assets/copie.png';
+
+
+import {
+  // Container
+  Container,
+  // Number
+  NumberSet, NumberItem, NumberWord
+} from '../EmotionForMoblie';
 
 function Level1() {
-  const id = "1A2B";
+  const id = "1A2B3A6G8E";
   const [isModalOpen, setModalOpen] = useState(false);
+  const [isCopied, setIsCopied] = useState(false);
+  const numberRef = useRef(null);
+
   const emergencyContacts = [
-    { href: 'tel:' +/*emergencycontact*/'', text: '母携帯' },
-    { href: 'tel:' +/*workcontact*/'', text: '勤務先' },
+    { href: 'tel:' + /*emergencycontact*/'', text: '母携帯' },
+    { href: 'tel:' + /*workcontact*/'', text: '勤務先' },
   ];
 
-
   const handleReport = () => {
-    window.location.href = 'tel:119';//119
+    window.location.href = 'tel:119'; //119
   };
 
   const handleEmergencyContact = () => {
     setModalOpen(true);
+  };
+
+  const handleCopy = () => {
+    const numberText = numberRef.current.innerText;
+    navigator.clipboard.writeText(numberText)
+      .then(() => {
+        setIsCopied(true);
+        setTimeout(() => setIsCopied(false), 2000); // 2秒後にコピー完了メッセージを非表示
+      })
+      .catch(err => console.error('Failed to copy: ', err));
   };
 
   return (
@@ -28,23 +52,26 @@ function Level1() {
               background-color: #B22222;
             }
         `} />
-      <AppContainer>
+      <Container>
         {/* Main */}
-        <CareConnect>
-          <Logo color='#fff' />
-          <NumberSet>
-            <NumberItem>患者番号:</NumberItem>
-            <Number>{id}</Number>
-          </NumberSet>
-          <Button onClick={handleReport}>119</Button>
-          <Button onClick={handleEmergencyContact}>緊急連絡先</Button>
-        </CareConnect>
+        <Logo color='#fff' />
+        <NumberSet>
+          <NumberItem>患者番号:</NumberItem>
+          <NumberWord ref={numberRef}>
+            {id}
+            <CopieBT src={Copie} onClick={handleCopy} alt="Copy Icon" />
+          </NumberWord>
+          {isCopied && <CopiedMessage>Copied!</CopiedMessage>}
+        </NumberSet>
 
-        {/* 緊急連絡人Menu */}
-        {isModalOpen && (
-          <Modal>
-            <ModalContent>
-              <h2>どこに連絡しますか？</h2>
+
+        <Button onClick={handleReport}>119</Button>
+        <Button onClick={handleEmergencyContact}>緊急連絡先</Button>
+
+        <Dialog open={isModalOpen}>
+          <DialogBoxArea>
+            <DialogTitle>どこに連絡しますか？</DialogTitle>
+            <DialogContent className='DialogContentStyle'>
               <LinkList>
                 {emergencyContacts.map((contact, index) => (
                   <LinkItem key={index}>
@@ -53,78 +80,25 @@ function Level1() {
                 ))}
               </LinkList>
               <ModalButton onClick={() => setModalOpen(false)}>閉じる</ModalButton>
-            </ModalContent>
-          </Modal>
-        )}
-      </AppContainer>
+            </DialogContent>
+          </DialogBoxArea>
+        </Dialog >
+      </Container>
     </>
-
   );
 }
 
 export default Level1;
 
-const AppContainer = styled.div`
-  align-items: center;
-  display: flex;
-  justify-content: center;
-  background-color: #B22222;
-`;
-
-const CareConnect = styled.div`
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  color: white;
-    padding: 3vh 3.5vh 0 3.5vh;
-`;
-
-const NumberSet = styled.div`
-  text-align: center;
-  margin: 1vh 0;
-  padding: 0;
-`
-const NumberItem = styled.p`
-    margin-bottom: -10px;
-    padding: 0;
-    font-size: 1em;
-`;
-const Number = styled.p`
-  margin: -2vh 0 0 0;
-  padding: 0;
-  font-size: 8vh;
-`;
-
 const Button = styled.button`
   font-size: 2em;
-  padding: 15px 30px; /* 大きめのパディング */
-  margin: 15px 0; /* 大きめのマージン */
-  width:250px;
+  padding: 15px 30px;
+  margin: 15px 0;
+  width: 250px;
   border: none;
   border-radius: 5px;
   background-color: white;
   color: black;
-`;
-
-const Modal = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const ModalContent = styled.div`
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  text-align: center;
-  color: black; /* フォントカラーを黒に変更 */
-  margin: auto;
 `;
 
 const ModalButton = styled.button`
@@ -146,8 +120,32 @@ const LinkList = styled.ul`
 
 const LinkItem = styled.li`
   margin: 15px 0;
-  a{
+  a {
     text-decoration: none;
     font-size:1.5em;
+    letter-spacing: 1px;
   }
+`;
+
+
+const DialogBoxArea = styled.div`
+  width:300px;
+  text-align:center;
+`
+
+
+const CopiedMessage = styled.p`
+  color: white;
+  font-size: 1em;
+  margin-top: 1px;
+  margin-bottom: 1px;
+`;
+
+const CopieBT = styled.img`
+  cursor: pointer;
+  margin-left: 10px;
+  margin-bottom: 20px;
+  width: 20px;
+  height: 20px;
+  filter: brightness(0) invert(1);
 `;
