@@ -34,7 +34,7 @@ function DisSignUpTop() {
     { name: "", phone: "" },
   ]);
   const [allData, setAllData] = useState({
-    photo: selectedFile,
+    photo: "",
     user_name: "",
     birth_date: "",
     age: age,
@@ -43,7 +43,7 @@ function DisSignUpTop() {
     hospital_destination: "",
     primary_care_doctor: "",
     specialty: "",
-    chronicDisease: "",
+    chronic_disease: "",
     disability_grade: "",
     emergency_contacts: [
       { name: "", phone: "" },
@@ -57,7 +57,7 @@ function DisSignUpTop() {
     hospital_destination: true,
     primary_care_doctor: true,
     specialty: true,
-    chronicDisease: true,
+    chronic_disease: true,
     disability_grade: true,
     emergency_contacts: [
       { name: true, phone: true },
@@ -152,13 +152,26 @@ function DisSignUpTop() {
 
   const handleSendData = async () => {
     setSendBtn(true);
+    const formData = new FormData();
+    for (const key in allData) {
+      if (Array.isArray(allData[key])) {
+        allData[key].forEach((item, index) => {
+          for (const subKey in item) {
+            formData.append(`${key}[${index}].${subKey}`, item[subKey]);
+          }
+        });
+      } else {
+        formData.append(key, allData[key]);
+      }
+    }
+    if (selectedFile) {
+      formData.append("photo", selectedFile);
+    }
+
     try {
       const response = await fetch("http://localhost:8080/users", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(allData),
+        body: formData,
       });
       if (!response.ok) {
         throw new Error("Network response was not ok");
@@ -199,7 +212,7 @@ function DisSignUpTop() {
             <Confirm>かかりつけの病院：{allData.hospital_destination}</Confirm>
             <Confirm>主治医：{allData.primary_care_doctor}</Confirm>
             <Confirm>何科：{allData.specialty}</Confirm>
-            <Confirm>持病名：{allData.chronicDisease}</Confirm>
+            <Confirm>持病名：{allData.chronic_disease}</Confirm>
             <Confirm>障がい者等級：{allData.disability_grade}</Confirm>
             <Confirm className={css`text-align: center;`}>緊急連絡先</Confirm>
             <Confirm>緊急連絡1：{emergencyContactArray[0].name} - {emergencyContactArray[0].phone}</Confirm>
@@ -442,24 +455,24 @@ function DisSignUpTop() {
             )}
 
             {/* 持病名 */}
-            {inputErrors.chronicDisease ? (
+            {inputErrors.chronic_disease ? (
               <InputAreaPx>
-                <InputLabelBlack htmlFor="chronicDisease">持病名:</InputLabelBlack>
+                <InputLabelBlack htmlFor="chronic_disease">持病名:</InputLabelBlack>
                 <InputBar
                   type="text"
-                  name="chronicDisease"
-                  value={allData.chronicDisease}
-                  onChange={(e) => handleInputChange("chronicDisease", e.target.value)}
+                  name="chronic_disease"
+                  value={allData.chronic_disease}
+                  onChange={(e) => handleInputChange("chronic_disease", e.target.value)}
                 />
               </InputAreaPx>
             ) : (
               <InputAreaPx>
-                <ErrInputLabel htmlFor="chronicDisease">持病名:</ErrInputLabel>
+                <ErrInputLabel htmlFor="chronic_disease">持病名:</ErrInputLabel>
                 <ErrInputBar
                   type="text"
-                  name="chronicDisease"
-                  value={allData.chronicDisease}
-                  onChange={(e) => handleInputChange("chronicDisease", e.target.value)}
+                  name="chronic_disease"
+                  value={allData.chronic_disease}
+                  onChange={(e) => handleInputChange("chronic_disease", e.target.value)}
                 />
               </InputAreaPx>
             )}

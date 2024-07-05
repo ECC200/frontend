@@ -64,11 +64,11 @@ function WebpatientData() {
                     setPatientData({
                         PersonImg: data.photo || '',
                         Fullname: data.user_name || '',
-                        Age: data.age.toString() || '',
+                        Age: data.age || '',
                         Birthday: data.birth_date || '',
-                        DisabilityType: '', // Adjust this as per the data structure
-                        DisabilityLevel: '', // Adjust this as per the data structure
-                        Hospital: '', // Adjust this as per the data structure
+                        DisabilityType: data.specialty || '',
+                        DisabilityLevel: data.disability_grade || '',
+                        Hospital: data.hospital_destination || '',
                         Doctor: data.primary_care_doctor || '',
                         PersonContact: data.contact || '',
                         EmergencyContact: data.emergency_contacts[0]?.phone || '',
