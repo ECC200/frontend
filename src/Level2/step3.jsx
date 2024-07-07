@@ -7,19 +7,8 @@ import { Global, css } from '@emotion/react';
 import { Swiper, SwiperSlide } from "swiper/react";
 import React from "react";
 
-
 import "swiper/css";
 import "swiper/css/pagination";
-
-import {
-    // Container
-    Container,
-    // Number
-    NumberSet, NumberItem, NumberWord,
-    // Button
-    UpperRightBtn,
-
-} from '../EmotionForMoblie';
 
 function Step3() {
     const { disabilityId } = useParams();
@@ -64,7 +53,6 @@ function Step3() {
                 <NumberSet>
                     <NumberItem>患者番号:</NumberItem>
                     <Number>{userData.user_id}</Number>
-
                 </NumberSet>
 
                 <SwiperContainer>
@@ -79,16 +67,15 @@ function Step3() {
                             {/* 名前 */}
                             <Field>
                                 <Label>
-                                    {/* <Furigana>なまえ</Furigana> */}
+                                    <Furigana>なまえ</Furigana>
                                     名前
                                 </Label>
                                 <Value>{userData.user_name}</Value>
-
                             </Field>
                             {/* 生年月日 */}
                             <Field>
                                 <Label>
-                                    {/* <Furigana>せいねんがっぴ</Furigana> */}
+                                    <Furigana>せいねんがっぴ</Furigana>
                                     生年月日
                                 </Label>
                                 <Value>{userData.birth_date}</Value>
@@ -96,7 +83,7 @@ function Step3() {
                             {/* 持病 */}
                             <Field>
                                 <Label>
-                                    {/* <Furigana>じびょう</Furigana> */}
+                                    <Furigana>じびょう</Furigana>
                                     持病
                                 </Label>
                                 <Value>{userData.chronic_disease}</Value>
@@ -111,7 +98,6 @@ function Step3() {
                                     <Value>{contact.name} - {contact.phone}</Value>
                                 </Field>
                             ))}
-
                         </SwiperSlide>
 
                         {/* Page two */}
@@ -120,16 +106,15 @@ function Step3() {
                             {/* 病院 */}
                             <Field>
                                 <Label>
-                                    {/* <Furigana>びょういん</Furigana> */}
+                                    <Furigana>びょういん</Furigana>
                                     病院
                                 </Label>
                                 <Value>{userData.hospital_destination}</Value>
-
                             </Field>
                             {/* 医者 */}
                             <Field>
                                 <Label>
-                                    {/* <Furigana>いしゃ</Furigana> */}
+                                    <Furigana>いしゃ</Furigana>
                                     医者
                                 </Label>
                                 <Value>{userData.primary_care_doctor}</Value>
@@ -137,12 +122,10 @@ function Step3() {
                             {/* 何科 */}
                             <Field>
                                 <Label>
-                                    {/* <Furigana>なにか</Furigana> */}
+                                    <Furigana>なにか</Furigana>
                                     何科
                                 </Label>
-
                                 <Value>{userData.department}</Value>
-
                             </Field>
                         </SwiperSlide>
 
@@ -151,15 +134,14 @@ function Step3() {
                             <Title>倒れた履歴</Title>
                             <CenteredField>
                                 <Label>
-                                    {/* <Furigana>しょほうじょうきょう</Furigana> */}
+                                    <Furigana>しょほうじょうきょう</Furigana>
                                     処方状況
                                 </Label>
                             </CenteredField>
                             <Value>{userData.medication_management}</Value>
-
                             <CenteredField>
                                 <Label>
-                                    {/* <Furigana>いりょうめも</Furigana> */}
+                                    <Furigana>いりょうめも</Furigana>
                                     医療メモ
                                 </Label>
                             </CenteredField>
@@ -172,7 +154,6 @@ function Step3() {
                                     <br />
                                 </React.Fragment>
                             ))}
-
                         </SwiperSlide>
                     </Swiper>
                 </SwiperContainer>
@@ -276,7 +257,7 @@ const Value = styled.div`
   padding: 0.5vh 0;
 `;
 
-// const Furigana = styled.div`
-//   font-size: 1.5vh;
-//   color: gray;
-// `;
+const Furigana = styled.div`
+  font-size: 1vh;
+  color: gray;
+`;
