@@ -8,6 +8,7 @@ import WebHeader from './webHeader.jsx';
 import styled from '@emotion/styled';
 import PersonImg from '../assets/taku.jpeg';
 
+
 function WebStaffData() {
     const { staffId } = useParams();
     const navigate = useNavigate();
@@ -103,6 +104,7 @@ function WebStaffData() {
         }
     }, [navigate, searchbar]);
 
+
     if (isInactive) {
         handleReLogin();
         return null;
@@ -145,6 +147,7 @@ function WebStaffData() {
                 </HeaderRigjht>
             </Header>
 
+
             <PageTitle>おはようございます</PageTitle>
 
             <SearchBarArea>
@@ -183,6 +186,7 @@ const fontSize = '1.3em';
 
 // --------------------------------------------Header----------------------------------------------------
 
+
 const Header = styled.header`
   display: flex;
   justify-content: space-between;
@@ -196,6 +200,7 @@ const ShowTime = styled.div`
     margin-left: 10%;
     color: #fff;
     letter-spacing: 1.7px;
+
 `;
 // ----------------------SearchBar----------------------
 const SearchBarArea = styled.div`
@@ -204,6 +209,7 @@ const SearchBarArea = styled.div`
     justify-content:center;
     align-items: center;
     margin: 15px 0 50px 0;
+
 `;
 const SearchBar = styled.input`
     width: 300px;
@@ -228,12 +234,14 @@ const HeaderBtn = styled.button`
     padding:5px 10px;
     margin: 0 10px;
     letter-spacing:3px;
+
 `;
 // ------------------------------------------------------------------------------------------------
 
 
 // --------------------------------------------Table----------------------------------------------------
 const DataTable = styled.div`
+
     display: grid;
     grid-template-columns: auto auto;
     margin: 25px auto;

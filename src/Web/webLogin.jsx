@@ -63,13 +63,14 @@ function WebLogin() {
                         }
                     `}
                 />
-                <BackDiv>
+                <Container>
                     <LoginBg>
                         <Logofunc />
                         <ResetPwMsg>ITの同僚に連絡してください。</ResetPwMsg>
                         <ResetPw onClick={handlePwChangeMsg}>Login page</ResetPw>
+
                     </LoginBg>
-                </BackDiv>
+                </Container>
             </>
         );
     } else {
@@ -82,7 +83,7 @@ function WebLogin() {
                         }
                     `}
                 />
-                <BackDiv>
+                <Container>
                     <LoginBg>
                         <Logofunc />
                         {reqMsg === false ? (
@@ -107,11 +108,12 @@ function WebLogin() {
                                     />
                                 </InputArea>
                                 <SubmitBtn onClick={handleLogin}>Login</SubmitBtn>
+
                             </>
                         ) : (
                             <>
                                 <InputArea>
-                                    <InputName htmlFor='staffId'>従業員の番号:</InputName>
+                                    <InputLabelBlack htmlFor='staffId'>スタッフID:</InputLabelBlack>
                                     <InputBar
                                         type="text"
                                         id="staffId"
@@ -120,7 +122,7 @@ function WebLogin() {
                                     />
                                 </InputArea>
                                 <InputArea>
-                                    <InputName htmlFor='password'>パスワード:</InputName>
+                                    <InputLabelBlack htmlFor='password'>パスワード:</InputLabelBlack>
                                     <InputBar
                                         type="password"
                                         id="password"
@@ -133,13 +135,14 @@ function WebLogin() {
                         )}
                         <ResetPw onClick={handlePwChangeMsg}>パスワードを忘れた方はこちら</ResetPw>
                     </LoginBg>
-                </BackDiv>
+                </Container>
             </>
         );
     }
 }
 
 export default WebLogin;
+
 
 const BackDiv = styled.div`
     display: flex;
@@ -151,10 +154,11 @@ const LoginBg = styled.div`
     display: flex;
     flex-direction: column;
     width: 30%;
-    height: 550px;
+    height: 600px;
     margin-left: auto;
     margin-right: auto;
     margin-top: 5%;
+
     border: 2px solid #000;
     border-radius: 25px;
     background-color: #fff;
@@ -208,15 +212,10 @@ const ErrInputBar = styled.input`
 
 const SubmitBtn = styled.button`
     border: 1px solid #000;
-    border-radius: 7px;
-    background-color: transparent;
     color: #000;
-    font-size: 14px;
-    letter-spacing: 5px;
+    margin: 0 auto;
     display: flex;
-    margin: 5% auto;
-    padding: 1.5% 3.5%;
-    text-transform: uppercase;
+    ${SubmitBtnPattern}
 `;
 
 const ResetPw = styled.button`
@@ -233,6 +232,7 @@ const ResetPwMsg = styled.p`
     color: #000;
     font-size: 25px;
     margin: 15% 3%;
+
     letter-spacing: 1.5px;
     text-align: center;
     text-transform: uppercase;

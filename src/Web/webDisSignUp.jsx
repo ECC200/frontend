@@ -29,9 +29,9 @@ function DisSignUpTop() {
   const [dob, setDob] = useState({ year: "", month: "", day: "" });
   const [age, setAge] = useState("");
   const [haveError, setHaveError] = useState(false);
-  
   const [allData, setAllData] = useState({
     photo: "",
+
     user_name: "",
     birth_date: "",
     age: age,
@@ -41,6 +41,7 @@ function DisSignUpTop() {
     primary_care_doctor: "",
     specialty: "",
     chronic_disease: "",
+
     disability_grade: "",
     emergency_contacts: [
       { name: "", phone: "" },
@@ -104,6 +105,7 @@ function DisSignUpTop() {
 
   const handleConfirm = () => {
     const newInputErrors = {};      
+
     for (const key in inputErrors) {
       if (key === "emergency_contacts") {
         newInputErrors[key] = inputErrors[key].map(() => ({ name: true, phone: true }));
@@ -257,6 +259,7 @@ function DisSignUpTop() {
             <Confirm className={css`text-align: center;`}>緊急連絡先</Confirm>
             <Confirm>緊急連絡1：{allData.emergency_contacts[0].name} - {allData.emergency_contacts[0].phone}</Confirm>
             <Confirm>緊急連絡2：{allData.emergency_contacts[1].name} - {allData.emergency_contacts[1].phone}</Confirm>
+
           </DialogContent>
           <ConfirmBtn onClick={handleSendData}>確認</ConfirmBtn>
         </Dialog>
@@ -503,6 +506,7 @@ function DisSignUpTop() {
                   name="chronic_disease"
                   value={allData.chronic_disease}
                   onChange={(e) => handleInputChange("chronic_disease", e.target.value)}
+
                 />
               </InputAreaPx>
             ) : (
@@ -513,6 +517,7 @@ function DisSignUpTop() {
                   name="chronic_disease"
                   value={allData.chronic_disease}
                   onChange={(e) => handleInputChange("chronic_disease", e.target.value)}
+
                 />
               </InputAreaPx>
             )}
@@ -560,6 +565,7 @@ function DisSignUpTop() {
                   onChange={(e) => handleEmergencyContactChange(index, 'name', e.target.value)}
                 />
               </InputAreaPx>
+
 
               {/* 電話番号 */}
               <InputAreaPx>

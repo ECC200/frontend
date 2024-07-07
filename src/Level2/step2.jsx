@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
 import Logofunc from "../LogoSetup";
 import { Global, css } from '@emotion/react'
+
 import {
   // Container
   Container,
@@ -35,6 +36,7 @@ function Step2() {
       }
     } else {
       setError(true);
+
     }
   };
 
@@ -50,6 +52,7 @@ function Step2() {
       <UpperRightBtn onClick={() => navigate("/step1")}>ログアウト</UpperRightBtn>
       <Container>
         <Logofunc color='#fff' />
+
         <InputArea>
           <InputLabelWhite htmlFor="disabilityId">障がい者番号:</InputLabelWhite>
           <InputBar
@@ -62,6 +65,7 @@ function Step2() {
           />
         </InputArea>
         {error && <ErrorMessage>※もう一度入力してください</ErrorMessage>}
+
         <SubmitBtn onClick={handleSubmit}>入力</SubmitBtn>
       </Container>
     </>

@@ -33,6 +33,7 @@ function App() {
           <Route path="/WebDisSignUp" element={<DisSignUpTop />} />
           <Route path="/webStaffReLogin" element={<WebStaffReLogin />} />
           <Route path="/WebPatientData/:userId" element={<WebPatientData />} />
+
         </Routes>
       </Router>
     </>

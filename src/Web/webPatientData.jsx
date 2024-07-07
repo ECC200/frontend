@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { css } from '@emotion/css';
+
 import styled from '@emotion/styled';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
@@ -9,6 +10,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import PlusIconImage from '../assets/plus_icon.png';
+
 import EditImage from '../assets/edit.png';
 import BackButtonImage from '../assets/back.png';
 import SaveButtonImage from '../assets/save.png';
@@ -34,6 +36,7 @@ function WebpatientData() {
     const [newContent, setNewContent] = useState({ date: '', content: '' });
     const [editContentIndex, setEditContentIndex] = useState(-1);
     const [saveMsg, setSaveMsg] = useState('本当に保存しますか？');
+
     const [open, setOpen] = useState(false);
     const [load, setLoad] = useState(false);
     const [sended, setSended] = useState(false);
@@ -84,6 +87,7 @@ function WebpatientData() {
             fetchData();
         }
     }, [userId]);
+
 
     const handleRightChange = (field, value) => {
         setPatientData((prevData) => ({
@@ -141,6 +145,7 @@ function WebpatientData() {
             {load ? (
                 <Dialog open={open} onClose={() => setOpen(false)}>
                     <DialogTitle className={css`text-align: center;`}>注意</DialogTitle>
+
                     <DialogContent className={css`width:600px;text-align: center;`}>
                         {!sended ? (
                             <Box className={css`text-align: center; margin:10px; `}>
@@ -157,13 +162,13 @@ function WebpatientData() {
             ) : (
                 <Dialog open={open} onClose={() => setOpen(false)}>
                     <DialogTitle className={css`text-align: center;`}>注意</DialogTitle>
+
                     <DialogContent className={css`width:600px;text-align: center;`}>
                         <h2>{saveMsg}</h2>
                         <SubmitBtn onClick={handleSave}>OK</SubmitBtn>
                     </DialogContent >
                 </Dialog >
             )}
-
             <Header>
                 <BackButtonStyled src={BackButtonImage} alt="戻る" onClick={() => navigate(-1)} />
                 <WebHeader />
@@ -227,6 +232,7 @@ function WebpatientData() {
                         <tr>
                             <th>住所 :</th>
                             <td>{patientData.Address}</td>
+
                         </tr>
                     </InfoLeftData>
                 </LeftStyle>
@@ -257,6 +263,8 @@ function WebpatientData() {
                         )}
                     </DateContentStyle>
 
+
+                    {/* List Item */}
                     <ContentListStyle>
                         {contentList.map((item, index) => (
                             <InfoCenterDataItem key={index}>
@@ -301,6 +309,8 @@ function WebpatientData() {
                     ) : (
                         <InfoRightDataArea>{patientData.Medicine}</InfoRightDataArea>
                     )}
+
+                    {/* Line */}
 
                     <SplitLine />
                     <p>主治医から：</p>
@@ -385,6 +395,8 @@ const InfoLeftData = styled.div`
   }
 `;
 
+///-----------------------------------------Center-------------------------------------------------------
+
 const InfoCenterData = styled.div`
   text-align: center;
   padding: 10px;
@@ -419,6 +431,9 @@ const InfoCenterDataItemDetailInput = styled.input`
     width: 430px;
     text-align: left;
 `
+
+
+///----------------------------------------------------Right---------------------------------------------------------------
 
 const InfoRightData = styled.div`
   text-align: left;
