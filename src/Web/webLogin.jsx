@@ -1,17 +1,15 @@
-import { useState, useCallback } from 'react';
-import { Global, css } from '@emotion/react'
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from "react-router-dom";
 import styled from '@emotion/styled';
 import Logofunc from '../LogoSetup';
-import Axios from 'axios';
-
+import { Global, css } from '@emotion/react';
 
 function WebLogin() {
-    const navigate = useNavigate();
     const [resetpw, setResetPW] = useState(false);
     const [staffId, setStaffId] = useState('');
     const [password, setPassword] = useState('');
     const [reqMsg, setReqMsg] = useState(true);
+    const navigate = useNavigate();
 
     const handleStaffIdChange = useCallback((e) => {
         setStaffId(e.target.value);
@@ -21,55 +19,46 @@ function WebLogin() {
         setPassword(e.target.value);
     }, []);
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        handleLogin()
-    };
-
-    // Staff Data
-    const handleTakeData = async () => {
-        try {
-            const response = await Axios.get('localhost:8080', {
-                StaffId: staffId,
-            });
-            navigate("/webStaffData/", { state: response.data });
-        } catch (error) {
-            console.error(error);
-        }
-    };
-
-    // Login
     const handleLogin = async () => {
         try {
-            const response = await Axios.post('localhost:8080', {
-                StaffId: staffId,
-                Password: password
+            const response = await fetch("http://localhost:8080/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ staffId, password }),
             });
-            switch (response.statusCode !== 200) {
-                case 200:
-                    handleTakeData()
-                    break
-                default:
-                    setReqMsg(false)
-                    break
+
+            if (response.ok) {
+                const data = await response.json();
+                if (data.success) {
+                    navigate(`/webStaffData/${staffId}`);
+                } else {
+                    setReqMsg(false);
+                }
+            } else {
+                setReqMsg(false);
             }
         } catch (error) {
-            console.error(error);
+            console.error("Error during login:", error);
+            setReqMsg(false);
         }
     };
 
-    const HandlePwChangeMsg = () => {
-        setResetPW(resetpw => !resetpw);
-    }
+    useEffect(() => {
+        setReqMsg(true);
+    }, []);
 
+    const handlePwChangeMsg = () => {
+        setResetPW(resetpw => !resetpw);
+    };
 
     if (resetpw) {
-        // パスワード再設定
         return (
             <>
                 <Global
                     styles={css`
-                        body{
+                        body {
                             background-color: #fff;
                         }
                     `}
@@ -78,18 +67,17 @@ function WebLogin() {
                     <LoginBg>
                         <Logofunc />
                         <ResetPwMsg>ITの同僚に連絡してください。</ResetPwMsg>
-                        <ResetPw onClick={HandlePwChangeMsg}>Login page</ResetPw>
+                        <ResetPw onClick={handlePwChangeMsg}>Login page</ResetPw>
                     </LoginBg>
                 </BackDiv>
             </>
         );
     } else {
-        // 普通
         return (
             <>
                 <Global
                     styles={css`
-                        body{
+                        body {
                             background-color: #fff;
                         }
                     `}
@@ -97,35 +85,31 @@ function WebLogin() {
                 <BackDiv>
                     <LoginBg>
                         <Logofunc />
-                        {/* Error */}
                         {reqMsg === false ? (
                             <>
-                                <ErrMsg>*Invalid Staff id / password</ErrMsg>
-                                <form onSubmit={handleSubmit}>
-                                    <InputArea>
-                                        <ErrInputName htmlFor='staffId'>従業員の番号:</ErrInputName>
-                                        <ErrInputBar
-                                            type="text"
-                                            id="staffId"
-                                            value={staffId}
-                                            onChange={handleStaffIdChange}
-                                        />
-                                    </InputArea>
-                                    <InputArea>
-                                        <ErrInputName htmlFor='password'>パスワード:</ErrInputName>
-                                        <ErrInputBar
-                                            type="password"
-                                            id="password"
-                                            value={password}
-                                            onChange={handlePasswordChange}
-                                        />
-                                    </InputArea>
-                                    <SubmitBtn type="submit">Login</SubmitBtn>
-                                </form>
+                                <ErrMsg>*従業員番号またはパスワードが正しくありません*</ErrMsg>
+                                <InputArea>
+                                    <ErrInputName htmlFor='staffId'>従業員番号:</ErrInputName>
+                                    <ErrInputBar
+                                        type="text"
+                                        id="staffId"
+                                        value={staffId}
+                                        onChange={handleStaffIdChange}
+                                    />
+                                </InputArea>
+                                <InputArea>
+                                    <ErrInputName htmlFor='password'>パスワード:</ErrInputName>
+                                    <ErrInputBar
+                                        type="password"
+                                        id="password"
+                                        value={password}
+                                        onChange={handlePasswordChange}
+                                    />
+                                </InputArea>
+                                <SubmitBtn onClick={handleLogin}>Login</SubmitBtn>
                             </>
                         ) : (
-                            // 普通
-                            <form onSubmit={handleSubmit}>
+                            <>
                                 <InputArea>
                                     <InputName htmlFor='staffId'>従業員の番号:</InputName>
                                     <InputBar
@@ -144,10 +128,10 @@ function WebLogin() {
                                         onChange={handlePasswordChange}
                                     />
                                 </InputArea>
-                                <SubmitBtn type="submit">ログイン</SubmitBtn>
-                            </form>
+                                <SubmitBtn onClick={handleLogin}>ログイン</SubmitBtn>
+                            </>
                         )}
-                        <ResetPw onClick={HandlePwChangeMsg}>パスワードを忘れた方はこちら</ResetPw>
+                        <ResetPw onClick={handlePwChangeMsg}>パスワードを忘れた方はこちら</ResetPw>
                     </LoginBg>
                 </BackDiv>
             </>
@@ -161,17 +145,16 @@ const BackDiv = styled.div`
     display: flex;
     align-content: center;
     justify-content: center;
-
-`
+`;
 
 const LoginBg = styled.div`
     display: flex;
     flex-direction: column;
     width: 30%;
-    height: 650px;
-    margin-left:auto;
-    margin-right:auto;
-    margin-top:5%;
+    height: 550px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 5%;
     border: 2px solid #000;
     border-radius: 25px;
     background-color: #fff;
@@ -183,7 +166,7 @@ const InputArea = styled.div`
     flex-direction: column;
     justify-content: center;
     width: 65%;
-    margin: 5% auto;
+    margin: 4% auto;
     letter-spacing: 5px;
 `;
 
@@ -209,6 +192,7 @@ const InputBar = styled.input`
         background-color: hsl(0 0% 85%);
     }
 `;
+
 const ErrInputBar = styled.input`
     background-color: #fff;
     border: 1px solid red;
@@ -239,24 +223,25 @@ const ResetPw = styled.button`
     border: none;
     background-color: transparent;
     color: #000;
+    margin-top: 50px;
     font-size: 12px;
-    margin-top: 5%;
     letter-spacing: 0.5em;
     text-transform: uppercase;
 `;
+
 const ResetPwMsg = styled.p`
     color: #000;
-    font-size:25px;
+    font-size: 25px;
     margin: 15% 3%;
     letter-spacing: 1.5px;
     text-align: center;
     text-transform: uppercase;
-`
+`;
+
 const ErrMsg = styled.p`
-    color:red;
-    font-size:18px;
+    color: red;
+    font-size: 18px;
     letter-spacing: 3px;
     text-align: center;
-    margin:0;
-    
-`
+    margin: 0;
+`;
