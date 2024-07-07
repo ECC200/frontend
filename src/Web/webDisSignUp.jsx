@@ -31,7 +31,7 @@ function DisSignUpTop() {
   const [haveError, setHaveError] = useState(false);
   
   const [allData, setAllData] = useState({
-    photo: selectedFile,
+    photo: "",
     user_name: "",
     birth_date: "",
     age: age,
@@ -151,6 +151,22 @@ function DisSignUpTop() {
 
   const handleSendData = async () => {
     setSendBtn(true);
+    const formData = new FormData();
+    for (const key in allData) {
+      if (Array.isArray(allData[key])) {
+        allData[key].forEach((item, index) => {
+          for (const subKey in item) {
+            formData.append(`${key}[${index}].${subKey}`, item[subKey]);
+          }
+        });
+      } else {
+        formData.append(key, allData[key]);
+      }
+    }
+    if (selectedFile) {
+      formData.append("photo", selectedFile);
+    }
+
     try {
       const formData = new FormData();
   
