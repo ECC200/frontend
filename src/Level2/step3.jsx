@@ -1,9 +1,12 @@
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import { Pagination } from "swiper/modules";
-import { Global, css } from '@emotion/react'
-import { Swiper, SwiperSlide } from "swiper/react";
-import Logo from "../LogoSetup";
 import styled from "@emotion/styled";
+import Logofunc from "../LogoSetup";
+import { Global, css } from '@emotion/react';
+import { Swiper, SwiperSlide } from "swiper/react";
+import React from "react";
+
 
 import "swiper/css";
 import "swiper/css/pagination";
@@ -19,39 +22,49 @@ import {
 } from '../EmotionForMoblie';
 
 function Step3() {
+    const { disabilityId } = useParams();
     const navigate = useNavigate();
+    const [userData, setUserData] = useState(null);
 
-    const id = "1A2B";
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                console.log(`Fetching data for disabilityId: ${disabilityId}`);
+                const response = await fetch(`http://localhost:8080/users/${disabilityId}`);
+                if (response.ok) {
+                    const data = await response.json();
+                    setUserData(data);
+                } else {
+                    navigate("/step2");
+                }
+            } catch (error) {
+                console.error("Error fetching data: ", error);
+                navigate("/step2");
+            }
+        };
+        fetchData();
+    }, [disabilityId, navigate]);
 
-    const patientData = {
-        PersonImg: '',
-        Fullname: '岸本 たく',
-        Birthday: '2003-08-30',
-        DisabilityType: '障害種別',
-        DisabilityLevel: '障がい者等級',
-        Hospital: 'XX病院',
-        Doctor: 'XX医',
-        PersonContact: '080-3860-1577',
-        EmergencyContact: '0120-333-906',
-        Address: '大阪府吹田市春日4-7-1-310',
-        Medicine: 'デパケン',
-        DoctorMessage: 'がんばってねー'
-    };
+    if (!userData) {
+        return <div>Loading...</div>;
+    }
 
     return (
         <>
             <Global
                 styles={css`
-                    body{
+                    body {
                         background-color: green;
                     }
-                `} />
+                `}
+            />
             <UpperRightBtn onClick={() => navigate("/step2")}>退出</UpperRightBtn>
             <Container>
-                <Logo color='#fff' />
+                <Logofunc color="#fff" />
                 <NumberSet>
                     <NumberItem>患者番号:</NumberItem>
-                    <NumberWord>{id}</NumberWord>
+                    <Number>{userData.user_id}</Number>
+
                 </NumberSet>
 
                 <SwiperContainer>
@@ -69,10 +82,8 @@ function Step3() {
                                     {/* <Furigana>なまえ</Furigana> */}
                                     名前
                                 </Label>
-                                <Label>
-                                    {/* <Furigana> きしもと  たく</Furigana> */}
-                                    {patientData.Fullname}
-                                </Label>
+                                <Value>{userData.user_name}</Value>
+
                             </Field>
                             {/* 生年月日 */}
                             <Field>
@@ -80,7 +91,7 @@ function Step3() {
                                     {/* <Furigana>せいねんがっぴ</Furigana> */}
                                     生年月日
                                 </Label>
-                                <Value>2024/05/16</Value>
+                                <Value>{userData.birth_date}</Value>
                             </Field>
                             {/* 持病 */}
                             <Field>
@@ -88,29 +99,19 @@ function Step3() {
                                     {/* <Furigana>じびょう</Furigana> */}
                                     持病
                                 </Label>
-                                <Label>
-                                    {/* <Furigana>びんぼう</Furigana> */}
-                                    貧乏
-                                </Label>
+                                <Value>{userData.chronic_disease}</Value>
                             </Field>
-                            {/* 緊急連絡人との関係 */}
-                            <Field>
-                                <Label>
-                                    {/* <Furigana> きんきゅうれんらくにんとのかんけい</Furigana> */}
-                                    緊急連絡人との関係
-                                </Label>
-                                <Label>
-                                    {/* <Furigana>ははおや</Furigana> */}
-                                    母親
-                                </Label>
-                            </Field>
-                            <Value></Value>
-                            <Value></Value>
-                            <Value></Value>
-                            <Value></Value>
-                            <Value></Value>
-                            <Value></Value>
-                            <Value></Value>
+                            {/* 緊急連絡人 */}
+                            {userData.emergency_contacts.map((contact, index) => (
+                                <Field key={index}>
+                                    <Label>
+                                        <Furigana>きんきゅうれんらくにん</Furigana>
+                                        緊急連絡人
+                                    </Label>
+                                    <Value>{contact.name} - {contact.phone}</Value>
+                                </Field>
+                            ))}
+
                         </SwiperSlide>
 
                         {/* Page two */}
@@ -122,10 +123,8 @@ function Step3() {
                                     {/* <Furigana>びょういん</Furigana> */}
                                     病院
                                 </Label>
-                                <Label>
-                                    {/* <Furigana> いーしーしーこんぴゅーた</Furigana> */}
-                                    {patientData.Hospital}
-                                </Label>
+                                <Value>{userData.hospital_destination}</Value>
+
                             </Field>
                             {/* 医者 */}
                             <Field>
@@ -133,10 +132,7 @@ function Step3() {
                                     {/* <Furigana>いしゃ</Furigana> */}
                                     医者
                                 </Label>
-                                <Label>
-                                    {/* <Furigana>ははおや</Furigana> */}
-                                    {patientData.Doctor}
-                                </Label>
+                                <Value>{userData.primary_care_doctor}</Value>
                             </Field>
                             {/* 何科 */}
                             <Field>
@@ -144,10 +140,9 @@ function Step3() {
                                     {/* <Furigana>なにか</Furigana> */}
                                     何科
                                 </Label>
-                                <Label>
-                                    {/* <Furigana>びんぼう</Furigana> */}
-                                    貧乏
-                                </Label>
+
+                                <Value>{userData.department}</Value>
+
                             </Field>
                         </SwiperSlide>
 
@@ -160,14 +155,24 @@ function Step3() {
                                     処方状況
                                 </Label>
                             </CenteredField>
-                            <Value>{patientData.Medicine}</Value>
+                            <Value>{userData.medication_management}</Value>
+
                             <CenteredField>
                                 <Label>
                                     {/* <Furigana>いりょうめも</Furigana> */}
                                     医療メモ
                                 </Label>
                             </CenteredField>
-                            <Value>{patientData.DoctorMessage}</Value>
+                            
+                            {userData.historys && userData.historys.map((item, index) => (
+                                <React.Fragment key={index}>
+                                    <Label>
+                                        <Value>{item.date} - {item.memo}</Value>
+                                    </Label>
+                                    <br />
+                                </React.Fragment>
+                            ))}
+
                         </SwiperSlide>
                     </Swiper>
                 </SwiperContainer>
@@ -178,6 +183,52 @@ function Step3() {
 
 export default Step3;
 
+const bgColor = 'green';
+
+const Container = styled.div`
+  background-color: ${bgColor};
+  padding: 3vh;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+
+const UpperRightBtn = styled.button`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 1.5em;
+`;
+
+const Header = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const NumberSet = styled.div`
+  text-align: center;
+  margin: 1vh 0;
+  padding: 0;
+`;
+
+const NumberItem = styled.p`
+  margin-bottom: -10px;
+  padding: 0;
+  font-size: 1em;
+`;
+
+const Number = styled.p`
+  margin: -2vh 0 0 0;
+  padding: 0;
+  font-size: 8vh;
+`;
 
 const Title = styled.div`
   color:#000;
@@ -197,7 +248,6 @@ const SwiperContainer = styled.div`
   overflow: hidden;
   box-sizing: border-box;
 `;
-
 
 const Field = styled.div`
   margin-bottom: 1vh;

@@ -29,12 +29,9 @@ function DisSignUpTop() {
   const [dob, setDob] = useState({ year: "", month: "", day: "" });
   const [age, setAge] = useState("");
   const [haveError, setHaveError] = useState(false);
-  const [emergencyContactArray, setEmergencyContactArray] = useState([
-    { name: "", phone: "" },
-    { name: "", phone: "" },
-  ]);
   const [allData, setAllData] = useState({
-    photo: selectedFile,
+    photo: "",
+
     user_name: "",
     birth_date: "",
     age: age,
@@ -43,7 +40,8 @@ function DisSignUpTop() {
     hospital_destination: "",
     primary_care_doctor: "",
     specialty: "",
-    chronicDisease: "",
+    chronic_disease: "",
+
     disability_grade: "",
     emergency_contacts: [
       { name: "", phone: "" },
@@ -57,7 +55,7 @@ function DisSignUpTop() {
     hospital_destination: true,
     primary_care_doctor: true,
     specialty: true,
-    chronicDisease: true,
+    chronic_disease: true,
     disability_grade: true,
     emergency_contacts: [
       { name: true, phone: true },
@@ -106,7 +104,8 @@ function DisSignUpTop() {
   };
 
   const handleConfirm = () => {
-    const newInputErrors = {};
+    const newInputErrors = {};      
+
     for (const key in inputErrors) {
       if (key === "emergency_contacts") {
         newInputErrors[key] = inputErrors[key].map(() => ({ name: true, phone: true }));
@@ -126,9 +125,10 @@ function DisSignUpTop() {
       newInputErrors.birth_date = false;
     }
 
-    if (!emergencyContactArray[0].name || !emergencyContactArray[0].phone) {
+    if (!allData.emergency_contacts[0].name || !allData.emergency_contacts[0].phone) {
       newInputErrors.emergency_contacts[0] = { name: false, phone: false };
     }
+  
 
     setInputErrors(newInputErrors);
 
@@ -143,6 +143,7 @@ function DisSignUpTop() {
     if (!errorFound) {
       setOpen(true);
     }
+    console.log(allData)
   };
 
   const handleCloseBox = () => {
@@ -152,9 +153,83 @@ function DisSignUpTop() {
 
   const handleSendData = async () => {
     setSendBtn(true);
-    // TODO: ApI
+    const formData = new FormData();
+    for (const key in allData) {
+      if (Array.isArray(allData[key])) {
+        allData[key].forEach((item, index) => {
+          for (const subKey in item) {
+            formData.append(`${key}[${index}].${subKey}`, item[subKey]);
+          }
+        });
+      } else {
+        formData.append(key, allData[key]);
+      }
+    }
+    if (selectedFile) {
+      formData.append("photo", selectedFile);
+    }
+
+    try {
+      const formData = new FormData();
+  
+      // allDataの各フィールドをFormDataに追加
+      Object.keys(allData).forEach(key => {
+        if (key === 'emergency_contacts') {
+          // 緊急連絡先の処理
+          allData.emergency_contacts.forEach((contact, index) => {
+            if (contact.name || contact.phone) {
+              formData.append(`emergency_contacts[${index}].name`, contact.name);
+              formData.append(`emergency_contacts[${index}].phone`, contact.phone);
+            }
+          });
+        } else if (key !== 'photo') {
+          formData.append(key, allData[key]);
+        }
+      });
+      
+      // 画像ファイルを追加
+      if (selectedFile) {
+        formData.append('photo', selectedFile);
+      }
+      
+      // FormDataの内容をデバッグ出力
+      for (let pair of formData.entries()) {
+        console.log(pair[0] + ': ' + pair[1]); 
+      }
+      
+      const response = await fetch("http://localhost:8080/users", {
+        method: "POST",
+        body: formData,
+      });
+      
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.json();
+      console.log("User created successfully:", data);
+      // 成功時の処理を追加
+    } catch (error) {
+      console.error("Error creating user:", error);
+      // エラー時の処理を追加
+    } finally {
+      setSendBtn(false);
+      setOpen(false);
+    }
   };
 
+  const handleEmergencyContactChange = (index, field, value) => {
+    setAllData(prevData => {
+      const newEmergencyContacts = [...prevData.emergency_contacts];
+      newEmergencyContacts[index] = {
+        ...newEmergencyContacts[index],
+        [field]: value
+      };
+      return {
+        ...prevData,
+        emergency_contacts: newEmergencyContacts
+      };
+    });
+  };
   return (
     <>
       {haveError && (
@@ -179,11 +254,12 @@ function DisSignUpTop() {
             <Confirm>かかりつけの病院：{allData.hospital_destination}</Confirm>
             <Confirm>主治医：{allData.primary_care_doctor}</Confirm>
             <Confirm>何科：{allData.specialty}</Confirm>
-            <Confirm>持病名：{allData.chronicDisease}</Confirm>
+            <Confirm>持病名：{allData.chronic_disease}</Confirm>
             <Confirm>障がい者等級：{allData.disability_grade}</Confirm>
             <Confirm className={css`text-align: center;`}>緊急連絡先</Confirm>
-            <Confirm>緊急連絡1：{emergencyContactArray[0].name} - {emergencyContactArray[0].phone}</Confirm>
-            <Confirm>緊急連絡2：{emergencyContactArray[1].name} - {emergencyContactArray[1].phone}</Confirm>
+            <Confirm>緊急連絡1：{allData.emergency_contacts[0].name} - {allData.emergency_contacts[0].phone}</Confirm>
+            <Confirm>緊急連絡2：{allData.emergency_contacts[1].name} - {allData.emergency_contacts[1].phone}</Confirm>
+
           </DialogContent>
           <ConfirmBtn onClick={handleSendData}>確認</ConfirmBtn>
         </Dialog>
@@ -422,24 +498,26 @@ function DisSignUpTop() {
             )}
 
             {/* 持病名 */}
-            {inputErrors.chronicDisease ? (
+            {inputErrors.chronic_disease ? (
               <InputAreaPx>
-                <InputLabelBlack htmlFor="chronicDisease">持病名:</InputLabelBlack>
+                <InputLabelBlack htmlFor="chronic_disease">持病名:</InputLabelBlack>
                 <InputBar
                   type="text"
-                  name="chronicDisease"
-                  value={allData.chronicDisease}
-                  onChange={(e) => handleInputChange("chronicDisease", e.target.value)}
+                  name="chronic_disease"
+                  value={allData.chronic_disease}
+                  onChange={(e) => handleInputChange("chronic_disease", e.target.value)}
+
                 />
               </InputAreaPx>
             ) : (
               <InputAreaPx>
-                <ErrInputLabel htmlFor="chronicDisease">持病名:</ErrInputLabel>
+                <ErrInputLabel htmlFor="chronic_disease">持病名:</ErrInputLabel>
                 <ErrInputBar
                   type="text"
-                  name="chronicDisease"
-                  value={allData.chronicDisease}
-                  onChange={(e) => handleInputChange("chronicDisease", e.target.value)}
+                  name="chronic_disease"
+                  value={allData.chronic_disease}
+                  onChange={(e) => handleInputChange("chronic_disease", e.target.value)}
+
                 />
               </InputAreaPx>
             )}
@@ -473,97 +551,36 @@ function DisSignUpTop() {
         <Emergency>緊急連絡先</Emergency>
         <h4>* 緊急連絡先は最低一人です</h4>
         <TwoBar>
-          <TwoColumn>
-            {/* 関係 */}
-            {inputErrors.emergency_contacts[0].name ? (
+          {allData.emergency_contacts.map((contact, index) => (
+            <TwoColumn key={index}>
+              {/* 関係 */}
               <InputAreaPx>
-                <InputLabelBlack htmlFor="emergencyContact">緊急連絡先の関係:</InputLabelBlack>
+                <InputLabelBlack htmlFor={`emergencyContact${index + 1}_name`}>
+                  緊急連絡先の関係:
+                </InputLabelBlack>
+                <InputBar
+                  type="text"
+                  name={`emergencyContact${index + 1}_name`}
+                  value={contact.name}
+                  onChange={(e) => handleEmergencyContactChange(index, 'name', e.target.value)}
+                />
+              </InputAreaPx>
+
+
+              {/* 電話番号 */}
+              <InputAreaPx>
+                <InputLabelBlack htmlFor={`emergencyContact${index + 1}_phone`}>
+                  緊急連絡電話番号:
+                </InputLabelBlack>
                 <InputBar
                   type="tel"
-                  name="emergencyContact1_name"
-                  value={emergencyContactArray[0].name}
-                  onChange={(e) => setEmergencyContactArray(prevState => {
-                    const newArray = [...prevState];
-                    newArray[0] = { ...newArray[0], name: e.target.value };
-                    return newArray;
-                  })}
+                  name={`emergencyContact${index + 1}_phone`}
+                  value={contact.phone}
+                  onChange={(e) => handleEmergencyContactChange(index, 'phone', e.target.value)}
                 />
               </InputAreaPx>
-            ) : (
-              <InputAreaPx>
-                <ErrInputLabel htmlFor="emergencyContact">緊急連絡先の関係:</ErrInputLabel>
-                <ErrInputBar
-                  type="tel"
-                  name="emergencyContact1_name"
-                  value={emergencyContactArray[0].name}
-                  onChange={(e) => setEmergencyContactArray(prevState => {
-                    const newArray = [...prevState];
-                    newArray[0] = { ...newArray[0], name: e.target.value };
-                    return newArray;
-                  })}
-                />
-              </InputAreaPx>
-            )}
-
-            <InputAreaPx>
-              <InputBar
-                type="tel"
-                name="emergencyContact2_name"
-                value={emergencyContactArray[1].name}
-                onChange={(e) => setEmergencyContactArray(prevState => {
-                  const newArray = [...prevState];
-                  newArray[1] = { ...newArray[1], name: e.target.value };
-                  return newArray;
-                })}
-              />
-            </InputAreaPx>
-          </TwoColumn>
-
-          {/* 電話番号 */}
-          <TwoColumn>
-            {inputErrors.emergency_contacts[0].phone ? (
-              <InputAreaPx>
-                <InputLabelBlack htmlFor="emergencyContact">緊急連絡電話番号:</InputLabelBlack>
-                <InputBar
-                  type="tel"
-                  name="emergencyContact1_phone"
-                  value={emergencyContactArray[0].phone}
-                  onChange={(e) => setEmergencyContactArray(prevState => {
-                    const newArray = [...prevState];
-                    newArray[0] = { ...newArray[0], phone: e.target.value };
-                    return newArray;
-                  })}
-                />
-              </InputAreaPx>
-            ) : (
-              <InputAreaPx>
-                <ErrInputLabel htmlFor="emergencyContact">緊急連絡電話番号:</ErrInputLabel>
-                <ErrInputBar
-                  type="tel"
-                  name="emergencyContact1_phone"
-                  value={emergencyContactArray[0].phone}
-                  onChange={(e) => setEmergencyContactArray(prevState => {
-                    const newArray = [...prevState];
-                    newArray[0] = { ...newArray[0], phone: e.target.value };
-                    return newArray;
-                  })}
-                />
-              </InputAreaPx>
-            )}
-
-            <InputAreaPx>
-              <InputBar
-                type="tel"
-                name="emergencyContact2_phone"
-                value={emergencyContactArray[1].phone}
-                onChange={(e) => setEmergencyContactArray(prevState => {
-                  const newArray = [...prevState];
-                  newArray[1] = { ...newArray[1], phone: e.target.value };
-                  return newArray;
-                })}
-              />
-            </InputAreaPx>
-          </TwoColumn>
+            </TwoColumn>
+          ))}
         </TwoBar>
 
         {/* 新規登録 Btn */}

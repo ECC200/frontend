@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import styled from '@emotion/styled';
-import Logofunc from '../LogoSetup';
-import { Global, css } from '@emotion/react';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import styled from "@emotion/styled";
+import Logofunc from "../LogoSetup";
+import { Global, css } from '@emotion/react'
 
 import {
   // Container
@@ -15,15 +15,28 @@ import {
 
 function Step2() {
   const navigate = useNavigate();
-  const [disabilityId, setDisabilityId] = useState('');
+  const [disabilityId, setDisabilityId] = useState("");
   const [error, setError] = useState(false);
 
-  const handleSubmit = () => {
-    if (!disabilityId) {
-      setError(true);
+  const handleSubmit = async () => {
+    const response = await fetch("http://localhost:8080/checkDisabilityID", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ disabilityId }),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      if (data.success) {
+        navigate(`/step3/${disabilityId}`);
+      } else {
+        setError(true);
+      }
     } else {
-      setError(false);
-      navigate('/step3/');
+      setError(true);
+
     }
   };
 
@@ -36,9 +49,10 @@ function Step2() {
           }
         `}
       />
-      <UpperRightBtn onClick={() => navigate('/step1/')}>ログアウト</UpperRightBtn>
+      <UpperRightBtn onClick={() => navigate("/step1")}>ログアウト</UpperRightBtn>
       <Container>
-        <Logofunc color="#fff" />
+        <Logofunc color='#fff' />
+
         <InputArea>
           <InputLabelWhite htmlFor="disabilityId">障がい者番号:</InputLabelWhite>
           <InputBar
@@ -51,7 +65,6 @@ function Step2() {
           />
         </InputArea>
         {error && <ErrorMessage>※もう一度入力してください</ErrorMessage>}
-
 
         <SubmitBtn onClick={handleSubmit}>入力</SubmitBtn>
       </Container>

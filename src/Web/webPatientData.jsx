@@ -1,6 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import axios from 'axios';
 import { css } from '@emotion/css';
-import { useNavigate } from 'react-router-dom';
+
 import styled from '@emotion/styled';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
@@ -8,50 +10,84 @@ import DialogTitle from '@mui/material/DialogTitle';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import PlusIconImage from '../assets/plus_icon.png';
-import personImg from '../assets/taku.jpeg';
+
 import EditImage from '../assets/edit.png';
 import BackButtonImage from '../assets/back.png';
 import SaveButtonImage from '../assets/save.png';
 import ReturnButtonImage from '../assets/x.png';
 import WebHeader from './webHeader.jsx';
+import PersonImg from '../assets/taku.jpeg';
+
 import {
     // Header
     Header, PageTitle,
 
     // Button
     SubmitBtnPattern,
-} from './EmotionForWeb.jsx'
+} from './EmotionForWeb.jsx';
 
 const lineSize = '2.5px';
 
 function WebpatientData() {
     const navigate = useNavigate();
-    const [isEditing, setIsEditing] = useState(false); // 編集状態のフラグ
-    const [contentList, setContentList] = useState([{ date: '2023-08-16', content: '定期健診、ビムパット50mg追加' }]);
+    const { userId } = useParams();
+    const [isEditing, setIsEditing] = useState(false);
+    const [contentList, setContentList] = useState([]);
     const [newContent, setNewContent] = useState({ date: '', content: '' });
     const [editContentIndex, setEditContentIndex] = useState(-1);
     const [saveMsg, setSaveMsg] = useState('本当に保存しますか？');
-    const [saveMsgTitle, setSaveMsgTitle] = useState('注意');
+
     const [open, setOpen] = useState(false);
     const [load, setLoad] = useState(false);
     const [sended, setSended] = useState(false);
 
     const [patientData, setPatientData] = useState({
-        photo: '',
-        user_name: '岸本 たく',
-        age: '20',
-        birth_date: '2003-08-30',
-        specialty: '何科',
-        disability_grade: '障がい者等級',
-        hospital_destination: 'かかりつけ病院',
-        chronicDisease: '持病名',
-        primary_care_doctor: '担当医',
-        contact: '080-3860-1577',
-        emergency_contacts: '0120-333-906',
-        address: '大阪府吹田市春日4-7-1-310',
-        Medicine: 'デパケン',
-        DoctorMessage: 'がんばってねー'
+        PersonImg: '',
+        Fullname: '',
+        Age: '',
+        Birthday: '',
+        DisabilityType: '',
+        DisabilityLevel: '',
+        Hospital: '',
+        Doctor: '',
+        PersonContact: '',
+        EmergencyContact: '',
+        Address: '',
+        Medicine: '',
+        DoctorMessage: ''
     });
+
+    useEffect(() => {
+        if (userId) {
+            const fetchData = async () => {
+                try {
+                    const response = await axios.get(`http://localhost:8080/users/${userId}`);
+                    const data = response.data;
+                    console.log(data); // デバッグ用
+                    setPatientData({
+                        PersonImg: data.photo || '',
+                        Fullname: data.user_name || '',
+                        Age: data.age || '',
+                        Birthday: data.birth_date || '',
+                        DisabilityType: data.specialty || '',
+                        DisabilityLevel: data.disability_grade || '',
+                        Hospital: data.hospital_destination || '',
+                        Doctor: data.primary_care_doctor || '',
+                        PersonContact: data.contact || '',
+                        EmergencyContact: data.emergency_contacts[0]?.phone || '',
+                        Address: data.address || '',
+                        Medicine: data.medication_status || '',
+                        DoctorMessage: data.doctor_comment || ''
+                    });
+                    setContentList(data.historys.map(h => ({ date: h.date, content: h.memo })));
+                } catch (error) {
+                    console.error('Error fetching patient data:', error);
+                }
+            };
+            fetchData();
+        }
+    }, [userId]);
+
 
     const handleRightChange = (field, value) => {
         setPatientData((prevData) => ({
@@ -76,31 +112,40 @@ function WebpatientData() {
         }
     };
 
-    const handleSave = () => {
+    const handleSave = async () => {
         setLoad(true);
 
-        // ApI
+        const userDetails = {
+            medication_status: patientData.Medicine,
+            doctor_comment: patientData.DoctorMessage
+        };
 
-        setTimeout(() => {
-            setSended(true);
-            setSaveMsgTitle('成功');
+        const historyData = contentList.map(item => ({
+            date: item.date,
+            memo: item.content
+        }));
+
+        try {
+            await axios.put(`http://localhost:8080/users/${userId}/details`, userDetails);
+            await axios.put(`http://localhost:8080/users/${userId}/history`, historyData);
+
             setSaveMsg('データが保存されました');
+            setSended(true);
             setIsEditing(false);
-
-            // Error
-            // setSaveMsg('保存に失敗しました');
-            // setSended(false);
-        }, 2000);
-
-        setSaveMsg('本当に保存しますか？');
-        setSaveMsgTitle('注意');
+        } catch (error) {
+            setSaveMsg('保存に失敗しました');
+            setSended(false);
+        } finally {
+            setLoad(false);
+        }
     };
 
     return (
         <>
             {load ? (
                 <Dialog open={open} onClose={() => setOpen(false)}>
-                    <DialogTitle className={css`text-align: center;`}>{saveMsgTitle}</DialogTitle>
+                    <DialogTitle className={css`text-align: center;`}>注意</DialogTitle>
+
                     <DialogContent className={css`width:600px;text-align: center;`}>
                         {!sended ? (
                             <Box className={css`text-align: center; margin:10px; `}>
@@ -116,15 +161,14 @@ function WebpatientData() {
                 </Dialog >
             ) : (
                 <Dialog open={open} onClose={() => setOpen(false)}>
-                    <DialogTitle className={css`text-align: center;`}>{saveMsgTitle}</DialogTitle>
+                    <DialogTitle className={css`text-align: center;`}>注意</DialogTitle>
+
                     <DialogContent className={css`width:600px;text-align: center;`}>
                         <h2>{saveMsg}</h2>
                         <SubmitBtn onClick={handleSave}>OK</SubmitBtn>
                     </DialogContent >
                 </Dialog >
             )}
-
-
             <Header>
                 <BackButtonStyled src={BackButtonImage} alt="戻る" onClick={() => navigate(-1)} />
                 <WebHeader />
@@ -144,55 +188,51 @@ function WebpatientData() {
                 )}
             </EditBtn>
 
-            {/* Table */}
             <ContainerStyle>
                 {/* Left */}
                 <LeftStyle>
-                    <Person_img src={personImg} alt="患者画像" />
+                    <Person_img src={patientData.PersonImg || PersonImg} alt="患者画像" />
                     <InfoLeftData>
                         <tr>
                             <th>名前 :</th>
-                            <td>{patientData.user_name}</td>
+                            <td>{patientData.Fullname}</td>
                         </tr>
                         <tr>
                             <th>年齢 :</th>
-                            <td>{patientData.age}</td>
+                            <td>{patientData.Age}</td>
                         </tr>
                         <tr>
                             <th>生年月日 :</th>
-                            <td>{patientData.birth_date}</td>
+                            <td>{patientData.Birthday}</td>
                         </tr>
                         <tr>
-                            <th>何科 :</th>
-                            <td>{patientData.specialty}</td>
-                        </tr>
-                        <tr>
-                            <th>持病名 :</th>
-                            <td>{patientData.chronicDisease}</td>
+                            <th>障がい種別 :</th>
+                            <td>{patientData.DisabilityType}</td>
                         </tr>
                         <tr>
                             <th>障がい者等級 :</th>
-                            <td>{patientData.disability_grade}</td>
+                            <td>{patientData.DisabilityLevel}</td>
                         </tr>
                         <tr>
-                            <th>主治医 :</th>
-                            <td>{patientData.primary_care_doctor}</td>
+                            <th>かかりつけ医 :</th>
+                            <td>{patientData.Doctor}</td>
                         </tr>
                         <tr>
                             <th>かかりつけ病院 :</th>
-                            <td>{patientData.hospital_destination}</td>
+                            <td>{patientData.Hospital}</td>
                         </tr>
                         <tr>
                             <th>本人連絡先 :</th>
-                            <td>{patientData.contact}</td>
+                            <td>{patientData.PersonContact}</td>
                         </tr>
                         <tr>
                             <th>緊急連絡先 :</th>
-                            <td>{patientData.emergency_contacts}</td>
+                            <td>{patientData.EmergencyContact}</td>
                         </tr>
                         <tr>
                             <th>住所 :</th>
-                            <td>{patientData.address}</td>
+                            <td>{patientData.Address}</td>
+
                         </tr>
                     </InfoLeftData>
                 </LeftStyle>
@@ -222,6 +262,7 @@ function WebpatientData() {
                             </>
                         )}
                     </DateContentStyle>
+
 
                     {/* List Item */}
                     <ContentListStyle>
@@ -270,6 +311,7 @@ function WebpatientData() {
                     )}
 
                     {/* Line */}
+
                     <SplitLine />
                     <p>主治医から：</p>
                     {isEditing ? (
@@ -288,7 +330,6 @@ function WebpatientData() {
 }
 
 export default WebpatientData;
-
 
 const BackButtonStyled = styled.img`
   position: absolute;
@@ -354,7 +395,6 @@ const InfoLeftData = styled.div`
   }
 `;
 
-
 ///-----------------------------------------Center-------------------------------------------------------
 
 const InfoCenterData = styled.div`
@@ -392,6 +432,7 @@ const InfoCenterDataItemDetailInput = styled.input`
     text-align: left;
 `
 
+
 ///----------------------------------------------------Right---------------------------------------------------------------
 
 const InfoRightData = styled.div`
@@ -428,14 +469,12 @@ const Title = styled.h2`
     text-align: center;
     margin: 0 auto;
 `
-///--------------------------------------------------------------------
 
 const EditBtn = styled.div`
   display: grid;
   justify-content:end;
   width:92%;
 `;
-
 
 const SubmitBtn = styled.button`
       border: 1px solid #000;
