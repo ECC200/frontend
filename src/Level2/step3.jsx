@@ -187,11 +187,11 @@ const UpperRightBtn = styled.button`
   font-size: 1.5em;
 `;
 
-const Header = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
+// const Header = styled.div`
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+// `;
 
 const NumberSet = styled.div`
   text-align: center;
