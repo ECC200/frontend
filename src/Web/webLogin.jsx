@@ -14,6 +14,8 @@ function WebLogin() {
     const [password, setPassword] = useState('');
     const [reqMsg, setReqMsg] = useState(true);
     const navigate = useNavigate();
+    const IpAddress = '54.226.61.199:8080'
+
 
     const handleStaffIdChange = useCallback((e) => {
         setStaffId(e.target.value);
@@ -24,9 +26,8 @@ function WebLogin() {
     }, []);
 
     const handleLogin = async () => {
-
         try {
-            const response = await fetch("http://localhost:8080/login", {
+            const response = await fetch(`http://${IpAddress}/login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

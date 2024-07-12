@@ -25,6 +25,7 @@ function WebStaffData() {
     const [confirm, setConfirm] = useState(false);
     const [searchbar, setSearchbar] = useState('');
     const searchRsp = 'No matching records found';
+    const IpAddress = '54.226.61.199:8080'
     const [staffData, setStaffData] = useState({
         staff_name: "",
         boss: "",
@@ -64,7 +65,8 @@ function WebStaffData() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(`http://localhost:8080/staffs/${staffId}`);
+                // const response = await axios.get(`http://localhost:8080/staffs/${staffId}`);
+                const response = await axios.get(`http://${IpAddress}/staffs/${staffId}`);
                 setStaffData(response.data);
             } catch (error) {
                 console.error("Error fetching staff data:", error);
@@ -100,7 +102,8 @@ function WebStaffData() {
         if (searchbar !== '') {
             setOpen(true);
             try {
-                await axios.post('http://localhost:8080/checkDisabilityID', { disabilityId: searchbar });
+                // await axios.post(`http://localhost:8080/checkDisabilityID`, { disabilityId: searchbar });
+                await axios.post(`http://${IpAddress}/checkDisabilityID`, { disabilityId: searchbar });
                 setTimeout(() => {
                     navigate(`/WebPatientData/${searchbar}`);
                 }, 1000);

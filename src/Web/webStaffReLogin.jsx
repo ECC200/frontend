@@ -11,6 +11,8 @@ import {
 
 
 function WebStaffReLogin() {
+    const IpAddress = '54.226.61.199:8080'
+
     const navigate = useNavigate();
     const location = useLocation();
     const { FullName, StaffID } = location.state;
@@ -20,7 +22,8 @@ function WebStaffReLogin() {
     // Staff Data
     const handleTakeData = async () => {
         try {
-            const response = await Axios.get('localhost:8080', {
+            // const response = await Axios.get(`localhost:8080`, {
+            const response = await Axios.get(`${IpAddress}`, {
                 StaffId: StaffID,
             });
             navigate("/webStaffData/", { state: response.data });
@@ -31,7 +34,8 @@ function WebStaffReLogin() {
     // Login
     const handleLogin = async () => {
         try {
-            const response = await Axios.post('localhost:8080', {
+            // const response = await Axios.post('localhost:8080', {
+            const response = await Axios.post(`${IpAddress}`, {
                 StaffId: StaffID,
                 Password: password
             });

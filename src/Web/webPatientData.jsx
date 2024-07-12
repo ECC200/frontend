@@ -37,7 +37,7 @@ function WebpatientData() {
     const [newContent, setNewContent] = useState({ date: '', content: '' });
     const [editContentIndex, setEditContentIndex] = useState(-1);
     const [saveMsg, setSaveMsg] = useState('本当に保存しますか？');
-
+    const IpAddress = '54.226.61.199:8080'
     const [open, setOpen] = useState(false);
     const [load, setLoad] = useState(false);
     const [sended, setSended] = useState(false);
@@ -63,7 +63,8 @@ function WebpatientData() {
         if (userId) {
             const fetchData = async () => {
                 try {
-                    const response = await axios.get(`http://localhost:8080/users/${userId}`);
+                    // const response = await axios.get(`http://localhost:8080/users/${userId}`);
+                    const response = await axios.get(`http://${IpAddress}/users/${userId}`);
                     const data = response.data;
                     setPatientData({
                         PersonImg: data.photo || '',
@@ -128,8 +129,10 @@ function WebpatientData() {
         }));
         try {
             setIsEditing(false);
-            await axios.put(`http://localhost:8080/users/${userId}/details`, userDetails);
-            await axios.put(`http://localhost:8080/users/${userId}/history`, historyData);
+            // await axios.put(`http://localhost:8080/users/${userId}/details`, userDetails);
+            // await axios.put(`http://localhost:8080/users/${userId}/history`, historyData);
+            await axios.put(`http://${IpAddress}/users/${userId}/details`, userDetails);
+            await axios.put(`http://${IpAddress}/users/${userId}/history`, historyData);
             setSaveMsg('データが保存されました');
             setSended(true);
         } catch (error) {
