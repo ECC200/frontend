@@ -395,10 +395,8 @@ const InfoLeftData = styled.div`
   border:none;
   padding: 5px;
   th{
-    padding: 3px 0;
-  }
-  th{
-     padding-right: 15px;
+    padding: 3px 15px 3px 0;
+    width:40%;
   }
   p {
     margin: 0;

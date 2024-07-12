@@ -25,15 +25,13 @@ function App() {
         <Routes>
           <Route path="/step1" element={<Step1 />} />
           <Route path="/step2" element={<Step2 />} />
-          {/* <Route path="/step3" element={<Step3 />} /> */}
           <Route path="/step3/:disabilityId" element={<Step3 />} />
-          <Route path="/level1" element={<Level1 />} />
+          <Route path="/level1/:userId" element={<Level1 />} />
           <Route path="/WebLogin" element={<WebLogin />} />
           <Route path="/WebStaffData/:staffId" element={<WebStaffData />} />
           <Route path="/WebDisSignUp" element={<DisSignUpTop />} />
           <Route path="/webStaffReLogin" element={<WebStaffReLogin />} />
           <Route path="/WebPatientData/:userId" element={<WebPatientData />} />
-
         </Routes>
       </Router>
     </>

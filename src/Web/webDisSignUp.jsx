@@ -194,14 +194,15 @@ function DisSignUpTop() {
       for (let pair of formData.entries()) {
         console.log(pair[0] + ': ' + pair[1]);
       }
-      await fetch("http://localhost:8080/users", {
+      const response = await fetch("http://localhost:8080/users", {
         method: "POST",
         body: formData,
       });
       // 成功時の処理を追加
-      // TODO: #
+
+      const data = await response.json();
       setTimeout(() => {
-        navigate(`/WebPatientData/#`);
+        navigate(`/WebPatientData/${data.user_id}`);
       }, 1000);
 
     } catch (error) {
