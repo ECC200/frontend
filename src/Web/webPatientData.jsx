@@ -16,14 +16,15 @@ import BackButtonImage from '../assets/back.png';
 import SaveButtonImage from '../assets/save.png';
 import ReturnButtonImage from '../assets/x.png';
 import WebHeader from './webHeader.jsx';
-import PersonImg from '../assets/taku.jpeg';
+import PersonImg from '../assets/ProfilePic.svg';
 
 import {
     // Header
     Header, PageTitle,
-
     // Button
     SubmitBtnPattern,
+    // Other
+    DialogBoxArea
 } from './EmotionForWeb.jsx';
 
 const lineSize = '2.5px';
@@ -57,13 +58,13 @@ function WebpatientData() {
         DoctorMessage: ''
     });
 
+    // データをとる
     useEffect(() => {
         if (userId) {
             const fetchData = async () => {
                 try {
                     const response = await axios.get(`http://localhost:8080/users/${userId}`);
                     const data = response.data;
-                    console.log(data); // デバッグ用
                     setPatientData({
                         PersonImg: data.photo || '',
                         Fullname: data.user_name || '',
@@ -88,7 +89,7 @@ function WebpatientData() {
         }
     }, [userId]);
 
-
+    // 右
     const handleRightChange = (field, value) => {
         setPatientData((prevData) => ({
             ...prevData,
@@ -96,6 +97,7 @@ function WebpatientData() {
         }));
     };
 
+    // 倒れた履歴修正
     const handleCenterChange = (index, field, value) => {
         setContentList((prevData) =>
             prevData.map((item, idx) =>
@@ -104,6 +106,7 @@ function WebpatientData() {
         );
     };
 
+    // 倒れた履歴追加
     const handleAddContent = () => {
         if (newContent.date && newContent.content) {
             const updatedContentList = [newContent, ...contentList].sort((a, b) => new Date(b.date) - new Date(a.date));
@@ -113,40 +116,34 @@ function WebpatientData() {
     };
 
     const handleSave = async () => {
+        setOpen(false);
         setLoad(true);
-
         const userDetails = {
             medication_status: patientData.Medicine,
             doctor_comment: patientData.DoctorMessage
         };
-
         const historyData = contentList.map(item => ({
             date: item.date,
             memo: item.content
         }));
-
         try {
+            setIsEditing(false);
             await axios.put(`http://localhost:8080/users/${userId}/details`, userDetails);
             await axios.put(`http://localhost:8080/users/${userId}/history`, historyData);
-
             setSaveMsg('データが保存されました');
             setSended(true);
-            setIsEditing(false);
         } catch (error) {
             setSaveMsg('保存に失敗しました');
-            setSended(false);
-        } finally {
-            setLoad(false);
         }
     };
 
+
     return (
         <>
-            {load ? (
-                <Dialog open={open} onClose={() => setOpen(false)}>
-                    <DialogTitle className={css`text-align: center;`}>注意</DialogTitle>
-
-                    <DialogContent className={css`width:600px;text-align: center;`}>
+            <Dialog open={load} onClose={() => setLoad(false)}>
+                <DialogBoxArea>
+                    <DialogTitle>注意</DialogTitle>
+                    <DialogContent className='DialogContentStyle'>
                         {!sended ? (
                             <Box className={css`text-align: center; margin:10px; `}>
                                 <CircularProgress color="inherit" />
@@ -154,43 +151,50 @@ function WebpatientData() {
                         ) : (
                             <>
                                 <h2>{saveMsg}</h2>
-                                <SubmitBtn onClick={() => setOpen(false)}>OK</SubmitBtn>
+                                <SubmitBtn onClick={() => setLoad(false)}>OK</SubmitBtn>
                             </>
                         )}
                     </DialogContent >
-                </Dialog >
-            ) : (
-                <Dialog open={open} onClose={() => setOpen(false)}>
-                    <DialogTitle className={css`text-align: center;`}>注意</DialogTitle>
+                </DialogBoxArea>
+            </Dialog >
 
-                    <DialogContent className={css`width:600px;text-align: center;`}>
-                        <h2>{saveMsg}</h2>
+
+            <Dialog open={open} onClose={() => setOpen(false)}>
+                <DialogBoxArea>
+                    <DialogTitle>注意</DialogTitle>
+                    <DialogContent className='DialogContentStyle'>
+                        <h2>本当に保存しますか？</h2>
                         <SubmitBtn onClick={handleSave}>OK</SubmitBtn>
                     </DialogContent >
-                </Dialog >
-            )}
+                </DialogBoxArea>
+            </Dialog >
+
+            {/* Header */}
             <Header>
                 <BackButtonStyled src={BackButtonImage} alt="戻る" onClick={() => navigate(-1)} />
                 <WebHeader />
             </Header>
 
+            {/* Topic */}
             <PageTitle>障がい者データ</PageTitle>
 
+            {/* icon Btn */}
             <EditBtn>
                 {isEditing && (
-                    <div className={css`display:flex;`}>
-                        <img src={SaveButtonImage} alt="保存" onClick={() => setOpen(true)} className={css`width: 30px;height: 30px;margin:0 10px;`} />
-                        <img src={ReturnButtonImage} alt="編集戻る" onClick={() => setIsEditing(false)} className={css`width: 30px;height: 30px;margin:0 10px;`} />
+                    <div>
+                        <IconBtn src={SaveButtonImage} alt="保存" onClick={() => setOpen(true)} />
+                        <IconBtn src={ReturnButtonImage} alt="編集戻る" onClick={() => setIsEditing(false)} />
                     </div>
                 )}
                 {!isEditing && (
-                    <img src={EditImage} alt="編集" onClick={() => setIsEditing(true)} className={css`width: 30px;height: 30px;`} />
+                    <IconBtn src={EditImage} alt="編集" onClick={() => setIsEditing(true)} />
                 )}
             </EditBtn>
 
+            {/* Table */}
             <ContainerStyle>
                 {/* Left */}
-                <LeftStyle>
+                <LeftData>
                     <Person_img src={patientData.PersonImg || PersonImg} alt="患者画像" />
                     <InfoLeftData>
                         <tr>
@@ -235,10 +239,11 @@ function WebpatientData() {
 
                         </tr>
                     </InfoLeftData>
-                </LeftStyle>
+                </LeftData>
 
                 {/* Main */}
                 <InfoCenterData>
+                    {/* Add bar */}
                     <DateContentStyle>
                         {isEditing ? (
                             <>
@@ -275,7 +280,7 @@ function WebpatientData() {
                                             value={item.date}
                                             onChange={(e) => handleCenterChange(index, 'date', e.target.value)}
                                         />
-                                        <InfoCenterDataItemDetailInput
+                                        <input
                                             type="text"
                                             value={item.content}
                                             onChange={(e) => handleCenterChange(index, 'content', e.target.value)}
@@ -284,17 +289,23 @@ function WebpatientData() {
                                 ) : (
                                     <>
                                         <span>{item.date}</span>
-                                        <InfoCenterDataItemDetail>{item.content}</InfoCenterDataItemDetail>
+                                        <p>{item.content}</p>
                                     </>
                                 )}
-                                <button
-                                    onClick={() => setEditContentIndex(editContentIndex === index ? -1 : index)}
-                                    className={css`margin-right: 20px;`}
-                                >
-                                    編集</button>
+                                {isEditing ? (
+                                    <div>
+                                        <button
+                                            onClick={() => setEditContentIndex(editContentIndex === index ? -1 : index)}
+                                            className={css`margin-right: 20px;`}
+                                        >
+                                            編集</button>
+                                    </div>
+                                ) : (<div></div>)}
                             </InfoCenterDataItem>
                         ))}
                     </ContentListStyle>
+
+
                 </InfoCenterData>
 
                 {/* Right */}
@@ -348,15 +359,15 @@ const ContainerStyle = styled.div`
   margin: 0 auto;
 `;
 
-const LeftStyle = styled.div`
+const LeftData = styled.div`
   border-right: ${lineSize} solid #000;
-  width: 380px;
+  width: 400px;
   text-align: center;
   padding: 10px;
 `;
 
 const Person_img = styled.img`
-  width: 150px;
+  width: 200px;
   margin: 10px 0;
 `;
 
@@ -413,24 +424,15 @@ const InfoCenterDataItem = styled.div`
   justify-content: space-between;
   border-bottom: ${lineSize} solid #000;
   padding: 10px 0;
-  width:100%;
+  height:100%;
+  width:700px;
+  text-align: left;
   span {
     margin-left: 20px;
     margin-right:50px;
   }
 `;
 
-const InfoCenterDataItemDetail = styled.p`
-    height: 100%;
-    width: 430px;
-    text-align: left;
-`
-
-const InfoCenterDataItemDetailInput = styled.input`
-    height: 100%;
-    width: 430px;
-    text-align: left;
-`
 
 
 ///----------------------------------------------------Right---------------------------------------------------------------
@@ -474,7 +476,14 @@ const EditBtn = styled.div`
   display: grid;
   justify-content:end;
   width:92%;
+  margin-bottom:10px
 `;
+
+const IconBtn = styled.img`
+    width: 30px;
+    height: 30px;
+    margin:0 10px;
+`
 
 const SubmitBtn = styled.button`
       border: 1px solid #000;

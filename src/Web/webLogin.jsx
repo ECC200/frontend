@@ -4,6 +4,10 @@ import styled from '@emotion/styled';
 import Logofunc from '../LogoSetup';
 import { Global, css } from '@emotion/react';
 
+import {
+    ErrInputLabel, InputLabelBlack, ErrInputBar, InputBar, InputArea, ErrMsg
+} from './EmotionForWeb'
+
 function WebLogin() {
     const [resetpw, setResetPW] = useState(false);
     const [staffId, setStaffId] = useState('');
@@ -20,6 +24,7 @@ function WebLogin() {
     }, []);
 
     const handleLogin = async () => {
+
         try {
             const response = await fetch("http://localhost:8080/login", {
                 method: "POST",
@@ -67,7 +72,7 @@ function WebLogin() {
                     <LoginBg>
                         <Logofunc />
                         <ResetPwMsg>ITの同僚に連絡してください。</ResetPwMsg>
-                        <ResetPw onClick={handlePwChangeMsg}>Login page</ResetPw>
+                        <ResetPw onClick={handlePwChangeMsg}>ログイン画面へ遷移</ResetPw>
                     </LoginBg>
                 </BackDiv>
             </>
@@ -89,7 +94,7 @@ function WebLogin() {
                             <>
                                 <ErrMsg>*従業員番号またはパスワードが正しくありません*</ErrMsg>
                                 <InputArea>
-                                    <ErrInputName htmlFor='staffId'>従業員番号:</ErrInputName>
+                                    <ErrInputLabel htmlFor='staffId'>従業員番号:</ErrInputLabel>
                                     <ErrInputBar
                                         type="text"
                                         id="staffId"
@@ -97,8 +102,9 @@ function WebLogin() {
                                         onChange={handleStaffIdChange}
                                     />
                                 </InputArea>
+
                                 <InputArea>
-                                    <ErrInputName htmlFor='password'>パスワード:</ErrInputName>
+                                    <ErrInputLabel htmlFor='password'>パスワード:</ErrInputLabel>
                                     <ErrInputBar
                                         type="password"
                                         id="password"
@@ -111,7 +117,7 @@ function WebLogin() {
                         ) : (
                             <>
                                 <InputArea>
-                                    <InputName htmlFor='staffId'>従業員の番号:</InputName>
+                                    <InputLabelBlack htmlFor='staffId'>従業員の番号:</InputLabelBlack>
                                     <InputBar
                                         type="text"
                                         id="staffId"
@@ -120,7 +126,7 @@ function WebLogin() {
                                     />
                                 </InputArea>
                                 <InputArea>
-                                    <InputName htmlFor='password'>パスワード:</InputName>
+                                    <InputLabelBlack htmlFor='password'>パスワード:</InputLabelBlack>
                                     <InputBar
                                         type="password"
                                         id="password"
@@ -151,60 +157,14 @@ const LoginBg = styled.div`
     display: flex;
     flex-direction: column;
     width: 30%;
-    height: 550px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 5%;
+    height: 675px;
+    margin:5% auto 0 auto;
     border: 2px solid #000;
     border-radius: 25px;
-    background-color: #fff;
     padding: 3% 0;
 `;
 
-const InputArea = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    width: 65%;
-    margin: 4% auto;
-    letter-spacing: 5px;
-`;
 
-const InputName = styled.label`
-    color: #000;
-    font-size: 18px;
-`;
-
-const ErrInputName = styled.label`
-    color: red;
-    font-size: 18px;
-`;
-
-const InputBar = styled.input`
-    background-color: #fff;
-    border: 1px solid #000;
-    border-radius: 10px;
-    color: #000;
-    padding-left: 3%;
-    font-size: 14px;
-    height: 50px;
-    :hover {
-        background-color: hsl(0 0% 85%);
-    }
-`;
-
-const ErrInputBar = styled.input`
-    background-color: #fff;
-    border: 1px solid red;
-    border-radius: 10px;
-    color: #000;
-    padding-left: 3%;
-    font-size: 14px;
-    height: 50px;
-    :hover {
-        background-color: hsl(0 0% 85%);
-    }
-`;
 
 const SubmitBtn = styled.button`
     border: 1px solid #000;
@@ -223,8 +183,8 @@ const ResetPw = styled.button`
     border: none;
     background-color: transparent;
     color: #000;
-    margin-top: 50px;
-    font-size: 12px;
+    margin-top: 20px;
+    font-size: 14px;
     letter-spacing: 0.5em;
     text-transform: uppercase;
 `;
@@ -236,12 +196,4 @@ const ResetPwMsg = styled.p`
     letter-spacing: 1.5px;
     text-align: center;
     text-transform: uppercase;
-`;
-
-const ErrMsg = styled.p`
-    color: red;
-    font-size: 18px;
-    letter-spacing: 3px;
-    text-align: center;
-    margin: 0;
 `;

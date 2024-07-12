@@ -1,7 +1,8 @@
-import { useRef, useState } from 'react';
-import styled from '@emotion/styled';
-import Logo from '../LogoSetup';
+import { useRef, useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { Global, css } from '@emotion/react'
+import Logo from '../LogoSetup';
+import styled from '@emotion/styled';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -16,18 +17,33 @@ import {
 } from '../EmotionForMoblie';
 
 function Level1() {
-  const id = "1A2B3A6G8E";
+  const { userId } = useParams();
   const [isModalOpen, setModalOpen] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
+  const [user, setUser] = useState(null);
+  const [error, setError] = useState(null);
   const numberRef = useRef(null);
 
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await fetch(`http://localhost:8080/users/${userId}`);
+        const userData = await response.json();
+        setUser(userData);
+      } catch (err) {
+        setError(err.message);
+        throw Error('そのユーザーは存在しません');
+      }
+    };
+    fetchUser();
+  }, [userId]);
   const emergencyContacts = [
-    { href: 'tel:' + /*emergencycontact*/'', text: '母携帯' },
-    { href: 'tel:' + /*workcontact*/'', text: '勤務先' },
+    { href: 'tel:' + (user?.emergencycontact || ''), text: '母携帯' },
+    { href: 'tel:' + (user?.workcontact || ''), text: '勤務先' },
   ];
 
   const handleReport = () => {
-    window.location.href = 'tel:119'; //119
+    window.location.href = 'tel:119';
   };
 
   const handleEmergencyContact = () => {
@@ -39,53 +55,68 @@ function Level1() {
     navigator.clipboard.writeText(numberText)
       .then(() => {
         setIsCopied(true);
-        setTimeout(() => setIsCopied(false), 2000); // 2秒後にコピー完了メッセージを非表示
+        setTimeout(() => setIsCopied(false), 2000);
       })
       .catch(err => console.error('Failed to copy: ', err));
   };
 
-  return (
-    <>
-      <Global
-        styles={css`
+
+
+
+
+  if (error) {
+    return (
+      <ErrorContainer>
+        <ErrorMessage>{error}</ErrorMessage>
+      </ErrorContainer>
+    );
+  } else if (!user) {
+    return <LoadingMessage>読み込み中...</LoadingMessage>;
+  } else {
+    return (
+      <>
+        <Global
+          styles={css`
             body {
               background-color: #B22222;
             }
         `} />
-      <Container>
-        {/* Main */}
-        <Logo color='#fff' />
-        <NumberSet>
-          <NumberItem>患者番号:</NumberItem>
-          <NumberWord ref={numberRef}>
-            {id}
-            <CopieBT src={Copie} onClick={handleCopy} alt="Copy Icon" />
-          </NumberWord>
-          {isCopied && <CopiedMessage>Copied!</CopiedMessage>}
-        </NumberSet>
+        <Container>
+          {/* Main */}
+          <Logo color='#fff' />
+
+          <NumberSet>
+            <NumberItem>患者番号:</NumberItem>
+            <NumberWord ref={numberRef}>
+              {userId}
+              <CopieBT src={Copie} onClick={handleCopy} alt="Copy Icon" />
+            </NumberWord>
+            {isCopied && <CopiedMessage>Copied!</CopiedMessage>}
+          </NumberSet>
 
 
-        <Button onClick={handleReport}>119</Button>
-        <Button onClick={handleEmergencyContact}>緊急連絡先</Button>
+          <Button onClick={handleReport}>119</Button>
+          <Button onClick={handleEmergencyContact}>緊急連絡先</Button>
 
-        <Dialog open={isModalOpen}>
-          <DialogBoxArea>
-            <DialogTitle>どこに連絡しますか？</DialogTitle>
-            <DialogContent className='DialogContentStyle'>
-              <LinkList>
-                {emergencyContacts.map((contact, index) => (
-                  <LinkItem key={index}>
-                    <a href={contact.href}>{contact.text}</a>
-                  </LinkItem>
-                ))}
-              </LinkList>
-              <ModalButton onClick={() => setModalOpen(false)}>閉じる</ModalButton>
-            </DialogContent>
-          </DialogBoxArea>
-        </Dialog >
-      </Container>
-    </>
-  );
+          <Dialog open={isModalOpen}>
+            <DialogBoxArea>
+              <DialogTitle>どこに連絡しますか？</DialogTitle>
+              <DialogContent className='DialogContentStyle'>
+                <LinkList>
+                  {emergencyContacts.map((contact, index) => (
+                    <LinkItem key={index}>
+                      <a href={contact.href}>{contact.text}</a>
+                    </LinkItem>
+                  ))}
+                </LinkList>
+                <ModalButton onClick={() => setModalOpen(false)}>閉じる</ModalButton>
+              </DialogContent>
+            </DialogBoxArea>
+          </Dialog >
+        </Container>
+      </>
+    );
+  }
 }
 
 export default Level1;
@@ -148,4 +179,29 @@ const CopieBT = styled.img`
   width: 20px;
   height: 20px;
   filter: brightness(0) invert(1);
+`;
+
+const ErrorContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #B22222;
+  color: white;
+`;
+
+const ErrorMessage = styled.p`
+  font-size: 1.2em;
+  margin: 10px 0;
+`;
+
+const LoadingMessage = styled.p`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-size: 1.2em;
+  background-color: #B22222;
+  color: white;
 `;

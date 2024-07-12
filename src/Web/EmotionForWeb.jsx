@@ -20,6 +20,7 @@ export const SubmitBtnColor = 'transparent'
 export const InputBorder = '1px'
 export const InputHeight = '40px'
 export const InputRadius = '10px'
+export const InputLableWord = '18px'
 
 // Input Set Area
 export const InputAreaWidth = '85%'
@@ -42,18 +43,22 @@ export const SubmitBtnPattern = `
 
 
 // ---------------------------- Emotion ------------------------------------
+// input
 export const InputLabelBlack = styled.label`
-color: #000;
-font-size: 18px;
-`;
+  color: #000;
+  font-size: ${InputLableWord};
+  letter-spacing: ${BtnLetterSpacing};
+  `;
 
 export const InputLabelWhite = styled.label`
-color: #fff;
-font-size: 18px;
+  color: #fff;
+  font-size: ${InputLableWord};
+  letter-spacing: ${BtnLetterSpacing};
 `;
 export const ErrInputLabel = styled.label`
-    color: #ff1515;
-    font-size: 18px;
+    color: ${ErrColor};
+  font-size: ${InputLableWord};
+  letter-spacing: ${BtnLetterSpacing};
 `;
 
 export const InputBar = styled.input`
@@ -84,8 +89,10 @@ export const ErrInputBar = styled.input`
 
 export const InputArea = styled.div`
 width: ${InputAreaWidth};
-margin: 5% 0;
+margin: 3% auto;
 `
+
+// Header and Title
 
 export const Header = styled.header`
   display: flex;
@@ -94,6 +101,7 @@ export const Header = styled.header`
   margin: 0 auto;
   background-color:gray;
 `;
+
 export const PageTitle = styled.h1`
       text-align: center;
       margin:35px 0;
@@ -121,5 +129,15 @@ font-size: ${BtnFontSize};
 padding: 8px 16px;
 `;
 
+export const ErrMsg = styled.p`
+    color: ${ErrColor};
+    font-size: ${BtnFontSize};
+    letter-spacing: 3px;
+    text-align: center;
+    margin: 10px 0;
+`;
 
-
+export const DialogBoxArea = styled.div`
+    width:600px;
+    text-align:center;
+`;

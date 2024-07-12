@@ -6,9 +6,13 @@ import Logofunc from "../LogoSetup";
 import { Global, css } from '@emotion/react';
 import { Swiper, SwiperSlide } from "swiper/react";
 import React from "react";
-
 import "swiper/css";
 import "swiper/css/pagination";
+import {
+    NumberWord, NumberSet, NumberItem, UpperRightBtn
+} from '../EmotionForMoblie'
+
+
 
 function Step3() {
     const { disabilityId } = useParams();
@@ -50,9 +54,10 @@ function Step3() {
             <UpperRightBtn onClick={() => navigate("/step2")}>退出</UpperRightBtn>
             <Container>
                 <Logofunc color="#fff" />
+
                 <NumberSet>
                     <NumberItem>患者番号:</NumberItem>
-                    <Number>{userData.user_id}</Number>
+                    <NumberWord>{userData.user_id}</NumberWord>
                 </NumberSet>
 
                 <SwiperContainer>
@@ -60,6 +65,7 @@ function Step3() {
                         pagination={{ dynamicBullets: true }}
                         modules={[Pagination]}
                         className="mySwiper"
+                        style={{ height: '350px' }}
                     >
                         {/* Page one */}
                         <SwiperSlide>
@@ -67,7 +73,6 @@ function Step3() {
                             {/* 名前 */}
                             <Field>
                                 <Label>
-                                    <Furigana>なまえ</Furigana>
                                     名前
                                 </Label>
                                 <Value>{userData.user_name}</Value>
@@ -75,7 +80,6 @@ function Step3() {
                             {/* 生年月日 */}
                             <Field>
                                 <Label>
-                                    <Furigana>せいねんがっぴ</Furigana>
                                     生年月日
                                 </Label>
                                 <Value>{userData.birth_date}</Value>
@@ -83,7 +87,6 @@ function Step3() {
                             {/* 持病 */}
                             <Field>
                                 <Label>
-                                    <Furigana>じびょう</Furigana>
                                     持病
                                 </Label>
                                 <Value>{userData.chronic_disease}</Value>
@@ -92,7 +95,6 @@ function Step3() {
                             {userData.emergency_contacts.map((contact, index) => (
                                 <Field key={index}>
                                     <Label>
-                                        <Furigana>きんきゅうれんらくにん</Furigana>
                                         緊急連絡人
                                     </Label>
                                     <Value>{contact.name} - {contact.phone}</Value>
@@ -106,7 +108,6 @@ function Step3() {
                             {/* 病院 */}
                             <Field>
                                 <Label>
-                                    <Furigana>びょういん</Furigana>
                                     病院
                                 </Label>
                                 <Value>{userData.hospital_destination}</Value>
@@ -114,7 +115,6 @@ function Step3() {
                             {/* 医者 */}
                             <Field>
                                 <Label>
-                                    <Furigana>いしゃ</Furigana>
                                     医者
                                 </Label>
                                 <Value>{userData.primary_care_doctor}</Value>
@@ -122,30 +122,25 @@ function Step3() {
                             {/* 何科 */}
                             <Field>
                                 <Label>
-                                    <Furigana>なにか</Furigana>
                                     何科
                                 </Label>
-                                <Value>{userData.department}</Value>
+                                <Value>{userData.specialty}</Value>
                             </Field>
                         </SwiperSlide>
 
                         {/* Page three */}
                         <SwiperSlide>
-                            <Title>倒れた履歴</Title>
                             <CenteredField>
-                                <Label>
-                                    <Furigana>しょほうじょうきょう</Furigana>
-                                    処方状況
-                                </Label>
+                                <Title>医療メモ</Title>
                             </CenteredField>
-                            <Value>{userData.medication_management}</Value>
+                            <Value>{userData.doctor_comment}</Value>
+                        </SwiperSlide>
+
+                        {/* Page four */}
+                        <SwiperSlide>
                             <CenteredField>
-                                <Label>
-                                    <Furigana>いりょうめも</Furigana>
-                                    医療メモ
-                                </Label>
+                                <Title>倒れた履歴</Title>
                             </CenteredField>
-                            
                             {userData.historys && userData.historys.map((item, index) => (
                                 <React.Fragment key={index}>
                                     <Label>
@@ -155,6 +150,7 @@ function Step3() {
                                 </React.Fragment>
                             ))}
                         </SwiperSlide>
+
                     </Swiper>
                 </SwiperContainer>
             </Container>
@@ -176,40 +172,7 @@ const Container = styled.div`
   justify-content: center;
 `;
 
-const UpperRightBtn = styled.button`
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: none;
-  border: none;
-  color: white;
-  cursor: pointer;
-  font-size: 1.5em;
-`;
 
-// const Header = styled.div`
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-// `;
-
-const NumberSet = styled.div`
-  text-align: center;
-  margin: 1vh 0;
-  padding: 0;
-`;
-
-const NumberItem = styled.p`
-  margin-bottom: -10px;
-  padding: 0;
-  font-size: 1em;
-`;
-
-const Number = styled.p`
-  margin: -2vh 0 0 0;
-  padding: 0;
-  font-size: 8vh;
-`;
 
 const Title = styled.div`
   color:#000;
@@ -255,9 +218,4 @@ const Value = styled.div`
   display: flex;
   justify-content: center;
   padding: 0.5vh 0;
-`;
-
-const Furigana = styled.div`
-  font-size: 1vh;
-  color: gray;
 `;

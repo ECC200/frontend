@@ -31,11 +31,13 @@ export const SubmitBtnPattern = `
   cursor: ${BtnCursor};
 `
 export const InputLabelBlack = styled.label`
+letter-spacing: 5px;
 color: #000;
 font-size: 100%;
 `;
 
 export const InputLabelWhite = styled.label`
+letter-spacing: 5px;
 color: #fff;
 font-size: 100%;
 `;
@@ -46,7 +48,7 @@ export const InputBar = styled.input`
   color: #000;
   height: ${InputHeight};
   width: 100%;
-  margin-top: 5px;
+  margin-top: 3%;
   padding-left: 10px;
   :hover {
     background-color: hsl(0 0% 85%);
@@ -90,7 +92,7 @@ export const NumberItem = styled.p`
 `;
 export const NumberWord = styled.p`
   padding: 0;
-  font-size: 4em;
+  font-size: 3.5em;
 `;
 
 

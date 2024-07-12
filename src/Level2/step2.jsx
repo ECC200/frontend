@@ -49,7 +49,8 @@ function Step2() {
           }
         `}
       />
-      <UpperRightBtn onClick={() => navigate("/step1")}>ログアウト</UpperRightBtn>
+      <UpperRightBtn onClick={() => navigate("/step1/")}>ログアウト</UpperRightBtn>
+
       <Container>
         <Logofunc color='#fff' />
 

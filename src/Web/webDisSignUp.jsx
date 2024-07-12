@@ -18,6 +18,7 @@ import {
   InputBar,
   ErrInputBar,
   ErrInputLabel,
+  DialogBoxArea
 } from "./EmotionForWeb.jsx";
 
 function DisSignUpTop() {
@@ -104,7 +105,7 @@ function DisSignUpTop() {
   };
 
   const handleConfirm = () => {
-    const newInputErrors = {};      
+    const newInputErrors = {};
 
     for (const key in inputErrors) {
       if (key === "emergency_contacts") {
@@ -128,7 +129,7 @@ function DisSignUpTop() {
     if (!allData.emergency_contacts[0].name || !allData.emergency_contacts[0].phone) {
       newInputErrors.emergency_contacts[0] = { name: false, phone: false };
     }
-  
+
 
     setInputErrors(newInputErrors);
 
@@ -143,7 +144,6 @@ function DisSignUpTop() {
     if (!errorFound) {
       setOpen(true);
     }
-    console.log(allData)
   };
 
   const handleCloseBox = () => {
@@ -169,9 +169,9 @@ function DisSignUpTop() {
       formData.append("photo", selectedFile);
     }
 
+    // API Start 
     try {
       const formData = new FormData();
-  
       // allDataの各フィールドをFormDataに追加
       Object.keys(allData).forEach(key => {
         if (key === 'emergency_contacts') {
@@ -186,31 +186,26 @@ function DisSignUpTop() {
           formData.append(key, allData[key]);
         }
       });
-      
       // 画像ファイルを追加
       if (selectedFile) {
         formData.append('photo', selectedFile);
       }
-      
       // FormDataの内容をデバッグ出力
       for (let pair of formData.entries()) {
-        console.log(pair[0] + ': ' + pair[1]); 
+        console.log(pair[0] + ': ' + pair[1]);
       }
-      
-      const response = await fetch("http://localhost:8080/users", {
+      await fetch("http://localhost:8080/users", {
         method: "POST",
         body: formData,
       });
-      
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      const data = await response.json();
-      console.log("User created successfully:", data);
       // 成功時の処理を追加
+      // TODO: #
+      setTimeout(() => {
+        navigate(`/WebPatientData/#`);
+      }, 1000);
+
     } catch (error) {
-      console.error("Error creating user:", error);
-      // エラー時の処理を追加
+      throw new Error("Network response was not ok");
     } finally {
       setSendBtn(false);
       setOpen(false);
@@ -234,43 +229,48 @@ function DisSignUpTop() {
     <>
       {haveError && (
         <Dialog open={haveError}>
-          <DialogTitle className={css`text-align: center;`}>メッセージ</DialogTitle>
-          <DialogContent className={css`width:600px;`}>
-            <h3 className={css`text-align: center;`}>必要な情報を入力してください</h3>
-            <ConfirmBtn onClick={handleCloseBox} className={css`text-align: center;`}>OK</ConfirmBtn>
-          </DialogContent>
+          <DialogBoxArea>
+            <DialogTitle>メッセージ</DialogTitle>
+            <DialogContent className='DialogContentStyle'>
+              <h3 className={css`text-align: center;`}>必要な情報を入力してください</h3>
+              <ConfirmBtn onClick={handleCloseBox} className={css`text-align: center;`}>OK</ConfirmBtn>
+            </DialogContent>
+          </DialogBoxArea>
         </Dialog>
       )}
 
       {!sendBtn ? (
         <Dialog open={open} onClose={() => setOpen(false)}>
-          <DialogTitle className={css`text-align: center;`}>個人情報を確認してください</DialogTitle>
-          <DialogContent className={css`width:600px;`}>
-            <Confirm>名前：{allData.user_name}</Confirm>
-            <Confirm>生年月日：{allData.birth_date}</Confirm>
-            <Confirm>年齢：{allData.age}</Confirm>
-            <Confirm>住所：{allData.address}</Confirm>
-            <Confirm>本人連絡先：{allData.contact}</Confirm>
-            <Confirm>かかりつけの病院：{allData.hospital_destination}</Confirm>
-            <Confirm>主治医：{allData.primary_care_doctor}</Confirm>
-            <Confirm>何科：{allData.specialty}</Confirm>
-            <Confirm>持病名：{allData.chronic_disease}</Confirm>
-            <Confirm>障がい者等級：{allData.disability_grade}</Confirm>
-            <Confirm className={css`text-align: center;`}>緊急連絡先</Confirm>
-            <Confirm>緊急連絡1：{allData.emergency_contacts[0].name} - {allData.emergency_contacts[0].phone}</Confirm>
-            <Confirm>緊急連絡2：{allData.emergency_contacts[1].name} - {allData.emergency_contacts[1].phone}</Confirm>
-
-          </DialogContent>
-          <ConfirmBtn onClick={handleSendData}>確認</ConfirmBtn>
+          <DialogBoxArea>
+            <DialogTitle>個人情報を確認してください</DialogTitle>
+            <DialogContent className='DialogContentStyle'>
+              <Confirm>名前：{allData.user_name}</Confirm>
+              <Confirm>生年月日：{allData.birth_date}</Confirm>
+              <Confirm>年齢：{allData.age}</Confirm>
+              <Confirm>住所：{allData.address}</Confirm>
+              <Confirm>本人連絡先：{allData.contact}</Confirm>
+              <Confirm>かかりつけの病院：{allData.hospital_destination}</Confirm>
+              <Confirm>主治医：{allData.primary_care_doctor}</Confirm>
+              <Confirm>何科：{allData.specialty}</Confirm>
+              <Confirm>持病名：{allData.chronic_disease}</Confirm>
+              <Confirm>障がい者等級：{allData.disability_grade}</Confirm>
+              <Confirm className={css`text-align: center;`}>緊急連絡先</Confirm>
+              <Confirm>緊急連絡1：{allData.emergency_contacts[0].name} - {allData.emergency_contacts[0].phone}</Confirm>
+              <Confirm>緊急連絡2：{allData.emergency_contacts[1].name} - {allData.emergency_contacts[1].phone}</Confirm>
+            </DialogContent>
+            <ConfirmBtn onClick={handleSendData}>確認</ConfirmBtn>
+          </DialogBoxArea>
         </Dialog>
       ) : (
         <Dialog open={open} onClose={() => setOpen(false)}>
-          <DialogTitle className={css`text-align: center;`}>新規登録</DialogTitle>
-          <DialogContent className={css`width:600px;`}>
-            <Box className={css`text-align: center; margin:10px;`}>
-              <CircularProgress color="inherit" />
-            </Box>
-          </DialogContent>
+          <DialogBoxArea>
+            <DialogTitle>新規登録</DialogTitle>
+            <DialogContent className='DialogContentStyle'>
+              <Box className={css`text-align: center; margin:10px;`}>
+                <CircularProgress color="inherit" />
+              </Box>
+            </DialogContent>
+          </DialogBoxArea>
         </Dialog>
       )}
 
@@ -556,7 +556,7 @@ function DisSignUpTop() {
               {/* 関係 */}
               <InputAreaPx>
                 <InputLabelBlack htmlFor={`emergencyContact${index + 1}_name`}>
-                  緊急連絡先の関係:
+                  緊急連絡先の関係{index + 1}:
                 </InputLabelBlack>
                 <InputBar
                   type="text"
@@ -570,7 +570,7 @@ function DisSignUpTop() {
               {/* 電話番号 */}
               <InputAreaPx>
                 <InputLabelBlack htmlFor={`emergencyContact${index + 1}_phone`}>
-                  緊急連絡電話番号:
+                  緊急連絡電話番号{index + 1}:
                 </InputLabelBlack>
                 <InputBar
                   type="tel"

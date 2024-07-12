@@ -6,8 +6,14 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import WebHeader from './webHeader.jsx';
 import styled from '@emotion/styled';
+import { css } from "@emotion/css";
 import PersonImg from '../assets/taku.jpeg';
+import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
 
+import {
+    Header, DialogBoxArea
+} from './EmotionForWeb.jsx'
 
 function WebStaffData() {
     const { staffId } = useParams();
@@ -16,12 +22,13 @@ function WebStaffData() {
     const [logout, setLogout] = useState(false);
     const [isInactive, setIsInactive] = useState(false);
     const timeoutRef = useRef(null);
+    const [confirm, setConfirm] = useState(false);
     const [searchbar, setSearchbar] = useState('');
-    const [searchRsp, setSearchRsp] = useState([]);
+    const searchRsp = 'No matching records found';
     const [staffData, setStaffData] = useState({
         staff_name: "",
         boss: "",
-        date: "2020/04/21",
+        date: "",
         department: "",
         doctor_message: "",
         password: "",
@@ -58,11 +65,7 @@ function WebStaffData() {
         const fetchData = async () => {
             try {
                 const response = await axios.get(`http://localhost:8080/staffs/${staffId}`);
-                if (response.status === 200) {
-                    setStaffData(response.data);
-                } else {
-                    console.error("Failed to fetch staff data");
-                }
+                setStaffData(response.data);
             } catch (error) {
                 console.error("Error fetching staff data:", error);
             }
@@ -81,6 +84,7 @@ function WebStaffData() {
         setLogout(true);
     };
 
+    // Time Now
     const [time, setTime] = useState(new Date());
     useEffect(() => {
         const timer = setInterval(() => {
@@ -90,17 +94,20 @@ function WebStaffData() {
         return () => clearInterval(timer);
     }, []);
 
+    // Search bar Api
     const handleSearch = useCallback(async () => {
-        try {
-            const response = await axios.post('http://localhost:8080/checkDisabilityID', { disabilityId: searchbar });
-            if (response.data.success) {
-                navigate(`/WebPatientData/${searchbar}`);
-            } else {
-                setSearchRsp(['No matching records found']);
-                setOpen(true);
+        setConfirm(false)
+        if (searchbar !== '') {
+            setOpen(true);
+            try {
+                await axios.post('http://localhost:8080/checkDisabilityID', { disabilityId: searchbar });
+                setTimeout(() => {
+                    navigate(`/WebPatientData/${searchbar}`);
+                }, 1000);
+            } catch (error) {
+                setConfirm(true)
+                console.error('Error searching disability ID:', error);
             }
-        } catch (error) {
-            console.error('Error searching disability ID:', error);
         }
     }, [navigate, searchbar]);
 
@@ -112,20 +119,24 @@ function WebStaffData() {
 
     return (
         <>
+            {/* Search Confirm Msg Box */}
             <Dialog open={open} onClose={() => setOpen(false)}>
                 <DialogBoxArea>
                     <DialogTitle>検索結果</DialogTitle>
                     <DialogContent className='DialogContentStyle'>
-                        {searchRsp.map((repo, index) => (
-                            <div key={index}>
-                                <h4>{repo}</h4>
-                            </div>
-                        ))}
+                        {confirm ? (
+                            <h3>{searchRsp}</h3>
+                        ) : (
+                            <Box className={css`text-align: center; margin:10px;`}>
+                                <CircularProgress color="inherit" />
+                            </Box>
+                        )}
                     </DialogContent>
                 </DialogBoxArea>
             </Dialog >
 
-            <Dialog open={logout} onClose={() => setLogout(false)}>
+            {/* Logout Confirm Msg Box */}
+            <Dialog Dialog open={logout} onClose={() => setLogout(false)}>
                 <DialogBoxArea>
                     <DialogTitle>ログアウト確認</DialogTitle>
                     <DialogContent className='DialogContentStyle'>
@@ -133,7 +144,7 @@ function WebStaffData() {
                         <SubmitBtn onClick={() => navigate("/WebLogin/")}>ログアウト</SubmitBtn>
                     </DialogContent>
                 </DialogBoxArea>
-            </Dialog >
+            </Dialog>
 
             <Header>
                 {time.getSeconds() > 9 ?
@@ -187,13 +198,7 @@ const fontSize = '1.3em';
 // --------------------------------------------Header----------------------------------------------------
 
 
-const Header = styled.header`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 0 auto;
-  background-color: gray;
-`;
+
 
 const ShowTime = styled.div`
     position: absolute;
@@ -291,13 +296,7 @@ const InfoRightMessage = styled.div`
     padding: 0 1% 2% 1%;
     height: 300px;
 `;
-// ------------------------------------------------------------------------------------------------
 
-
-const DialogBoxArea = styled.div`
-    width:600px;
-    text-align:center;
-`;
 // ------------------------------------------------------------------------------------------------
 const PageTitle = styled.h1`
     text-align: center;

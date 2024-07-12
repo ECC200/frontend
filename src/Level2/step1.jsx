@@ -17,9 +17,10 @@ function Step1() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
 
+  // eslint-disable-next-line no-undef
   const handleLogin = async () => {
     try {
-      const response = await fetch("http://localhost:8080/login", {
+      const response = await fetch('http://localhot:8080/login', {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -46,6 +47,7 @@ function Step1() {
   return (
     <Container>
       <Logofunc />
+
       <InputArea>
         <InputSet>
           <InputLabelBlack htmlFor="staffId">スタッフ番号:</InputLabelBlack>
@@ -59,6 +61,7 @@ function Step1() {
             }}
           />
         </InputSet>
+
         <InputSet>
           <InputLabelBlack htmlFor="password">パスワード:</InputLabelBlack>
           <InputBar
@@ -84,8 +87,7 @@ export default Step1;
 const InputSet = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 3% auto;
-  letter-spacing: 5px;
+  margin: 0 auto;
 `;
 
 const SubmitBtn = styled.button`
