@@ -17,7 +17,7 @@ function Step1() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
 
-  const IpAddress = '54.226.61.199:8080'
+  const IpAddress = '54.91.203.105:8080'
 
 
   const handleLogin = async () => {

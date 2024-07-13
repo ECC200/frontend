@@ -11,7 +11,7 @@ import {
 
 
 function WebStaffReLogin() {
-    const IpAddress = '54.226.61.199:8080'
+    const IpAddress = '54.91.203.105:8080'
 
     const navigate = useNavigate();
     const location = useLocation();

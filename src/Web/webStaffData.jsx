@@ -25,7 +25,7 @@ function WebStaffData() {
     const [confirm, setConfirm] = useState(false);
     const [searchbar, setSearchbar] = useState('');
     const searchRsp = 'No matching records found';
-    const IpAddress = '54.226.61.199:8080'
+    const IpAddress = '54.91.203.105:8080'
     const [staffData, setStaffData] = useState({
         staff_name: "",
         boss: "",

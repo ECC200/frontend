@@ -37,7 +37,7 @@ function WebpatientData() {
     const [newContent, setNewContent] = useState({ date: '', content: '' });
     const [editContentIndex, setEditContentIndex] = useState(-1);
     const [saveMsg, setSaveMsg] = useState('本当に保存しますか？');
-    const IpAddress = '54.226.61.199:8080'
+    const IpAddress = '54.91.203.105:8080'
     const [open, setOpen] = useState(false);
     const [load, setLoad] = useState(false);
     const [sended, setSended] = useState(false);

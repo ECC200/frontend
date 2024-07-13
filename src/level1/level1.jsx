@@ -22,7 +22,7 @@ function Level1() {
   const [userEc1, setUserEc1] = useState([]);
   const [userEc2, setUserEc2] = useState([]);
 
-  const IpAddress = '54.226.61.199:8080'
+  const IpAddress = '54.91.203.105:8080'
 
   useEffect(() => {
     const fetchUser = async () => {

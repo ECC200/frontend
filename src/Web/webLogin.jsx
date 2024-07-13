@@ -14,7 +14,7 @@ function WebLogin() {
     const [password, setPassword] = useState('');
     const [reqMsg, setReqMsg] = useState(true);
     const navigate = useNavigate();
-    const IpAddress = '54.226.61.199:8080'
+    const IpAddress = '54.91.203.105:8080'
 
 
     const handleStaffIdChange = useCallback((e) => {
