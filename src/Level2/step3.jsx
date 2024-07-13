@@ -19,13 +19,13 @@ function Step3() {
     const navigate = useNavigate();
     const [userData, setUserData] = useState(null);
 
-    const IpAddress = '54.226.61.199:8080'
+    const IpAddress = 'http://54.91.203.105:8080'
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 // const response = await fetch(`http://localhost:8080/users/${disabilityId}`);
-                const response = await fetch(`http://${IpAddress}/users/${disabilityId}`);
+                const response = await fetch(`${IpAddress}/users/${disabilityId}`);
                 if (response.ok) {
                     const data = await response.json();
                     setUserData(data);

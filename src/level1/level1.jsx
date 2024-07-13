@@ -22,13 +22,13 @@ function Level1() {
   const [userEc1, setUserEc1] = useState([]);
   const [userEc2, setUserEc2] = useState([]);
 
-  const IpAddress = '54.226.61.199:8080'
+  const IpAddress = 'http://54.91.203.105:8080'
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
         // const response = await fetch(`http://localhost:8080/users/${userId}`);
-        const response = await fetch(`http://${IpAddress}/users/${userId}`);
+        const response = await fetch(`${IpAddress}/users/${userId}`);
         const userData = await response.json();
         setUserEc1([userData.emergency_contacts[0].phone, userData.emergency_contacts[0].name]);
         setUserEc2([userData.emergency_contacts[1].phone, userData.emergency_contacts[1].name]);
