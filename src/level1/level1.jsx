@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Global, css } from '@emotion/react'
 import Logo from '../LogoSetup';
@@ -18,7 +18,6 @@ function Level1() {
   const [isModalOpen, setModalOpen] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
   const [error, setError] = useState(null);
-  const numberRef = useRef(null);
   const [userEc1, setUserEc1] = useState([]);
   const [userEc2, setUserEc2] = useState([]);
 
@@ -52,13 +51,23 @@ function Level1() {
   };
 
   const handleCopy = () => {
-    const numberText = numberRef.current.innerText;
-    navigator.clipboard.writeText(numberText)
-      .then(() => {
+    if (userId) {
+      // Create a temporary text area element
+      const textArea = document.createElement('textarea');
+      textArea.value = userId;
+      document.body.appendChild(textArea);
+      textArea.select();
+      try {
+        document.execCommand('copy'); // Copy the text to clipboard
         setIsCopied(true);
         setTimeout(() => setIsCopied(false), 2000);
-      })
-      .catch(err => console.error('Failed to copy: ', err));
+      } catch (err) {
+        console.error('Failed to copy: ', err);
+      }
+      document.body.removeChild(textArea); // Clean up
+    } else {
+      console.error('userId is undefined');
+    }
   };
 
   if (error) {
@@ -87,7 +96,7 @@ function Level1() {
 
         <NumberSet>
           <NumberItem>患者番号:</NumberItem>
-          <NumberWord ref={numberRef}>
+          <NumberWord>
             {userId}
             <CopieBT src={Copie} onClick={handleCopy} alt="Copy Icon" />
           </NumberWord>

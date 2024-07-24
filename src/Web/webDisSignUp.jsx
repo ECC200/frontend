@@ -32,7 +32,6 @@ function DisSignUpTop() {
   const [haveError, setHaveError] = useState(false);
   const [allData, setAllData] = useState({
     photo: "",
-
     user_name: "",
     birth_date: "",
     age: age,
@@ -42,7 +41,6 @@ function DisSignUpTop() {
     primary_care_doctor: "",
     specialty: "",
     chronic_disease: "",
-
     disability_grade: "",
     emergency_contacts: [
       { name: "", phone: "" },

@@ -55,7 +55,8 @@ function WebpatientData() {
         EmergencyContact: '',
         Address: '',
         Medicine: '',
-        DoctorMessage: ''
+        DoctorMessage: '',
+        ChronicDisease: ''
     });
 
     // データをとる
@@ -75,10 +76,14 @@ function WebpatientData() {
                         Hospital: data.hospital_destination || '',
                         Doctor: data.primary_care_doctor || '',
                         PersonContact: data.contact || '',
-                        EmergencyContact: data.emergency_contacts[0]?.phone || '',
+                        EmergencyContact1Name: data.emergency_contacts[0]?.name || '',
+                        EmergencyContact2Name: data.emergency_contacts[1]?.name || '',
+                        EmergencyContact1Phone: data.emergency_contacts[0]?.phone || '',
+                        EmergencyContact2Phone: data.emergency_contacts[1]?.phone || '',
                         Address: data.address || '',
                         Medicine: data.medication_status || '',
-                        DoctorMessage: data.doctor_comment || ''
+                        DoctorMessage: data.doctor_comment || '',
+                        ChronicDisease: data.chronic_disease || ''
                     });
                     setContentList(data.historys.map(h => ({ date: h.date, content: h.memo })));
                 } catch (error) {
@@ -210,16 +215,20 @@ function WebpatientData() {
                             <td>{patientData.Birthday}</td>
                         </tr>
                         <tr>
-                            <th>障がい種別 :</th>
+                            <th>何科 :</th>
                             <td>{patientData.DisabilityType}</td>
+                        </tr>
+                        <tr>
+                            <th>主治医 :</th>
+                            <td>{patientData.Doctor}</td>
+                        </tr>
+                        <tr>
+                            <th>持病名 :</th>
+                            <td>{patientData.ChronicDisease}</td>
                         </tr>
                         <tr>
                             <th>障がい者等級 :</th>
                             <td>{patientData.DisabilityLevel}</td>
-                        </tr>
-                        <tr>
-                            <th>かかりつけ医 :</th>
-                            <td>{patientData.Doctor}</td>
                         </tr>
                         <tr>
                             <th>かかりつけ病院 :</th>
@@ -231,7 +240,11 @@ function WebpatientData() {
                         </tr>
                         <tr>
                             <th>緊急連絡先 :</th>
-                            <td>{patientData.EmergencyContact}</td>
+                            <td>{patientData.EmergencyContact1Name} : {patientData.EmergencyContact1Phone}</td>
+                        </tr>
+                        <tr>
+                            <th></th>
+                            <td>{patientData.EmergencyContact2Name} : {patientData.EmergencyContact2Phone}</td>
                         </tr>
                         <tr>
                             <th>住所 :</th>
