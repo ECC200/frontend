@@ -281,7 +281,6 @@ function WebpatientData() {
                         )}
                     </DateContentStyle>
 
-
                     {/* List Item */}
                     <ContentListStyle>
                         {contentList.map((item, index) => (
@@ -317,7 +316,6 @@ function WebpatientData() {
                             </InfoCenterDataItem>
                         ))}
                     </ContentListStyle>
-
 
                 </InfoCenterData>
 
@@ -401,6 +399,7 @@ const DateContentStyle = styled.div`
 const ContentListStyle = styled.table`
   list-style-type: none;
   padding: 0;
+  width: 100%;
 `;
 
 const InfoLeftData = styled.div`
@@ -435,8 +434,6 @@ const InfoCenterDataItem = styled.div`
   justify-content: space-between;
   border-bottom: ${lineSize} solid #000;
   padding: 10px 0;
-  height:100%;
-  width:700px;
   text-align: left;
   span {
     margin-left: 20px;
