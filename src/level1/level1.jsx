@@ -24,7 +24,7 @@ function Level1() {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/users/${userId}`);
+        const response = await fetch(`http://44.199.143.74:8080/users/${userId}`);
         const userData = await response.json();
         setUserEc1([userData.emergency_contacts[0].phone, userData.emergency_contacts[0].name]);
         setUserEc2([userData.emergency_contacts[1].phone, userData.emergency_contacts[1].name]);

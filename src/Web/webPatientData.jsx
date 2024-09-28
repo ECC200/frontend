@@ -64,7 +64,7 @@ function WebpatientData() {
         if (userId) {
             const fetchData = async () => {
                 try {
-                    const response = await axios.get(`http://localhost:8080/users/${userId}`);
+                    const response = await axios.get(`http://44.199.143.74:8080/users/${userId}`);
                     const data = response.data;
                     setPatientData({
                         PersonImg: data.photo || '',
@@ -133,8 +133,8 @@ function WebpatientData() {
         }));
         try {
             setIsEditing(false);
-            await axios.put(`http://localhost:8080/users/${userId}/details`, userDetails);
-            await axios.put(`http://localhost:8080/users/${userId}/history`, historyData);
+            await axios.put(`http://44.199.143.74:8080/users/${userId}/details`, userDetails);
+            await axios.put(`http://44.199.143.74:8080/users/${userId}/history`, historyData);
             setSaveMsg('データが保存されました');
             setSended(true);
         } catch (error) {

@@ -64,7 +64,7 @@ function WebStaffData() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(`http://localhost:8080/staffs/${staffId}`);
+                const response = await axios.get(`http://44.199.143.74:8080/staffs/${staffId}`);
                 setStaffData(response.data);
             } catch (error) {
                 console.error("Error fetching staff data:", error);
@@ -100,7 +100,7 @@ function WebStaffData() {
         if (searchbar !== '') {
             setOpen(true);
             try {
-                await axios.post('http://localhost:8080/checkDisabilityID', { disabilityId: searchbar });
+                await axios.post('http://44.199.143.74:8080/checkDisabilityID', { disabilityId: searchbar });
                 setTimeout(() => {
                     navigate(`/WebPatientData/${searchbar}`);
                 }, 1000);

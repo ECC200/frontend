@@ -23,7 +23,7 @@ function Step3() {
         const fetchData = async () => {
             try {
                 console.log(`Fetching data for disabilityId: ${disabilityId}`);
-                const response = await fetch(`http://localhost:8080/users/${disabilityId}`);
+                const response = await fetch(`http://44.199.143.74:8080/users/${disabilityId}`);
                 if (response.ok) {
                     const data = await response.json();
                     setUserData(data);

@@ -20,7 +20,7 @@ function WebStaffReLogin() {
     // Staff Data
     const handleTakeData = async () => {
         try {
-            const response = await Axios.get('localhost:8080', {
+            const response = await Axios.get('44.199.143.74:8080', {
                 StaffId: StaffID,
             });
             navigate("/webStaffData/", { state: response.data });
@@ -31,7 +31,7 @@ function WebStaffReLogin() {
     // Login
     const handleLogin = async () => {
         try {
-            const response = await Axios.post('localhost:8080', {
+            const response = await Axios.post('44.199.143.74:8080', {
                 StaffId: StaffID,
                 Password: password
             });

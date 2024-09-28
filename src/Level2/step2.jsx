@@ -19,7 +19,7 @@ function Step2() {
   const [error, setError] = useState(false);
 
   const handleSubmit = async () => {
-    const response = await fetch("http://localhost:8080/checkDisabilityID", {
+    const response = await fetch("http://44.199.143.74:8080/checkDisabilityID", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

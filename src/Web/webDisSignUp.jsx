@@ -192,7 +192,7 @@ function DisSignUpTop() {
       for (let pair of formData.entries()) {
         console.log(pair[0] + ': ' + pair[1]);
       }
-      const response = await fetch("http://localhost:8080/users", {
+      const response = await fetch("http://44.199.143.74:8080/users", {
         method: "POST",
         body: formData,
       });
